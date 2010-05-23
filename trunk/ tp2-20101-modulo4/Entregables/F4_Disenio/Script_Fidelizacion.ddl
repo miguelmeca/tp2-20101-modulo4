@@ -1,0 +1,148 @@
+CREATE TABLE TB_5-ETS-14-TipoCliente (
+	tipo VARCHAR ( 1 ) NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fecharcreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-14-TipoCliente_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-14-TipoCliente2 PRIMARY KEY (TB_5-ETS-14-TipoCliente_ID)
+	);
+CREATE TABLE TB_5-ETS-09-DetallePedido (
+	cantidad INTEGER NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-02-Producto_ID INTEGER NOT NULL,
+	TB_5-ETS-01-Pedido_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-09-DetallePedid9 PRIMARY KEY (TB_5-ETS-02-Producto_ID, TB_5-ETS-01-Pedido_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-09-DetallePedid10 ON TB_5-ETS-09-DetallePedido (TB_5-ETS-01-Pedido_ID );
+CREATE INDEX TC_TB_5-ETS-09-DetallePedid9 ON TB_5-ETS-09-DetallePedido (TB_5-ETS-02-Producto_ID );
+CREATE TABLE TB_5-ETS-03-Equivalencia (
+	monto DOUBLE PRECISION NOT NULL,
+	cant_punto INTEGER NOT NULL,
+	fechacreacion DATE NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	fechaexpiracion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-03-Equivalencia_ID INTEGER NOT NULL,
+	TB_5-ETS-02-Producto_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-03-Equivalencia6 PRIMARY KEY (TB_5-ETS-03-Equivalencia_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-03-Equivalencia13 ON TB_5-ETS-03-Equivalencia (TB_5-ETS-02-Producto_ID );
+CREATE TABLE TB_5-ETS-07-Tarjeta (
+	nro_tarjeta INTEGER NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-04-Cliente_ID INTEGER NOT NULL,
+	TB_5-ETS-06-Cuenta_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-07-Tarjeta5 PRIMARY KEY (TB_5-ETS-04-Cliente_ID, TB_5-ETS-06-Cuenta_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-07-Tarjeta7 ON TB_5-ETS-07-Tarjeta (TB_5-ETS-04-Cliente_ID );
+CREATE INDEX TC_TB_5-ETS-07-Tarjeta8 ON TB_5-ETS-07-Tarjeta (TB_5-ETS-06-Cuenta_ID );
+CREATE TABLE TB_5-ETS-05-Canje (
+	fecha_canje DATE NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-04-Cliente_ID INTEGER NOT NULL,
+	TB_5-ETS-02-Producto_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-05-Canje7 PRIMARY KEY (TB_5-ETS-04-Cliente_ID, TB_5-ETS-02-Producto_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-05-Canje6 ON TB_5-ETS-05-Canje (TB_5-ETS-02-Producto_ID );
+CREATE INDEX TC_TB_5-ETS-05-Canje5 ON TB_5-ETS-05-Canje (TB_5-ETS-04-Cliente_ID );
+CREATE TABLE TB_5-ETS-01-Pedido (
+	fecha_Pedido DATE NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-01-Pedido_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-01-Pedido8 PRIMARY KEY (TB_5-ETS-01-Pedido_ID)
+	);
+CREATE TABLE TB_5-ETS-11-TipoProducto (
+	tipo VARCHAR ( 1 ) NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-11-TipoProducto_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-11-TipoProducto4 PRIMARY KEY (TB_5-ETS-11-TipoProducto_ID)
+	);
+CREATE TABLE TB_5-ETS-04-Cliente (
+	nro_dni INTEGER NOT NULL,
+	nombre VARCHAR ( 100 ) NOT NULL,
+	ape_pat VARCHAR ( 100 ) NOT NULL,
+	ape_mat VARCHAR ( 100 ) NOT NULL,
+	telefono1 INTEGER NOT NULL,
+	telefono2 INTEGER NOT NULL,
+	lugar_Trabajo VARCHAR ( 100 ) NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-04-Cliente_ID INTEGER NOT NULL,
+	TB_5-ETS-14-TipoCliente_ID INTEGER NOT NULL,
+	TB_5-ETS-13-Ubigeo_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-04-Cliente0 PRIMARY KEY (TB_5-ETS-04-Cliente_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-04-Cliente12 ON TB_5-ETS-04-Cliente (TB_5-ETS-13-Ubigeo_ID );
+CREATE INDEX TC_TB_5-ETS-04-Cliente1 ON TB_5-ETS-04-Cliente (TB_5-ETS-14-TipoCliente_ID );
+CREATE TABLE TB_5-ETS-06-Cuenta (
+	fecha_creacion DATE NOT NULL,
+	puntosAcumulados INTEGER NOT NULL,
+	puntosvencidos INTEGER NOT NULL,
+	puntos_canjeado INTEGER NOT NULL,
+	usuariocreacion VARCHAR ( 1 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 1 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-06-Cuenta_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-06-Cuenta1 PRIMARY KEY (TB_5-ETS-06-Cuenta_ID)
+	);
+CREATE TABLE TB_5-ETS-02-Producto (
+	descripción VARCHAR ( 100 ) NOT NULL,
+	stock INTEGER NOT NULL,
+	usuariocreacion VARCHAR ( 100 ) NOT NULL,
+	usuariomodificacion VARCHAR ( 100 ) NOT NULL,
+	fechacreacion DATE NOT NULL,
+	fechamodificacion DATE NOT NULL,
+	estado BIT ( 1 ) NOT NULL,
+	TB_5-ETS-02-Producto_ID INTEGER NOT NULL,
+	TB_5-ETS-11-TipoProducto_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-02-Producto3 PRIMARY KEY (TB_5-ETS-02-Producto_ID)
+	);
+CREATE INDEX TC_TB_5-ETS-02-Producto3 ON TB_5-ETS-02-Producto (TB_5-ETS-11-TipoProducto_ID );
+CREATE TABLE TB_5-ETS-13-Ubigeo (
+	cod_departamento INTEGER NOT NULL,
+	cod_provincia INTEGER NOT NULL,
+	cod_distrito INTEGER NOT NULL,
+	nom_ubigeo VARCHAR ( 100 ) NOT NULL,
+	TB_5-ETS-13-Ubigeo_ID INTEGER NOT NULL,
+	CONSTRAINT PK_TB_5-ETS-13-Ubigeo10 PRIMARY KEY (TB_5-ETS-13-Ubigeo_ID)
+	);
+ALTER TABLE TB_5-ETS-02-Producto ADD CONSTRAINT FK_TB_5-ETS-02-Producto1 FOREIGN KEY (TB_5-ETS-11-TipoProducto_ID) REFERENCES TB_5-ETS-11-TipoProducto (TB_5-ETS-11-TipoProducto_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-03-Equivalencia ADD CONSTRAINT FK_TB_5-ETS-03-Equivalencia9 FOREIGN KEY (TB_5-ETS-02-Producto_ID) REFERENCES TB_5-ETS-02-Producto (TB_5-ETS-02-Producto_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-05-Canje ADD CONSTRAINT FK_TB_5-ETS-05-Canje3 FOREIGN KEY (TB_5-ETS-04-Cliente_ID) REFERENCES TB_5-ETS-04-Cliente (TB_5-ETS-04-Cliente_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-05-Canje ADD CONSTRAINT FK_TB_5-ETS-05-Canje4 FOREIGN KEY (TB_5-ETS-02-Producto_ID) REFERENCES TB_5-ETS-02-Producto (TB_5-ETS-02-Producto_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-09-DetallePedido ADD CONSTRAINT FK_TB_5-ETS-09-DetallePedid8 FOREIGN KEY (TB_5-ETS-01-Pedido_ID) REFERENCES TB_5-ETS-01-Pedido (TB_5-ETS-01-Pedido_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-09-DetallePedido ADD CONSTRAINT FK_TB_5-ETS-09-DetallePedid7 FOREIGN KEY (TB_5-ETS-02-Producto_ID) REFERENCES TB_5-ETS-02-Producto (TB_5-ETS-02-Producto_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-07-Tarjeta ADD CONSTRAINT FK_TB_5-ETS-07-Tarjeta5 FOREIGN KEY (TB_5-ETS-04-Cliente_ID) REFERENCES TB_5-ETS-04-Cliente (TB_5-ETS-04-Cliente_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-07-Tarjeta ADD CONSTRAINT FK_TB_5-ETS-07-Tarjeta6 FOREIGN KEY (TB_5-ETS-06-Cuenta_ID) REFERENCES TB_5-ETS-06-Cuenta (TB_5-ETS-06-Cuenta_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-04-Cliente ADD CONSTRAINT FK_TB_5-ETS-04-Cliente0 FOREIGN KEY (TB_5-ETS-14-TipoCliente_ID) REFERENCES TB_5-ETS-14-TipoCliente (TB_5-ETS-14-TipoCliente_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE TB_5-ETS-04-Cliente ADD CONSTRAINT FK_TB_5-ETS-04-Cliente2 FOREIGN KEY (TB_5-ETS-13-Ubigeo_ID) REFERENCES TB_5-ETS-13-Ubigeo (TB_5-ETS-13-Ubigeo_ID)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+
