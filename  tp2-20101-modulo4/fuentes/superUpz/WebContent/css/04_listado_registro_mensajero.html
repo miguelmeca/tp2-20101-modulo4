@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Documento sin t&iacute;tulo</title>
+
+<link type="text/css" href="../../css/demos.css" rel="stylesheet" />
+
+<!--**JQUERY**-->
+<!--** ACTIVAR CUANDO SEA LOCAL
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js" ></script>
+ 
+<link type="text/css" href="themes/redmond/ui.all.css" rel="stylesheet" />
+**-->
+
+<!--** ACTIVAR REMOTA **-->
+  <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
+  <script type="text/javascript" src="http://jqueryui.com/js/jquery.js"></script>	
+	
+	
+	<script type="text/javascript" src="../../ui/ui.core.js"></script>
+	<script type="text/javascript" src="../../ui/ui.accordion.js"></script>
+	<script type="text/javascript" src="../../ui/ui.datepicker.js"></script>
+	<script type="text/javascript" src="../../ui/ui.dialog.js"></script>
+	<script type="text/javascript" src="../../ui/ui.draggable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.droppable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.progressbar.js"></script>
+	<script type="text/javascript" src="../../ui/ui.resizable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.selectable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.slider.js"></script>
+	<script type="text/javascript" src="../../ui/ui.sortable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.tabs.js"></script>
+	<script type="text/javascript" src="../../ui/effects.core.js"></script>
+	<script type="text/javascript" src="../../ui/effects.blind.js"></script>
+	<script type="text/javascript" src="../../ui/effects.bounce.js"></script>
+	<script type="text/javascript" src="../../ui/effects.clip.js"></script>
+	<script type="text/javascript" src="../../ui/effects.drop.js"></script>
+	<script type="text/javascript" src="../../ui/effects.explode.js"></script>
+	<script type="text/javascript" src="../../ui/effects.fold.js"></script>
+	<script type="text/javascript" src="../../ui/effects.highlight.js"></script>
+	<script type="text/javascript" src="../../ui/effects.pulsate.js"></script>
+	<script type="text/javascript" src="../../ui/effects.scale.js"></script>
+	<script type="text/javascript" src="../../ui/effects.shake.js"></script>
+	<script type="text/javascript" src="../../ui/effects.slide.js"></script>
+	<script type="text/javascript" src="../../ui/effects.transfer.js"></script>
+	<script type="text/javascript" src="../../ui/i18n/ui.datepicker-es.js"></script>
+
+ 
+   <!--**EXTERNAL**-->
+   <script type="text/javascript" src="../../external/bgiframe/jquery.bgiframe.js"></script>
+<script>
+
+jQuery(document).ready(function(){
+								
+	//$('#switcher').themeswitcher({loadTheme :'redmond', buttonPreText: 'Tema: '});
+	$('#switcher').themeswitcher({loadTheme :'Redmond', initialText: 'Seleccione Tema: ', buttonPreText: 'Tema: '});
+	
+	$(".datepicker").datepicker();
+	
+	
+	$("#formNuevoBien").dialog({
+						  bgiframe: true
+						  , height: 600
+						  , width: 600
+						  , modal: false
+						  //, draggable: false
+						  , closeOnEscape: false
+						  , resizable: false
+						  //,hide: 'fold'
+						  ,autoOpen: false 
+					  });
+		
+		
+	$('.btnExit').click(
+		function()
+		{
+				$("#formNuevoBien").dialog( 'close' );
+						
+		});
+					  
+	$('.btnOpen').click(
+		function()
+		{
+				$("#formNuevoBien").dialog( 'open' );
+						
+		});					  
+	
+	});
+
+</script>
+</head>
+
+<body>
+
+<div class="demos-nav" style="width:100%">
+
+ <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+					<div id="switcher"></div>
+
+<table width="100%" border="1">
+  <tr>
+    <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> <div align="center">N&ordm;</div></td>
+    <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> <div align="center">C&oacute;digo</div></td>
+    <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> <div align="center">Caso</div></td>
+    
+    <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> <div align="center">Destinatario</div></td>
+    
+    <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"> <div align="center"></td>
+  </tr>
+  
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td></td>
+  </tr>
+  
+</table>
+
+</div>
+</body>
+</html>

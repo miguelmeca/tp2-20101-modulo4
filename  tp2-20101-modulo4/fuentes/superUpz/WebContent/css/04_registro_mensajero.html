@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Documento sin t&iacute;tulo</title>
+
+<link type="text/css" href="../../css/demos.css" rel="stylesheet" />
+
+<!--**JQUERY**-->
+<!--** ACTIVAR CUANDO SEA LOCAL
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js" ></script>
+ 
+<link type="text/css" href="themes/redmond/ui.all.css" rel="stylesheet" />
+**-->
+
+<!--** ACTIVAR REMOTA **-->
+  <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
+  <script type="text/javascript" src="http://jqueryui.com/js/jquery.js"></script>	
+	
+	
+	<script type="text/javascript" src="../../ui/ui.core.js"></script>
+	<script type="text/javascript" src="../../ui/ui.accordion.js"></script>
+	<script type="text/javascript" src="../../ui/ui.datepicker.js"></script>
+	<script type="text/javascript" src="../../ui/ui.dialog.js"></script>
+	<script type="text/javascript" src="../../ui/ui.draggable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.droppable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.progressbar.js"></script>
+	<script type="text/javascript" src="../../ui/ui.resizable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.selectable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.slider.js"></script>
+	<script type="text/javascript" src="../../ui/ui.sortable.js"></script>
+	<script type="text/javascript" src="../../ui/ui.tabs.js"></script>
+	<script type="text/javascript" src="../../ui/effects.core.js"></script>
+	<script type="text/javascript" src="../../ui/effects.blind.js"></script>
+	<script type="text/javascript" src="../../ui/effects.bounce.js"></script>
+	<script type="text/javascript" src="../../ui/effects.clip.js"></script>
+	<script type="text/javascript" src="../../ui/effects.drop.js"></script>
+	<script type="text/javascript" src="../../ui/effects.explode.js"></script>
+	<script type="text/javascript" src="../../ui/effects.fold.js"></script>
+	<script type="text/javascript" src="../../ui/effects.highlight.js"></script>
+	<script type="text/javascript" src="../../ui/effects.pulsate.js"></script>
+	<script type="text/javascript" src="../../ui/effects.scale.js"></script>
+	<script type="text/javascript" src="../../ui/effects.shake.js"></script>
+	<script type="text/javascript" src="../../ui/effects.slide.js"></script>
+	<script type="text/javascript" src="../../ui/effects.transfer.js"></script>
+	<script type="text/javascript" src="../../ui/i18n/ui.datepicker-es.js"></script>
+
+ 
+   <!--**EXTERNAL**-->
+   <script type="text/javascript" src="../../external/bgiframe/jquery.bgiframe.js"></script>
+<script>
+
+jQuery(document).ready(function(){
+								
+	//$('#switcher').themeswitcher({loadTheme :'redmond', buttonPreText: 'Tema: '});
+	$('#switcher').themeswitcher({loadTheme :'Redmond', initialText: 'Seleccione Tema: ', buttonPreText: 'Tema: '});
+	
+	$(".datepicker").datepicker();
+	
+	
+	$("#formNuevoBien").dialog({
+						  bgiframe: true
+						  , height: 600
+						  , width: 600
+						  , modal: false
+						  //, draggable: false
+						  , closeOnEscape: false
+						  , resizable: false
+						  //,hide: 'fold'
+						  ,autoOpen: false 
+					  });
+		
+		
+	$('.btnExit').click(
+		function()
+		{
+				$("#formNuevoBien").dialog( 'close' );
+						
+		});
+					  
+	$('.btnOpen').click(
+		function()
+		{
+				$("#formNuevoBien").dialog( 'open' );
+						
+		});					  
+	
+	});
+
+</script>
+<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs();
+	});
+</script>
+
+</head>
+
+<body>
+
+<div class="demos-nav" style="width:100%">
+
+ <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+					<div id="switcher"></div>
+<table width="100%" border="1">
+	<tr>
+		<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">DOCUMENTOS RECEPCIONADOS POR MENSAJERO</td>
+	</tr>
+    <tr>
+		<td height="592" valign="top" >
+		<table width="100%" border="0">
+        <tr>
+        	<td><table width="100%" border="0">
+
+
+                    <tr class="demo-description">
+                        <td width="17%" rowspan="2" class="ui-accordion-content"><div align="center">DOCUMENTOS POR</div>
+                        <div align="center">REGISTRAR</div></td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <label>
+                            <input type="radio" name="radio" id="radio" value="radio" />
+                            Mensajero</label>
+                      </td>
+                        <td colspan="2" class="ui-accordion-content"><div align="center">
+              <select name="select2" style="width:190px"  ></select>
+            </div></td>
+                      </tr>
+                    <tr>
+	                    <td>&nbsp;</td>
+                        <td>
+                          <label>
+                            <input type="radio" name="radio" id="radio" value="radio" />
+                            Exhorto</label>
+                      </td>
+                        <td colspan="2" class="ui-accordion-content"><div align="center">
+              <select name="select2" style="width:190px"  ></select>
+            </div></td>
+                        <td colspan="2" class="ui-accordion-content"><div align="center">
+              <select name="select2" style="width:190px"  ></select>
+            </div></td>
+                    </tr>
+                    
+            </table>
+            </td>
+        </tr>	
+        <tr>
+				<td align="right">
+				  <form id="form1" name="form1" method="post" action="">
+				    <label>
+				      <input type="checkbox" name="checkbox" id="checkbox"/>
+				      Buscar con lector de código de barras</label>
+		        </form></td>
+            </tr>
+            
+			<tr>
+	            <td> <table width="100%" border="0">
+                	<tr>
+						<td>
+						<div id="tabs">
+						<ul>
+                            <li><a href="#tabs-1">Registro de Visitas</a></li>
+                            <li><a href="#tabs-2">Modificar Notif./Devoluc.</a></li>
+                        </ul>
+							<div id="tabs-1" >
+							  <iframe id="ifrPartes2" name="ifrPartes" width="100%" height="150px" src="04_listado_registro_mensajero.html" frameborder="1"></iframe>
+							</div>
+
+							<div id="tabs-2">
+							  <iframe id="ifrPartes" name="ifrPartes" width="100%" height="150px" src="04_listado_registro_mensajero.html" frameborder="1"></iframe>
+							</div>
+                        </div>
+						</td>
+                    </tr>
+                    
+                    <tr>
+					  <td class="ui-widget-header"><div align="right">
+                       <input type="button" name="Submit222" value="Salir" style="width:120px"  class="btnExit"/>
+                      </div></td>
+                    </tr>
+                    
+				</table>
+                </td>    
+            </tr>
+		</table>
+        </td>
+    </tr>
+</table>
+
+
+</div>
+</body>
+</html>
