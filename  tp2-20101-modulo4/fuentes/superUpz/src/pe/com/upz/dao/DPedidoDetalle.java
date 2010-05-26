@@ -10,6 +10,9 @@ import pe.com.upz.daoInterface.IDetallePedido;
 
 public class DPedidoDetalle implements IDetallePedido {
 
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IDetallePedido#almacenarDetalle(java.sql.Connection, int, pe.com.upz.bean.BPedidoDetalle, pe.com.upz.bean.BUsuario)
+	 */
 	@Override
 	public void almacenarDetalle(Connection conn,int codigoPedido,BPedidoDetalle pedidoDetalle, BUsuario usuario)
 			throws SQLException {
