@@ -1,6 +1,6 @@
 <%--
 *Resumen
-*Objeto                 : aba_autorizacion.jsp.
+*Objeto                 : rep_ClientesPorMes.jsp.
 * Descripcion           : Pagina para aoutorizar la orden.
 * Fecha de Creacion     : 05/05/2010
 * Autor                 : Gonzalo Azabache Carrillo
@@ -30,7 +30,7 @@ String ruta = request.getContextPath();
 	<tr>
 		<td width="100%"
 			class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<div align="center">Autorizaci&oacute;n de Orden</div>
+		<div align="center">Medir Fidelizaci&oacute;n y Bajas de Clientes</div>
 		</td>
 	</tr>
 	<tr>
@@ -40,20 +40,21 @@ String ruta = request.getContextPath();
 				<td colspan="2" align="left">&nbsp;</td>
 			</tr>
 			<tr>
-				<td width="49%" align="left">Usuario:</td>
-				<td width="51%" align="left"><input type="text"
-					name="txtUsuario" id="txtUsuario" style="width: 150px"
-					class="text  ui-corner-all" size="20" /></td>
-			</tr>
-			<tr>
-				<td align="left">&nbsp;</td>
-				<td align="left">&nbsp;</td>
-			</tr>
-			<tr>
-				<td align="left">Contrase&ntilde;a:</td>
-				<td align="left"><input type="password" name="txtClave"
-					id="txtClave" style="width: 150px" class="text  ui-corner-all"
-					size="100" /></td>
+				<td width="49%" align="left">Mes:</td>
+				<td width="51%" align="left"><select name="select">
+ <option value="1">enero</option>
+ <option value="2">febrero</option>
+ <option value="3">marzo</option>
+ <option value="4">abril</option>
+ <option value="5">mayo</option>
+ <option value="6">junio</option>
+ <option value="7">julio</option>
+ <option value="8">agosto</option>
+ <option value="9">septiembre</option>
+ <option value="10">octubre</option>
+ <option value="11">noviembre</option>
+ <option value="12">diciembre</option>
+			    </select></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="left">&nbsp;</td>
@@ -79,7 +80,6 @@ String ruta = request.getContextPath();
 </div>
 </body>
 <script language="JavaScript">
-
 	function cerrar(){
 		frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
 		frmListaProducto.submit();

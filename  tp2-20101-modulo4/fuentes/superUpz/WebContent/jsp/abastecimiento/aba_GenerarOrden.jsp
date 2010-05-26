@@ -138,7 +138,12 @@ MM_reloadPage(true);
 							<div align="center"><input name="txtCantidad<%=producto.getCodigo()%>" type="text"
 								class="text  ui-corner-all" id="txtCantidad<%=producto.getCodigo()%>" style="width: 50px"
 								value="<%=producto.obtenerMaximoSolicitar()%>" size="5" maxlength="5"
-								disabled /></div>
+								onkeyup="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
+								onblur="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
+								disabled />
+								<input name="hddCantidad<%=producto.getCodigo()%>" type="hidden"
+								id="hddCantidad<%=producto.getCodigo()%>" 
+								value="<%=producto.obtenerMaximoSolicitar()%>" /></div>
 							</div>
 							</td>
 						</tr>
@@ -212,6 +217,18 @@ function habilitarCajaTexto(check, codigo){
 		cajaTexto.focus();
 	}
 }
+function validarCantidadIngresada(codigo){
+	var valor = document.getElementById("txtCantidad"+codigo);
+	var valorMaximo = document.getElementById("hddCantidad"+codigo);
+	var ingresado =valor.value;
+	if(parseInt(valor.value) > parseInt(valorMaximo.value)){
+		valor.value=valorMaximo.value;
+		alert("Cantidad ingresada de "+ingresado+" unidades no válida");
+		valor.focus();
+	}
+	
+}
+
 function validarProductosSeleccionados(){
 	var seleccionado = false;
 	
