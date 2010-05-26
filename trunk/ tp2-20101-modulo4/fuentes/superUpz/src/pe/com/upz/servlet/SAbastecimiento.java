@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : SAbastecimiento.
+ * Descripción                : Servlet del modulo de abastecimiento.
+ * Fecha de Creación          : 25/05/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.servlet;
 
 import java.io.IOException;
@@ -34,6 +41,10 @@ import pe.com.upz.daoInterface.IUsuario;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
 
+/**
+ * Servlet del modulo de abastecimiento.
+ *
+ */
 public class SAbastecimiento extends HttpServlet {
 	
 	/* (non-Javadoc)
@@ -46,7 +57,7 @@ public class SAbastecimiento extends HttpServlet {
 			String ruta = "";
 			BUsuario usuario = ((BUsuario)request.getSession().getAttribute("usuarioSesion"));
 			if (operacion.equals("ingresoOrden")) {
-				ruta = mostrarIngresoOrden(request, true);
+				ruta = mostrarIngresoOrden(request, false);
 			}else if(operacion.equals("validarPermiso")){
 				ruta = validarPermiso(request);
 			}else if(operacion.equals("mostrarOrden")){
@@ -55,7 +66,6 @@ public class SAbastecimiento extends HttpServlet {
 				ruta = almacenarOrden(request,usuario);
 			}
 
-			//response.sendRedirect(ruta);
 			getServletConfig().getServletContext().getRequestDispatcher(ruta).forward(request, response);
 
 		} catch (Exception e) {

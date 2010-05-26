@@ -33,6 +33,10 @@ public class ConnectDS {
 	 */
 	public static final String  FORMATO_DDMMYYHHMMSS="DD/MM/YYYY HH24:MI:SS";
 	/**
+	 * Formato H24:MI para las fechas.
+	 */	
+	public static final String  FORMATO_HHMI="hh24:mi";
+	/**
 	 * realiza la conexion a la base de datos.
 	 * @return objeto de conexion a la BD.
 	 */
