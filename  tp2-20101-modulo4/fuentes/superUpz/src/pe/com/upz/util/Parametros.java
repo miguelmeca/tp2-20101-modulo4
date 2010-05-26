@@ -11,6 +11,10 @@ package pe.com.upz.util;
  */
 public class Parametros {
 	/**
+	 * Nombre de la empresa.
+	 */
+	public final static String ENTERPRISE_NOMBRE = "Supermercados UPZ";
+	/**
 	 * Nombre de la aplicacion.
 	 */
 	public final static String S_APP_NOMBRE = "Módulo de Fidelización ";
