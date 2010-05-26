@@ -17,7 +17,20 @@ import pe.com.upz.bean.BUsuario;
  */
 public interface IPedido {
 	
+	/**
+	 * Obtiene el numero maximo de orde de pedido alamcenada en el sistema.
+	 * @param conn objeto de conexion, tipo Connection.
+	 * @return numero del maximo pedido, tipo int.
+	 * @throws SQLException SQLException captura excepciones tipo SQL.
+	 */
 	public abstract int obtenerMaximoNumeroPedido(Connection conn) throws SQLException;;
 	
+	/**
+	 * Almacena la cebecera de la orden de pedido.
+	 * @param conn objeto de conexion, tipo Connection.
+	 * @param usuario usuario de la sesion, tipo BUsuario
+	 * @return numero de la orden almacenada, tipo int.
+	 * @throws SQLException SQLException captura excepciones tipo SQL.
+	 */
 	public abstract int almacenarOrden(Connection conn,BUsuario usuario) throws SQLException;;
 }

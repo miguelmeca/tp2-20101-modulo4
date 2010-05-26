@@ -119,7 +119,7 @@ public class BProducto extends Bean{
 	 * @return cantidad maxima a solcitar.
 	 */
 	public long obtenerMaximoSolicitar(){
-		return 0;
+		return 50;
 	}
 	/**
 	 * Retorna el codigo formateado con ceros
