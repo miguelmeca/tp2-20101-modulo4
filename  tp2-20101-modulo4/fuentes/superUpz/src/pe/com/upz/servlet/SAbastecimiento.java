@@ -71,8 +71,9 @@ public class SAbastecimiento extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + getClass().getName() + "; Mensaje:" + e);
-			response
-					.sendRedirect("msg.jsp?tipo=error&titulo=Login&descripcion=En este momento no lo podemos atender&continua=login.jsp");
+			request.setAttribute("mensajeSistema", "En este momento no lo podemos atender");
+			getServletConfig().getServletContext().getRequestDispatcher("/jsp/comun/msg.jsp")
+			.forward(request, response);
 		}
 
 	}
