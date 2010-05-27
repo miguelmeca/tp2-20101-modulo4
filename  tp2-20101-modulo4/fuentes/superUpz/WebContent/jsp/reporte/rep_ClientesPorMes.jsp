@@ -23,7 +23,7 @@ String ruta = request.getContextPath();
 
 </head>
 
-<body onload="JavaScript:mostrarMensaje()">
+<body >
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width: 100%" align="center">
 <form name="frmLogin" id="frmLogin" method="post" action="">
@@ -73,8 +73,8 @@ String ruta = request.getContextPath();
 </body>
 <script language="JavaScript">
 	function cerrar(){
-		frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
-		frmListaProducto.submit();
+		frmLogin.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+		frmLogin.submit();
 	}
 	/*
 	 * Ingreso al sistema.
