@@ -13,7 +13,8 @@ mensaje = (mensaje==null?"":mensaje);
 String ruta = request.getContextPath(); 
 %>
 
-<html >
+
+<%@page import="pe.com.upz.util.Parametros"%><html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Autorizar</title>
@@ -41,19 +42,10 @@ String ruta = request.getContextPath();
 			</tr>
 			<tr>
 				<td width="49%" align="left">Mes:</td>
-				<td width="51%" align="left"><select name="select">
- <option value="1">enero</option>
- <option value="2">febrero</option>
- <option value="3">marzo</option>
- <option value="4">abril</option>
- <option value="5">mayo</option>
- <option value="6">junio</option>
- <option value="7">julio</option>
- <option value="8">agosto</option>
- <option value="9">septiembre</option>
- <option value="10">octubre</option>
- <option value="11">noviembre</option>
- <option value="12">diciembre</option>
+				<td width="51%" align="left"><select name="selMes" id="selMes">
+				<%for(int i=0;i<Parametros.NOMBRE_MES.length;i++){ %>
+					<option value="<%=i %>"><%=Parametros.NOMBRE_MES[i] %></option>
+				<%} %>
 			    </select></td>
 			</tr>
 			<tr>
@@ -75,7 +67,7 @@ String ruta = request.getContextPath();
 </table>
 
 <input type="hidden" name="hddOperacion" id="hddOperacion"
-	value="validarPermiso">
+	value="mostrarReporteCliente">
 </form>
 </div>
 </body>
@@ -85,54 +77,12 @@ String ruta = request.getContextPath();
 		frmListaProducto.submit();
 	}
 	/*
-	* Valida los datos ingresados.
-	*/
-	function validarIngreso(){
-		var usuario = document.getElementById("txtUsuario").value;
-		var clave = document.getElementById("txtClave").value;
-		if (""==usuario){
-			alert("Ingrese el nombre del usuario.");
-			document.getElementById("txtUsuario").value="";
-			document.getElementById("txtClave").value ="";
-			return false;
-		} 
-		if (""==clave){
-			alert("Ingrese una contraseÃ±a.");
-			document.getElementById("txtUsuario").value="";
-			document.getElementById("txtClave").value ="";
-			return false;
-		}
-		return true;
-	}
-	/*
 	 * Ingreso al sistema.
 	 */
 	function ingresar(){
-
-		if(!validarIngreso()){
-			return;
-		}
-		
-		frmLogin.action="SAbastecimiento";
+	
+		frmLogin.action="SReporte";
 		frmLogin.submit();
-	}
-	/*
-	* Muetra el menje indicado al momento de cargar la pagina.
-	*/
-	function mostrarMensaje(){
-		var mensajeMostrar = "<%=mensaje%>";
-		if(mensajeMostrar == "contraseniaInvalido"){
-			alert("La contraseña del usuario es incorrecta. Vuelva a ingresar los datos.");
-		}else if(mensajeMostrar == "usuarioInvalido"){
-			alert("El nombre del usuario es incorrecto. Vuelva a ingresarlo.");
-		}else if(mensajeMostrar == "usuarioNoJefe"){
-			alert("El usuario ingresado no tiene el rol de jefe de fidelización.");
-		}else if(mensajeMostrar == "aprobacion"){
-			alert("No se permite generar una orden de pedido fuera de la fecha establecida. "+ 
-					"Será necesario una aprobación.");
-		}
-		document.getElementById("txtUsuario").value="";
-		document.getElementById("txtClave").value ="";
 	}
 </script>
 </html>

@@ -184,6 +184,7 @@ MM_reloadPage(true);
 
 <script language="JavaScript">
 function cerrar(){
+	frmListaProducto.target="_top";
 	frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
 	frmListaProducto.submit();
 }
@@ -192,6 +193,7 @@ function aceptar(){
 		alert("Debe selecccionar productos para la orden de pedido.");
 		return;
 	}
+	frmListaProducto.target="_top";
 	frmListaProducto.hddOperacion.value="almacenarOrden";
 	frmListaProducto.action="SAbastecimiento?hddOperacion=almacenarOrden";
 	frmListaProducto.submit();
