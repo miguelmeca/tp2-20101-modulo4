@@ -51,5 +51,9 @@ public class Parametros {
 	 * Cantidad de productos permitida en una orden de pedido.
 	 */
 	public static int CANTIDAD_PRODUCTOS_X_ORDEN=2;
+	
+	public static String[] NOMBRE_MES = { "enero", "febrero", "marzo", "abril",
+			"mayo", "junio", "julio", "agosto", "septiembre", "octubre",
+			"noviembre", "diciembre" };
 }
 

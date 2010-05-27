@@ -32,61 +32,62 @@ public class SReporte extends HttpServlet {
 		try {
 			String operacion = (String) request.getParameter("hddOperacion");
 			String ruta = "";
+			HSSFWorkbook workBook;
 			BUsuario usuario = ((BUsuario) request.getSession().getAttribute(
 					"usuarioSesion"));
+			short indicador = -1;
 			if (operacion.equals("reproteClientes")) {
 				ruta = mostrarReporteClientes(request);
-			} 
+			}else if(operacion.equals("mostrarReporteCliente")){
+				indicador =0;
+				workBook = generarReporteClientes(request,usuario); 
+				response.setHeader("Content-Disposition", 
+                		"attachment;filename=REPORTE_CLIENTES.xls;");
+				response.setContentType("application/vnd.ms-excel");
+				workBook.write(response.getOutputStream());
+				response.getOutputStream().close();
+			}
 
-			
-			getServletConfig().getServletContext().getRequestDispatcher(ruta)
-					.forward(request, response);
-
+			if(indicador == -1){
+				getServletConfig().getServletContext().getRequestDispatcher(ruta)
+						.forward(request, response);
+			}
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + getClass().getName() + "; Mensaje:" + e);
-			response
-					.sendRedirect("msg.jsp?tipo=error&titulo=Login&descripcion=En este momento no lo podemos atender&continua=login.jsp");
+			request.setAttribute("mensajeSistema", "En este momento no lo podemos atender");
+			getServletConfig().getServletContext().getRequestDispatcher("/jsp/comun/msg.jsp")
+			.forward(request, response);
 		}
 	}
 	
+	/**
+	 * Procesa el reporte de clientea ganados/perdidos en un mes determinado
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return archivo xls del reporte, tipo HSSFWorkbook.
+	 */
 	private String mostrarReporteClientes(HttpServletRequest request){
 		String ruta = "/jsp/reporte/rep_ClientesPorMes.jsp";
 		return ruta;
 	}
 
-	private HSSFWorkbook generarReporteExpAdministrativo(
+	private HSSFWorkbook generarReporteClientes(
 			HttpServletRequest request,
 			BUsuario usuario) {
 
-		String fechaActual;
-
 		String rutaInicial = getServletContext().getRealPath("/");
-		String rutaExcelPlantilla = "recursos/plantillas/";
-
-		String fechaInicio = "";//Util.convNulo(request.getParameter("FechaInicio"));
-		String fechaFin = "";//Util.convNulo(request.getParameter("FechaFin"));
+		String rutaExcelPlantilla = "/recursos/plantillas/";
+		int numeroMes = Integer.parseInt(request.getParameter("selMes"));
+		
 
 		HSSFWorkbook archivoXls = new HSSFWorkbook();
 		NReporte negocioReportes = new NReporte();
 
 		try {
-
-			//LMensaje listaMensajes = (LMensaje) this.getServletConfig()
-			//		.getServletContext().getAttribute("listaMensajes");
-
-			//Connection objConexion = Negocio.getConexionBD(usuario);
-
-			fechaActual ="";// negConPenal.obtenerFechaActual(objConexion,
-			//		"dd/mm/yyyy hh24:mi:ss");
-
-			//Negocio.CerrarConexionBD(objConexion);
-
 			archivoXls = negocioReportes
-					.generarReporteExpAdministrativo(usuario, fechaActual,
+					.generarReporteExpAdministrativo(usuario,
 							rutaExcelPlantilla, rutaInicial,
-							0,0,
-							fechaInicio, fechaFin);
+							numeroMes);
 		} catch (Exception e) {
 			archivoXls = null;
 		}
