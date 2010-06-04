@@ -26,6 +26,8 @@ import pe.com.upz.bean.BRol;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
+import pe.com.upz.controlador.CAbastecimiento;
+import pe.com.upz.controlador.CSeguridad;
 import pe.com.upz.dao.DOpcion;
 import pe.com.upz.dao.DPedido;
 import pe.com.upz.dao.DPedidoDetalle;
@@ -88,7 +90,7 @@ public class SAbastecimiento extends HttpServlet {
 		String ruta = "";
 		Connection conn =null;
 		try{
-			Lista listaDetalle= new Lista();
+			/*Lista listaDetalle= new Lista();
 			BProducto producto;
 			BPedido pedido = new BPedido();
 			BPedidoDetalle detalle;
@@ -124,11 +126,13 @@ public class SAbastecimiento extends HttpServlet {
 				detalleDao.almacenarDetalle(conn, pedido.getCodigo(),
 						(BPedidoDetalle) pedido.getListaDetalle()
 								.getElemento(i), usuario);
-			}
-			
+			}*/
+			String[] codigo = request.getParameterValues("chkProducto");
+			CAbastecimiento cAbastecimiento = new CAbastecimiento();
+			String codigoGenerado = cAbastecimiento.alamcenarOrden(request, usuario, codigo, conn);
 			conn.commit();
 			
-			request.setAttribute("mensajeSistema", "Se ha generado la orden número "+pedido.getCodigo());
+			request.setAttribute("mensajeSistema", "Se ha generado la orden número "+codigoGenerado);
 			ruta = "/jsp/comun/msg.jsp";
 		}catch (SQLException e) {
 			try {
@@ -208,11 +212,11 @@ public class SAbastecimiento extends HttpServlet {
 	private String mostrarOrden(HttpServletRequest request){
 		
 		Lista listaProductos= new Lista();
-		BProducto producto;
+		String ruta="";
+		/*BProducto producto;
 		BTipoProducto tipo;
 		String[] codigo = request.getParameterValues("chkProducto");
 		
-		String fecha = ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_DDMMYYHHMMSS);
 		
 		for(int i=0;i< codigo.length;i++){
 			producto = new BProducto();
@@ -223,17 +227,22 @@ public class SAbastecimiento extends HttpServlet {
 			tipo.setDescripcion(request.getParameter("hddTipo"+codigo[i]));
 			producto.setTipo(tipo);
 			listaProductos.setElemento(producto);
-		}
+		}*/
+		String fecha = ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_DDMMYYHHMMSS);
+		String[] codigo = request.getParameterValues("chkProducto");
+		CAbastecimiento cAbastecimiento = new CAbastecimiento();
+		listaProductos = cAbastecimiento.mostrarOrden(request, codigo);		
 		request.setAttribute("listaProductos", listaProductos);
 		request.setAttribute("fecha", fecha);
-		return "/jsp/abastecimiento/aba_MostrarOrden.jsp";
+		ruta = "/jsp/abastecimiento/aba_MostrarOrden.jsp";
+		return ruta;
 	}
 	/**
 	 * valida si el rol e identidad del jefe superior que otorga el permiso.
 	 * @param request objeto de solicitud http, tipo HttpServletRequest.
 	 * @return ruta de la pagina a mostrar.
 	 */
-	private String validarPermiso(HttpServletRequest request){
+	private String validarPermiso(HttpServletRequest request) {
 		String ruta = "";
 		try {
 			IUsuario usuarioDao = new DUsuario();
@@ -244,50 +253,33 @@ public class SAbastecimiento extends HttpServlet {
 
 			sLogin = request.getParameter("txtUsuario");
 			sClave = request.getParameter("txtClave");
-			
-			if(!usuarioDao.validarExisteUsuario(sLogin)){
+
+			if (!usuarioDao.validarExisteUsuario(sLogin)) {
 				ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=usuarioInvalido";
 				return ruta;
 			}
-			
-			usuario = usuarioDao.validarUsuario(sLogin, sClave);
-			
+
+			CSeguridad cSeguridad = new CSeguridad();
+			usuario = cSeguridad.validarusuario(sLogin, sClave);
+
 			if (usuario != null) {
-
-				IRol rol = new DRol();
-
-				// obteniendo los roles
-				rol.obtenerRol(usuario);
-				
-				//VALIDAR QUE SEA JEFE DE FIDELIZACIÓN
-				for (int i=0;i< usuario.getListaRol().getTamanio();i++){
-					BRol rolUsuario = (BRol)usuario.getListaRol().getElemento(i);
-					if(rolUsuario.getCodigoRol() == Parametros.CODIGO_JEFE_FIDELIZACION){
-						ruta = mostrarIngresoOrden(request,true);
-						return  ruta;
-					}
+				if (cSeguridad.esUsuarioJefeFidelizacion(usuario)) {
+					ruta = mostrarIngresoOrden(request, true);
+				} else {
+					ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=usuarioNoJefe";
 				}
-				ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=usuarioNoJefe";
 			} else {
 				ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=contraseniaInvalido";
 			}
-			
-		}catch (Exception e) {
-			System.out.println(
-					"Proyecto: "
-						+ Parametros.S_APP_NOMBRE
-						+ "; Clase: SAbastecimiento; "
-						+ "; Parametros="
-						+ Parametros.URL
-						+ ":"
-						+ Parametros.USUARIO
-						+ ":"
-						+ Parametros.CLAVE
-						+ "; Mensaje:"
-						+ e);
+
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: SAbastecimiento; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
 		}
 		return ruta;
-		
+
 	}
 	/**
 	 * Muestra la pagina de ingreso de orden o de validacion segun sea el caso
@@ -313,6 +305,9 @@ public class SAbastecimiento extends HttpServlet {
 			//obteneiendo el numero del dia
 			numeroDia = Integer.parseInt(ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_NUMERO_DIA_SEMANA));
 
+			
+			
+			
 			if(validado ||( Parametros.NUMERO_DIA_GENERAR_PEDIDO == numeroDia && Parametros.NUMERO_SEMANA_GENERAR_PEDIDO == numeroSemana)){
 				listadoProducto = daoProducto.obtenerListadoProductos(true);
 				ruta = "/jsp/abastecimiento/aba_GenerarOrden.jsp";

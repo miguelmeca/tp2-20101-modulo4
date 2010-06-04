@@ -1,11 +1,11 @@
 /**
  * Resumen.
- * Objeto                     : NReporte.
- * Descripción                : Clase que contiene metodos del negocio para la generacion de reportes 
- * Fecha de Creación          : 256/05/2010.
+ * Objeto                     : CReporte.
+ * Descripción                : Clase controladora para la generacion de reportes 
+ * Fecha de Creación          : 31/05/2010.
  * Autor                     : Gonzalo Azabache Carrillo.
  */
-package pe.com.upz.negocio;
+package pe.com.upz.controlador;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,15 +21,14 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
-import pe.com.upz.util.ReporteConstrucctor;
 import pe.com.upz.util.Parametros;
+import pe.com.upz.util.ReporteConstrucctor;
 
 /**
- * Clase que contiene metodos del negocio para la generacion de reportes
+ * Clase que controladora para la generacion de reportes 
  * 
  */
-public class NReporte {
-
+public class CReporte {
 	/**
 	 * Genera el listado de procesos con expediente administrativo de la carta.
 	 * 
@@ -119,6 +118,4 @@ public class NReporte {
 			return libro;
 		}
 	}
-
-
 }
