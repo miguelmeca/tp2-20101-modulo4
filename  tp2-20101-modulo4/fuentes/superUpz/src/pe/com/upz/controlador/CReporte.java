@@ -9,7 +9,6 @@ package pe.com.upz.controlador;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -66,7 +65,6 @@ public class CReporte {
 			HSSFRow fila = null;
 			HSSFCell celda = null;
 
-			ArrayList arrProcesos = new ArrayList();
 
 			libro = new HSSFWorkbook(fsExcel);
 			HSSFSheet hoja = libro.getSheet("REPORTE_CLIENTES");

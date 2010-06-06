@@ -18,7 +18,7 @@ public class DProducto implements IProducto{
 	 * @see pe.com.upz.daoInterface.IProducto#obtenerListadoProductos(boolean)
 	 */
 	@Override
-	public Lista obtenerListadoProductos(boolean soloActivos)
+	public Lista obtenerListadoProductos(boolean soloActivos,int filtro)
 			throws SQLException {
 		
 		Connection conn = ConnectDS.obtenerConeccion();

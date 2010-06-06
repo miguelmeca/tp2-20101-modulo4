@@ -7,8 +7,10 @@
  */
 package pe.com.upz.daoInterface;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
+import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BRol;
 import pe.com.upz.util.Lista;
 
@@ -20,10 +22,11 @@ public interface IProducto {
 	/**
 	 * obtiene un listado con los productos registrados.
 	 * @param soloActivos indica si solo se obtiene los productos activos.
+	 * @param filtro opcion para los filtro. 0 = sin filtro, 1 = fitro por tipo, tipo int.
 	 * @return listado de productos
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract Lista obtenerListadoProductos(boolean soloActivos)
+	public abstract Lista obtenerListadoProductos(boolean soloActivos, int filtro)
     throws SQLException;
 	
 	/**
@@ -34,5 +37,14 @@ public interface IProducto {
 	 */
 	public abstract boolean validarFechaGeneracionOrden(String fechaHoy)
     throws SQLException;
+	
+
+	/**
+	 * Almacena un producto en la BD.
+	 * @param producto producto a almacenar, tipo BProducto.
+	 * @param conn conexion a la BD, tipo Connection.
+	 */
+	public abstract void alamacenarProducto(BProducto producto, Connection conn);
+	
 
 }
