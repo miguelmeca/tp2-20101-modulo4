@@ -8,37 +8,20 @@
 package pe.com.upz.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.ParseConversionEvent;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import pe.com.upz.bean.BPedido;
-import pe.com.upz.bean.BPedidoDetalle;
-import pe.com.upz.bean.BProducto;
-import pe.com.upz.bean.BRol;
-import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.controlador.CAbastecimiento;
+import pe.com.upz.controlador.CMantenimiento;
 import pe.com.upz.controlador.CSeguridad;
-import pe.com.upz.dao.DOpcion;
-import pe.com.upz.dao.DPedido;
-import pe.com.upz.dao.DPedidoDetalle;
-import pe.com.upz.dao.DProducto;
-import pe.com.upz.dao.DRol;
 import pe.com.upz.dao.DUsuario;
-import pe.com.upz.daoInterface.IDetallePedido;
-import pe.com.upz.daoInterface.IOpcion;
-import pe.com.upz.daoInterface.IPedido;
-import pe.com.upz.daoInterface.IProducto;
-import pe.com.upz.daoInterface.IRol;
 import pe.com.upz.daoInterface.IUsuario;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
@@ -90,6 +73,8 @@ public class SAbastecimiento extends HttpServlet {
 		String ruta = "";
 		Connection conn =null;
 		try{
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
 			/*Lista listaDetalle= new Lista();
 			BProducto producto;
 			BPedido pedido = new BPedido();
@@ -245,7 +230,6 @@ public class SAbastecimiento extends HttpServlet {
 	private String validarPermiso(HttpServletRequest request) {
 		String ruta = "";
 		try {
-			IUsuario usuarioDao = new DUsuario();
 			BUsuario usuario;
 
 			String sLogin;
@@ -253,14 +237,15 @@ public class SAbastecimiento extends HttpServlet {
 
 			sLogin = request.getParameter("txtUsuario");
 			sClave = request.getParameter("txtClave");
+			
+			CSeguridad cSeguridad = new CSeguridad();
 
-			if (!usuarioDao.validarExisteUsuario(sLogin)) {
+			if (!cSeguridad.validarExisteUsuario(sLogin)) {
 				ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=usuarioInvalido";
 				return ruta;
 			}
 
-			CSeguridad cSeguridad = new CSeguridad();
-			usuario = cSeguridad.validarusuario(sLogin, sClave);
+			usuario = cSeguridad.validarUsuario(sLogin, sClave);
 
 			if (usuario != null) {
 				if (cSeguridad.esUsuarioJefeFidelizacion(usuario)) {
@@ -293,27 +278,19 @@ public class SAbastecimiento extends HttpServlet {
 		
 		try {
 			boolean mostrarValidacion = true;
-			int numeroSemana;
-			int numeroDia;
 			Lista listadoProducto=null;
 			String fecha = ConnectDS.obtenerFecha();
-			IProducto daoProducto = new DProducto();
+			
+			CAbastecimiento  cAbastecimiento = new CAbastecimiento();
+			cAbastecimiento.mostrarIngresoOrden(validado);
 			
 			
-			//obteniendo el nuemro de la semana
-			numeroSemana = Integer.parseInt(ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_NUMERO_SEMANA));
-			//obteneiendo el numero del dia
-			numeroDia = Integer.parseInt(ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_NUMERO_DIA_SEMANA));
-
-			
-			
-			
-			if(validado ||( Parametros.NUMERO_DIA_GENERAR_PEDIDO == numeroDia && Parametros.NUMERO_SEMANA_GENERAR_PEDIDO == numeroSemana)){
-				listadoProducto = daoProducto.obtenerListadoProductos(true);
+			if(cAbastecimiento.mostrarIngresoOrden(validado)){
+				CMantenimiento  cMantenimiento = new CMantenimiento();
+				listadoProducto = cMantenimiento.obtenerListadoProductos(true,0);
 				ruta = "/jsp/abastecimiento/aba_GenerarOrden.jsp";
 				mostrarValidacion = false;
 			}else{
-				
 				ruta = "/jsp/abastecimiento/aba_Autorizacion.jsp?mensaje=aprobacion";
 			}
 			request.setAttribute("mostrarValidacion", new Boolean(mostrarValidacion).toString());

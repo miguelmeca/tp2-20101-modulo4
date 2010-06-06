@@ -76,6 +76,57 @@ public class ConnectDS {
 	public static String obtenerFecha(){
 		return obtenerFechaFormato(FORMATO_FECHA_DDMMYYYY);
 	}
+	
+	/**
+	 * Realiza commit a la BD.
+	 * @param conn conexion a la BD, tipo Connection.
+	 */
+	public static void aceptarTrasaccion(Connection conn){
+		try {
+			if(conn!=null && !conn.isClosed()){
+				conn.commit();
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(
+					"Proyecto: "
+						+ Parametros.S_APP_NOMBRE
+						+ "; Clase: ConnectDS; "
+						+ "; Parametros="
+						+ Parametros.URL
+						+ ":"
+						+ Parametros.USUARIO
+						+ ":"
+						+ Parametros.CLAVE
+						+ "; Mensaje:"
+						+ e);
+		}
+	}
+	/**
+	 * realiza un rollbacka  a la BD.
+	 * @param conn conexion a la BD, tipo Connection.
+	 */
+	public static void deshacerTrasaccion(Connection conn){
+		try {
+			if(conn!=null && !conn.isClosed()){
+				conn.rollback();
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(
+					"Proyecto: "
+						+ Parametros.S_APP_NOMBRE
+						+ "; Clase: ConnectDS; "
+						+ "; Parametros="
+						+ Parametros.URL
+						+ ":"
+						+ Parametros.USUARIO
+						+ ":"
+						+ Parametros.CLAVE
+						+ "; Mensaje:"
+						+ e);
+		}
+	}
 	/**
 	 * Retorna una fecha en un formato espeficico.
 	 * @param formato formato para obtener la fecha.

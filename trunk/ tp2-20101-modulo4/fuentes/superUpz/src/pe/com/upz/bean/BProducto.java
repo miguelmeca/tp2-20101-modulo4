@@ -34,6 +34,12 @@ public class BProducto extends Bean{
 	/**
 	 * tipo de producto
 	 */
+	
+	/**
+	 * ruta de la imagen del producto.
+	 */
+	private String rutaImagen;
+	
 	private BTipoProducto tipo;
 
 	/**
@@ -128,4 +134,21 @@ public class BProducto extends Bean{
 	public String obtenerCodigoCadena(){
 		return ""+codigo;
 	}
+
+	/**
+	 * Retorna ruta de la imagen, tipo String.
+	 * @return ruta de la imagen, tipo String.
+	 */
+	public String getRutaImagen() {
+		return rutaImagen;
+	}
+
+	/**
+	 * Setea ruta de la imagen, tipo String.
+	 * @param rutaImagen ruta de la imagen, tipo String.
+	 */
+	public void setRutaImagen(String rutaImagen) {
+		this.rutaImagen = rutaImagen;
+	}
+	
 }

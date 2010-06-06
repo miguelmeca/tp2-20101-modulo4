@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import pe.com.upz.bean.BRol;
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.controlador.CSeguridad;
 import pe.com.upz.dao.DOpcion;
 import pe.com.upz.dao.DRol;
 import pe.com.upz.dao.DUsuario;
@@ -55,7 +56,7 @@ public class SLogeo extends HttpServlet {
 	/**
 	 * Valida el ingreso al sistema.
 	 * @param request objeto de solicitud http, tipo HttpServletRequest.
-	 * @return ruta de la pagina a mostrar.
+	 * @return ruta de la pagina a mostrar, tipo String.
 	 */
 	private String validarIngreso(HttpServletRequest request) {
 		String ruta = "";
@@ -69,12 +70,14 @@ public class SLogeo extends HttpServlet {
 			sLogin = request.getParameter("txtUsuario");
 			sClave = request.getParameter("txtClave");
 			
-			if(!usuarioDao.validarExisteUsuario(sLogin)){
+			CSeguridad cSeguridad = new CSeguridad();
+			
+			if(!cSeguridad.validarExisteUsuario(sLogin)){
 				ruta = "index.jsp?mensaje=usuarioInvalido";
 				return ruta;
 			}
 			
-			usuario = usuarioDao.validarUsuario(sLogin, sClave);
+			usuario = cSeguridad.validarUsuario(sLogin, sClave);
 
 			if (usuario != null) {
 
@@ -82,20 +85,20 @@ public class SLogeo extends HttpServlet {
 					HttpSession tempSession = request.getSession(false);
 					tempSession.invalidate();
 				}
-				IRol rol = new DRol();
+				// colocando los roles
+				cSeguridad.colocarRolesUsuario(usuario);
+				
 				IOpcion opcion = new DOpcion();
 				Lista menu = new Lista();
 
-				// obteniendo los roles
-				rol.obtenerRol(usuario);
 				// obteniendo las opciones
-				for (int i = 0; i < usuario.getListaRol().getTamanio(); i++) {
+				/*for (int i = 0; i < usuario.getListaRol().getTamanio(); i++) {
 					opcion.obtenerOpcionesUsuario((BRol) usuario.getListaRol()
 							.getElemento(i));
 
-				}
+				}*/
 				// obteniendo el menu
-				menu = usuarioDao.obtenerMenu(usuario);
+				menu = cSeguridad.obtenerOpcionesMenu(usuario);
 
 				HttpSession session = request.getSession(true);
 				session.setAttribute("usuarioSesion", usuario);
@@ -109,7 +112,7 @@ public class SLogeo extends HttpServlet {
 			System.out.println(
 					"Proyecto: "
 						+ Parametros.S_APP_NOMBRE
-						+ "; Clase: ConnectDS; "
+						+ "; Clase: "+this.getClass().getName()+";"
 						+ "; Parametros="
 						+ Parametros.URL
 						+ ":"
