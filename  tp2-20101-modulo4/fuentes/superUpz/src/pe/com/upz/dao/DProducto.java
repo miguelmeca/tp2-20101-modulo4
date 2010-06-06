@@ -77,4 +77,10 @@ public class DProducto implements IProducto{
 		return false;
 	}
 
+	@Override
+	public void alamacenarProducto(BProducto producto, Connection conn) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
