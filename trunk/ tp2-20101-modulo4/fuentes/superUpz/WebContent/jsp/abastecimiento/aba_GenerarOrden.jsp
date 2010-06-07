@@ -130,8 +130,8 @@ MM_reloadPage(true);
 							<input name="hddTipo<%=producto.getCodigo()%>" type="hidden" value="<%=producto.getTipo().getDescripcion()%>" />
 							</td>
 							<td width="40%" class="ui-accordion-content">
-							<div align="center" class="Estilo4"><%=producto.getDescripcion()%></div>
-							<input name="hddDescripcion<%=producto.getCodigo()%>" type="hidden" value="<%=producto.getDescripcion()%>" />
+							<div align="center" class="Estilo4"><%=producto.getNombre()%></div>
+							<input name="hddDescripcion<%=producto.getCodigo()%>" type="hidden" value="<%=producto.getNombre()%>" />
 							</td>
 							<td width="19%" class="ui-accordion-content">
 							<div align="center" class="Estilo4">

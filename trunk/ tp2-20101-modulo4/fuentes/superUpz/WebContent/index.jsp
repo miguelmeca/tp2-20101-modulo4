@@ -82,7 +82,8 @@ mensaje = (mensaje==null?"":mensaje);
 									<tr>
 										<td width="49%" align="left">Usuario:</td>
 										<td width="51%" align="left">
-										<input type="text"
+										<input type="text" 
+										    value="bcamela" 
 											name="txtUsuario" id="txtUsuario" style="width: 150px"
 											class="text  ui-corner-all" size="20" /></td>
 									</tr>
@@ -94,6 +95,7 @@ mensaje = (mensaje==null?"":mensaje);
 										<td align="left">Contrase&ntilde;a:</td>
 										<td align="left">
 										<input type="password" name="txtClave"
+											value ="a" 
 											id="txtClave" style="width: 150px" class="text  ui-corner-all" size="100" /></td>
 									</tr>
 									<tr>
@@ -181,8 +183,8 @@ mensaje = (mensaje==null?"":mensaje);
 		}else if(mensajeMostrar == "usuarioInvalido"){
 			alert("El nombre del usuario es incorrecto. Vuelva a ingresarlo.");
 		}
-		document.getElementById("txtUsuario").value="";
-		document.getElementById("txtClave").value ="";
+		//document.getElementById("txtUsuario").value="";
+		//document.getElementById("txtClave").value ="";
 	}
 </script>
 </html>
