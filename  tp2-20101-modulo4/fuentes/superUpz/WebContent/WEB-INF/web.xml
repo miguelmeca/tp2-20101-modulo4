@@ -48,6 +48,15 @@
           pe.com.upz.servlet.SReporte
       </servlet-class>
     </servlet>    
+
+      <servlet>
+      <servlet-name>
+          SMantenimiento
+      </servlet-name>
+      <servlet-class>
+          pe.com.upz.servlet.SMantenimiento
+      </servlet-class>
+    </servlet>
     <!-- DEFINICION WEB (LOGICA) -->
    
     <servlet-mapping>
@@ -73,5 +82,13 @@
         <url-pattern>
             /SReporte
         </url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>   
+         <servlet-mapping>
+        <servlet-name>
+            SMantenimiento
+        </servlet-name>
+        <url-pattern>
+            /SMantenimiento
+        </url-pattern>
+    </servlet-mapping>  
 </web-app>
