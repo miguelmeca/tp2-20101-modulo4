@@ -62,7 +62,7 @@ body {
 <body>
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width: 100%" align="center">
-<form action="" method="get" name="frmNuevoActualizar">
+<form action="" method="post" name="frmNuevoActualizar" enctype="MULTIPART/FORM-DATA">
 <table width="1010px" border="0">
 	<tr>
 		<td
@@ -123,18 +123,22 @@ body {
 									value="<%=producto.getNombre() %>" maxlength="100" /></td>
 							</tr>
 							<tr>
-								<td align="left" style="height: 31px; width: 175px;">imagen:
-								(*)</td>
-								<td align="left" style="height: 31px; width: 420px;"><input
-									type="file" name="txtRutaImagen" /></td>
-							</tr>
-							<tr>
 								<td align="left" style="height: 31px; width: 175px;">
 								Descripción: (*)</td>
 								<td align="left" style="height: 31px; width: 420px;"><textarea
 									class="text  ui-corner-all" name="txtDescripcion"
-									id="txtDescripcion" style="width: 200px"><%=producto.getDescripcion()%></textarea></td>
+									id="txtDescripcion" style="width: 200px"><%=producto.getDescripcion()%></textarea>
+									<input type="hidden" name="hddOperacion" id="hddOperacion" value="<%=producto.getCodigo()==-1?"almacenarProducto":"actualizarProducto" %>" />
+									</td>
+									
 							</tr>
+							<tr>
+								<td align="left" style="height: 31px; width: 175px;">imagen:
+								(*)</td>
+								<td align="left" style="height: 31px; width: 420px;"><input
+									type="file" name="filRutaImagen" id ="filRutaImagen" /></td>
+							</tr>
+							
 
 							<tr>
 								<td colspan="2" align="left">&nbsp;</td>
@@ -168,7 +172,6 @@ body {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="hddOperacion" id="hddOperacion" value="<%=producto.getCodigo()==-1?"almacenarProducto":"actualizarProducto" %>" />
 </form>
 </div>
 </body>
