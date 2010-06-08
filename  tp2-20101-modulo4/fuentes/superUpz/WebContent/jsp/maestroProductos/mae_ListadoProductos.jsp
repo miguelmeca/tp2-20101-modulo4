@@ -11,15 +11,19 @@
 String ruta = request.getContextPath(); 
 String variable = (String)request.getAttribute("mostrar");
 String mantenimiento = (String)request.getAttribute("mantenimiento");
+String cambiarPuntaje = (String)request.getAttribute("puntaje");
 boolean mostrarDiv=true;
 boolean mostrarMantenimineto=true;
+boolean mostrarPuntaje=false;
 if(variable !=null && variable.equals("0")){
 	mostrarDiv = false;
 }
 if(mantenimiento !=null && mantenimiento.equals("0")){
 	mostrarMantenimineto = false;
 }
-
+if(cambiarPuntaje !=null && cambiarPuntaje.equals("1")){
+	mostrarPuntaje = true;
+}
 //Para el Nro. de Pagina.
 int numPagina=0;
 //Si la pagina es nula entonces debe ser 1;
@@ -72,7 +76,7 @@ body {
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 
 <div class="demos-nav" style="width:100%" align = "center">
-<form action="" method="get" name="frmListaProducto" enctype="MULTIPART/FORM-DATA" >
+<form action="" method="get" name="frmListaProducto"  >
 <% if(mostrarDiv){%>
 <table width="1010px" border="0" >
 <%}else{ %>
@@ -181,12 +185,16 @@ body {
           	style="width:120px" 
           	onclick="javascript:agregarNuevo()" 
           	class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default btnEditar"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default btnEliminar"  />
-          <%}else{ %>
-		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default btnCancelar"  />          
-          <%}%>
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar" />
+		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
+          <%}else if (false){ %>
+		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default"  />          
+          <%}else if(mostrarPuntaje){%>
+          <input type="button" name="btnPuntaje" value="Asignar Puntos" 
+          onclick="javascript:agregarPuntaje()" 
+          style="width:120px" class="ui-state-default" />
+          <%} %>
+          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -214,5 +222,10 @@ function agregarNuevo(){
 		frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
 		frmListaProducto.submit();
 	}
+function agregarPuntaje(){
+	frmListaProducto.hddOperacion.value="agregarPuntaje";
+	frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
+	frmListaProducto.submit();
+}
 </script>
 </html>
