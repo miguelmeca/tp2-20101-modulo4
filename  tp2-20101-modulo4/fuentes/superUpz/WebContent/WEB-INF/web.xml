@@ -57,6 +57,14 @@
           pe.com.upz.servlet.SMantenimiento
       </servlet-class>
     </servlet>
+    <servlet>
+      <servlet-name>
+          SEquivalencia
+      </servlet-name>
+      <servlet-class>
+          pe.com.upz.servlet.SEquivalencia
+      </servlet-class>
+    </servlet>
     <!-- DEFINICION WEB (LOGICA) -->
    
     <servlet-mapping>
@@ -89,6 +97,14 @@
         </servlet-name>
         <url-pattern>
             /SMantenimiento
+        </url-pattern>
+    </servlet-mapping>  
+         <servlet-mapping>
+        <servlet-name>
+            SEquivalencia
+        </servlet-name>
+        <url-pattern>
+            /SEquivalencia
         </url-pattern>
     </servlet-mapping>  
 </web-app>
