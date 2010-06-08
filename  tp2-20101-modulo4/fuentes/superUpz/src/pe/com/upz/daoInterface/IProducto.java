@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BRol;
+import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
 /**
@@ -43,8 +44,26 @@ public interface IProducto {
 	 * Almacena un producto en la BD.
 	 * @param producto producto a almacenar, tipo BProducto.
 	 * @param conn conexion a la BD, tipo Connection.
+	 * @return codigo generado, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract void alamacenarProducto(BProducto producto, Connection conn);
+	public abstract int alamacenarProducto(BProducto producto,BUsuario usuario, Connection conn)throws SQLException;
 	
-
+	/**
+	 * Obtiene el maximo codigo de producto
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 * @return
+	 */
+	public abstract int obtenerMaximoNumeroProducto(Connection conn)throws SQLException;
+	
+	/**
+	 * obtiene un listado con los productos registrados y su puntaje.
+	 * @param soloActivos indica si solo se obtiene los productos activos.
+	 * @param filtro opcion para los filtro. 0 = sin filtro, 1 = fitro por tipo, tipo int.
+	 * @return listado de productos
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro)
+    throws SQLException;
 }

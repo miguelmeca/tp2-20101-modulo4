@@ -8,6 +8,7 @@
 package pe.com.upz.bean;
 
 import pe.com.upz.util.Bean;
+import pe.com.upz.util.Lista;
 
 /**
  * Bean de productos de fidelizacion.
@@ -19,6 +20,10 @@ public class BProducto extends Bean{
 	 * codigo del producto
 	 */
 	private int codigo;
+	/**
+	 * nombre del producto
+	 */
+	private String nombre;
 	/**
 	 * descripcion del producto
 	 */
@@ -34,13 +39,13 @@ public class BProducto extends Bean{
 	/**
 	 * tipo de producto
 	 */
-	
+	private BTipoProducto tipo;
 	/**
 	 * ruta de la imagen del producto.
 	 */
 	private String rutaImagen;
 	
-	private BTipoProducto tipo;
+	private Lista listaPuntaje;
 
 	/**
 	 * Retorna codigo del producto.
@@ -149,6 +154,38 @@ public class BProducto extends Bean{
 	 */
 	public void setRutaImagen(String rutaImagen) {
 		this.rutaImagen = rutaImagen;
+	}
+
+	/**
+	 * Retorna nombre del producto
+	 * @return nombre nombre del producto, tipo String.
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Setea nombre del producto
+	 * @param nombre nombre del producto, tipo String.
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * Retorna listado con los puntajes del producto.
+	 * @return listado con los puntajes del producto, tipo Lista.
+	 */
+	public Lista getListaPuntaje() {
+		return listaPuntaje;
+	}
+
+	/**
+	 * Setea listado con los puntajes del producto.
+	 * @param listaPuntaje listado con los puntajes del producto, tipo Lista.
+	 */
+	public void setListaPuntaje(Lista listaPuntaje) {
+		this.listaPuntaje = listaPuntaje;
 	}
 	
 }
