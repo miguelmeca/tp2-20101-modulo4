@@ -28,6 +28,15 @@ public class BTipoProducto extends Bean{
 	 */
 	private int estado;
 
+	
+	
+	
+	public BTipoProducto() {
+		super();
+		codigo = -1;
+		estado = 0;
+		descripcion = "";
+	}
 	/**
 	 * Retorna codigo del tipo.
 	 * @return codigo del tipo.

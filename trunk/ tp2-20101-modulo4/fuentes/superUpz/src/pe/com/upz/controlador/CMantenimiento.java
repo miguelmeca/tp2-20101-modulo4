@@ -11,11 +11,22 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DTipoProducto;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.daoInterface.ITipoProducto;
 import pe.com.upz.util.Lista;
+
+import java.util. *;
+
+import org.apache.commons.fileupload.*;
+import org.apache.commons.fileupload.disk.*;
+import org.apache.commons.fileupload.servlet.*;
+//import org.apache.commons.io.*;
+import java.io.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Clase controladora para el modulo de mantenimiento.
@@ -53,9 +64,16 @@ public class CMantenimiento {
 		return listadoTipoProducto;
 	}	
 	
-	public void almacenarProducto(BProducto producto, Connection conn)throws SQLException{
+	/**
+	 * Almacena el producto nuevo.
+	 * @param producto producto a almacenar, tipo BProducto.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public int almacenarProducto(BProducto producto,BUsuario usuario, Connection conn)throws SQLException{
 		IProducto dProducto = new DProducto();
-		dProducto.alamacenarProducto(producto, conn);
+		return dProducto.alamacenarProducto(producto,usuario, conn);
 	}
 	
 }

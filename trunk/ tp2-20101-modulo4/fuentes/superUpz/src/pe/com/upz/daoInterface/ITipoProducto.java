@@ -23,7 +23,7 @@ public interface ITipoProducto {
 	 * @return listado con los tipos de producto, tipo Lista.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract Lista obtenerListadoTipo(boolean SoloActivos)
+	public abstract Lista obtenerListadoTipo(boolean soloActivos)
     throws SQLException;	
 	/**
 	 * Obtiene el listado de tipos de productos activos.
