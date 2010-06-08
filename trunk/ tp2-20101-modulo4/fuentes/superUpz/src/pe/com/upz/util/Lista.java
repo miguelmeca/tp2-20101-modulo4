@@ -44,6 +44,11 @@ public class Lista {
 	private int tamPagina;
 
 	/**
+	 * Cantidad de paginas postradas en la web.
+	 */
+	private int cantidadPaginasMostradas;
+	
+	/**
 	 * Elimina el primer elemento de la lista.
 	 */
 	public void eliminarElemento() {
@@ -104,11 +109,11 @@ public class Lista {
 		return elemento;
 	}
 	/**
-	 * Obtiene el elemento indicado de la lista.
+	 * Obtiene el elemento indicado de la lista por pagina.
 	 * @param index indice del elemento a retornar.
 	 * @return
 	 */
-	public Bean getElemento(int index) {
+	public Bean getElementoEnPagina(int index) {
 		Bean elemento = null;
 		try {
 			elemento = (Bean) lista.get(index + tamPagina * numPagina);
@@ -117,7 +122,20 @@ public class Lista {
 		}
 		return elemento;
 	}
-	
+	/**
+	 * Obtiene el elemento indicado de la lista.
+	 * @param index indice del elemento a retornar.
+	 * @return
+	 */
+	public Bean getElemento(int index) {
+		Bean elemento = null;
+		try {
+			elemento = (Bean) lista.get(index);
+		} catch (Exception e) {
+			System.out.println("getElemento" + e);
+		}
+		return elemento;
+	}	
 	
 	/** 
 	 * Obtiene la posición del primer elemento de la pagina.
@@ -174,13 +192,27 @@ public class Lista {
 		}
 	}
 	/**
-	 * Obtiene el Nro de Paginas de la Lista.
-	 * @return numero de paginas
+	 * Obtiene el numero inicial de las paginas a mostrar.
+	 * @return numero de paginas a mostrar, tipo int.
 	 */
-	public int getNumPagina() {
+	public int getNumPaginaInicialEnPaginacion() {
 		int intPaginas;
-
-		return (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
+		int totalPaginas = (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
+		
+		int numero;
+		
+		if(numPagina - 2 <= 1){
+			numero = 1;
+		}else if (numPagina + 2 > totalPaginas){
+			numero = (numPagina-cantidadPaginasMostradas)+(totalPaginas- numPagina + 1);
+		}else{
+			numero = numPagina-2;
+		}
+		
+		return numero;
+		
+		
+		//return (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
 
 	}
 	/**
@@ -202,7 +234,7 @@ public class Lista {
 		return lista.size();
 	}
 	/**
-	 * Retorna la cantidad de elementos en una pagina.
+	 * Retorna el tamamanio de elementos dentro de una pagina.
 	 * @return cantidadde elementos en una pagina.
 	 */
 	public int getTamPagina() {
@@ -283,6 +315,13 @@ public class Lista {
 		numPagina = newNumPagina;
 	}
 	/**
+	 * Retorna el numero de la pagina.
+	 * @param newNumPagina numero de la pagina, tipo int.
+	 */
+	public int getNumPagina() {
+		return numPagina;
+	}
+	/**
 	 * Setea el valor verdadero o falso de la existencia de una siguiente pagina.
 	 * @param newSiguiente indica si exiiste una siguiente pagina, tipo boolean.
 	 */
@@ -290,10 +329,41 @@ public class Lista {
 		siguiente = newSiguiente;
 	}
 	/**
-	 * Setea el nuevo tamamanio de la paginacion.
+	 * Setea el nuevo tamamanio de elementos dentro de una pagina.
 	 * @param newTamPagina tamanio de paginacion, tipo int.
 	 */
 	public void setTamPagina(int newTamPagina) {
 		tamPagina = newTamPagina;
 	}
+	/**
+	 * Retorna cantidad de paginas mostradas en la web.
+	 * @return cantidadPaginasMostradas cantidad de paginas mostradas en la web, tipo int.
+	 */
+	public int getCantidadPaginasActual() {
+		int totalPaginas = (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
+		return (cantidadPaginasMostradas >totalPaginas?totalPaginas:cantidadPaginasMostradas );
+	}
+	/**
+	 * Retorna cantidad de paginas mostradas en la web.
+	 * @return cantidadPaginasMostradas cantidad de paginas mostradas en la web, tipo int.
+	 */
+	public int getCantidadPaginasMostradas() {
+		return cantidadPaginasMostradas;
+	}
+	/** 
+	 * Setea cantidad de paginas mostradas en la web.
+	 * @param cantidadPaginasMostradas cantidad de paginas mostradas en la web, tipo int.
+	 */
+	public void setCantidadPaginasMostradas(int cantidadPaginasMostradas) {
+		this.cantidadPaginasMostradas = cantidadPaginasMostradas;
+	}
+	/**
+	 * Obtiene el total de paginas de la lista.
+	 * @return  cantidad de paginas, tipo int.
+	 */
+	public int getCantidadPaginasDeListado() {
+		return   (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
+	}	
+	
+	
 }
