@@ -10,8 +10,6 @@
 <% 
 String mensaje = request.getParameter("mensaje");
 
-mensaje = (mensaje==null?"":mensaje);
-
 %>
 
 
@@ -32,14 +30,13 @@ mensaje = (mensaje==null?"":mensaje);
 
 </head>
 
-<body onload="JavaScript:mostrarMensaje()">
+<body >
 <div id="cabecera" align="center">
 <table width="1010px" border="0"
 	class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 	<tr>
-		<td width="21%"><a href="principal.html"
-			onClick="return (false);"> <img src="images/logotipo.jpg"
-			width="150" height="80" alt="Volver a página principal"></a></td>
+		<td width="21%"> <img src="images/logotipo.jpg"
+			width="150" height="80" ></td>
 		<td align="center"><span class="style6 style2">SUPERMERCADOS
 		UPZ</span></td>
 	</tr>
@@ -47,13 +44,9 @@ mensaje = (mensaje==null?"":mensaje);
 </div>
 
 <div align="center">
-<form name="frmLogin" id="frmLogin" method="post" action="">
+<form name="frmLogin" id="frmLogin" method="get" action="">
 <table width="1010px" border="0">
-	<tr>
-		<td
-			class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"
-			align="center">&nbsp;</td>
-	</tr>
+	
 	<tr>
 		<td height="327" valign="top">
 		<table width="100%" border="0">
@@ -61,130 +54,33 @@ mensaje = (mensaje==null?"":mensaje);
 			<tr>
 				<td height="171" valign="top" class="ui-tabs-nav">
 				<center>
-				<table width="600" height="386" border="0"
-					background="images/fondo.jpg">
+				<table width="600" height="386" border="0">
 					<tr>
-					  <td align="center">
-
-						<table width="58%" border="1">
-							<tr>
-								<td width="100%"
-									class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-								<div align="center">Ingreso al Sistema</div>
-								</td>
-							</tr>
-							<tr>
-								<td align="center">
-								<table border="0">
-									<tr>
-										<td colspan="2" align="left">&nbsp;</td>
-									</tr>
-									<tr>
-										<td width="49%" align="left">Usuario:</td>
-										<td width="51%" align="left">
-										<input type="text" 
-										    value="bcamela" 
-											name="txtUsuario" id="txtUsuario" style="width: 150px"
-											class="text  ui-corner-all" size="20" /></td>
-									</tr>
-									<tr>
-										<td align="left">&nbsp;</td>
-										<td align="left">&nbsp;</td>
-									</tr>
-									<tr>
-										<td align="left">Contrase&ntilde;a:</td>
-										<td align="left">
-										<input type="password" name="txtClave"
-											value ="a" 
-											id="txtClave" style="width: 150px" class="text  ui-corner-all" size="100" /></td>
-									</tr>
-									<tr>
-										<td colspan="2" align="left">&nbsp;</td>
-									</tr>
-								</table>
-								</td>
-							</tr>
-							<tr>
-								<td class="ui-widget-header">
-								<div align="right"><input type="button" name="btnAceptar"
-									value="Aceptar" style="width: 120px" 
-									OnClick="JavaScript:ingresar()" 
-									class="ui-state-default" /> <input type="button"
-									name="btnCancelar" value="Cancelar" style="width: 120px" 
-									class="ui-state-default btnOpenEdicion" /></div>
-								</td>
-							</tr>
-						</table>
-
-						
-					    </td>
+					  <td align="center"><a onClick='javascript:abrirVentana();' 
+                                        style='cursor:hand' ><img src="images/fondo.jpg" border="0" /></a>
+					  
+					  </td>
 					</tr>
 				</table>
 				</center>
 				</td>
 			</tr>
-
-			<tr>
-				<td class="ui-widget-header">
-				<div align="right">&nbsp;</div>
-				</td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
 		</table>
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="hddOperacion" id="hddOperacion" value="validarIngreso">
 </form>
 </div>
 </body>
-<script language="JavaScript">
-	/*
-	* Valida los datos ingresados.
-	*/
-	function validarIngreso(){
-		var usuario = document.getElementById("txtUsuario").value;
-		var clave = document.getElementById("txtClave").value;
-		if (""==usuario){
-			alert("Ingrese el nombre del usuario.");
-			document.getElementById("txtUsuario").value="";
-			document.getElementById("txtClave").value ="";
-			return false;
-		} 
-		if (""==clave){
-			alert("Ingrese una contraseña.");
-			document.getElementById("txtUsuario").value="";
-			document.getElementById("txtClave").value ="";
-			return false;
-		}
-		return true;
-	}
-	/*
-	 * Ingreso al sistema.
-	 */
-	function ingresar(){
 
-		if(!validarIngreso()){
-			return;
-		}
-		
-		frmLogin.action="SLogeo";
-		frmLogin.submit();
-	}
-	/*
-	* Muetra el menje indicado al momento de cargar la pagina.
-	*/
-	function mostrarMensaje(){
-		var mensajeMostrar = "<%=mensaje%>";
-		if(mensajeMostrar == "contraseniaInvalido"){
-			alert("La contraseña del usuario es incorrecta. Vuelva a ingresar los datos.");
-		}else if(mensajeMostrar == "usuarioInvalido"){
-			alert("El nombre del usuario es incorrecto. Vuelva a ingresarlo.");
-		}
-		//document.getElementById("txtUsuario").value="";
-		//document.getElementById("txtClave").value ="";
-	}
+<script language="JavaScript">
+    function abrirVentana() 
+    {
+          var sAncho=screen.width, sAlto=screen.height-100;
+          var sTop=0;    
+          var sLeft=(screen.width-sAncho)/2;    
+          var sFeatures="status=yes, left=" + sLeft + ",top=" + sTop + ", width=" + sAncho + ", height=" + sAlto + ", resizable=no, toolbar=no,menubar=no,scrollbars=yes";
+              open("SLogeo?hddOperacion=inicioLogeo","VentanaPrincipal",sFeatures);
+    }
 </script>
 </html>

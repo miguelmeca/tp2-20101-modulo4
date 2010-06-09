@@ -1,7 +1,7 @@
 <%--
 *Resumen
-*Objeto                 : mae_ListadoProductos.jsp.
-* Descripcion           : pagina para listar los productos.
+*Objeto                 : equ_ListadoPuntaje.jsp.
+* Descripcion           : pagina para listar los productos para el puntaje.
 * Fecha de Creacion     : 10/06/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
@@ -147,21 +147,25 @@ body {
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=producto.getCodigo()%></div>
             </td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=producto.getTipo().getDescripcion()%></div>
-            </td>
+            <input type="hidden" name="hddTipo<%=producto.getCodigo()%>" value="<%=producto.getTipo().getDescripcion()%>" />
+			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=producto.getNombre()%></div>
             <input type="hidden" name="hddNombre<%=producto.getCodigo()%>" value="<%=producto.getNombre()%>" />
             </td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4">
               <%=equivalencia.getCantidadPuntoUno()%> ptos + S/.<%=equivalencia.getMontoUno()%>
-              <input type="hidden" name="hddDescripcion<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoUno()%>" />
+              <input type="hidden" name="hddPuntoUno<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoUno()%>" />
+			  <input type="hidden" name="hddMontoUno<%=producto.getCodigo()%>" value="<%=equivalencia.getMontoUno()%>" />
             </div></td>
 			<td class="ui-accordion-content"><div align="center" class="Estilo4">
               <%=equivalencia.getCantidadPuntoDos()%> ptos + S/.<%=equivalencia.getMontoDos()%>
-              <input type="hidden" name="hddDescripcion<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoDos()%>" />
+              <input type="hidden" name="hddPuntoDos<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoDos()%>" />
+			  <input type="hidden" name="hddMontoDos<%=producto.getCodigo()%>" value="<%=equivalencia.getMontoDos()%>" />
             </div></td>
 			<td class="ui-accordion-content"><div align="center" class="Estilo4">
               <%=equivalencia.getCantidadPuntoTres()%> ptos + S/.<%=equivalencia.getMontoTres()%>
-              <input type="hidden" name="hddDescripcion<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoTres()%>" />
+              <input type="hidden" name="hddPuntoTres<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoTres()%>" />
+			  <input type="hidden" name="hddMontoTres<%=producto.getCodigo()%>" value="<%=equivalencia.getMontoTres()%>" />
             </div></td>
             <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=producto.getCodigo()%>"  /></td>
             </tr>
@@ -176,7 +180,9 @@ body {
           <input type="button" name="btnPuntaje" value="Asignar Puntos" 
           onclick="javascript:agregarPuntaje()" 
           style="width:120px" class="ui-state-default" />
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default" />
+          <input type="button" name="btnCancelar" 
+          onclick="javascript:cerrar()" 
+          value="Cancelar" style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -190,6 +196,11 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmListaProducto.submit();
+}
+
 function mostrarMensaje(){
 	var resultado = "<%=mensajeMantenimiento%>";
 	if(resultado == "nuevoOK"){
@@ -199,14 +210,9 @@ function mostrarMensaje(){
 	}
 }
 
-function agregarNuevo(){
-		frmListaProducto.hddOperacion.value="ingresoNuevoProducto";
-		frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
-		frmListaProducto.submit();
-	}
 function agregarPuntaje(){
-	frmListaProducto.hddOperacion.value="agregarPuntaje";
-	frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
+	frmListaProducto.hddOperacion.value="agregarEquivalencia";
+	frmListaProducto.action="SEquivalencia";
 	frmListaProducto.submit();
 }
 </script>

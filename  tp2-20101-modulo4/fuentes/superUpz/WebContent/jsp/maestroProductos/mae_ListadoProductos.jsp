@@ -72,7 +72,7 @@ body {
 </style>
 </head>
 
-<body onload="javascript:mostrarMensaje()">
+<body onload="javascript:mostrarMensaje();ocultarPaneles();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 
 <div class="demos-nav" style="width:100%" align = "center">
@@ -94,21 +94,22 @@ body {
             </div></td>
             <td width="24%" class="ui-accordion-content" ><div align="center" class="Estilo1">
                 <div align="left">
-                  <select name="select" class="ui-icon-document" style="width:200PX;heigth:10px"  >
+                  <select name="selTipoBusqueda" class="ui-icon-document" style="width:200PX;heigth:10px" onChange="javascript: ocultarPaneles();" >
                       <option value="01">tipo</option>
                       <option value="02">descripción</option>
-					  <option value="02">código</option>
+					  <option value="03">código</option>
                         </select>
                 </div>
             </div></td>
             <td width="62%" class="ui-accordion-content"><table width="100%" border="0">
               <tr>
-                <td height="38" class="Estilo1"><div align="right"> </div>                  
-                  <div align="right"> DESCRIPCION: (*) </div></td>
-                <td class="Estilo1"><div align="center">
-                  <input type="text" name="textfield2" style="width:150px" class="text  ui-corner-all" />                
-                </div>
-                <div align="right"> </div>                </td>
+                <td height="38" class="Estilo1"><div id="divDescripcion">Nombre de producto: 
+                    <input name="txtNombreBuscar" type="text"  maxlength="100"></div>
+                  <div id="divTipo"><select name="selTipoBuscar">
+                    <option value="1">tipo 1</option>
+                  </select></div>
+                  <div id="divCodigo">C&oacute;digo: 
+                    <input name="txtCodigoBuscar" type="text"  maxlength="100"></div></td>
                 <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
               </tr>
             </table></td>
@@ -194,7 +195,9 @@ body {
           onclick="javascript:agregarPuntaje()" 
           style="width:120px" class="ui-state-default" />
           <%} %>
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default" />
+          <input type="button" name="btnCancelar" 
+          onclick="javascript:cerrar()" 
+          value="Cancelar" style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -208,6 +211,11 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmListaProducto.submit();
+}
+
 function mostrarMensaje(){
 	var resultado = "<%=mensajeMantenimiento%>";
 	if(resultado == "nuevoOK"){
@@ -226,6 +234,47 @@ function agregarPuntaje(){
 	frmListaProducto.hddOperacion.value="agregarPuntaje";
 	frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
 	frmListaProducto.submit();
+}
+function ocultarPaneles(){
+	var seleccion = frmListaProducto.selTipoBusqueda.value;
+
+	if(seleccion == "01"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','show','divCodigo','','hide');
+	}else if(seleccion == "02"){
+		MM_showHideLayers('divDescripcion','','show','divTipo','','hide','divCodigo','','hide');
+	}else if(seleccion == "03"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','show');
+	}
+}
+
+//-----------------------------------------------------------
+function MM_findObj(n, d)
+{ //v4.0
+     var p,i,x;
+     if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length)
+     {
+       d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);
+     }
+     if(!(x=d[n])&&d.all) x=d.all[n];
+
+     for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+
+     for(i=0;!x&&d.layers&&i<d.layers.length;i++)
+       x=MM_findObj(n,d.layers[i].document);
+
+     if(!x && document.getElementById)
+       x=document.getElementById(n); return x;
+}
+
+function MM_showHideLayers()
+{ var i,p,v,obj,args=MM_showHideLayers.arguments;
+     for (i=0; i<(args.length-2); i+=3)
+       if ((obj=MM_findObj(args[i]))!=null)
+       { v=args[i+2];
+         if (obj.style)
+         {  obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v;  }
+         obj.visibility=v;
+       }
 }
 </script>
 </html>
