@@ -211,9 +211,9 @@ public class DProducto implements IProducto{
 			equivalencia.setCantidadPuntoUno(rs.getInt("EQP1"));
 			equivalencia.setCantidadPuntoDos(rs.getInt("EQP2"));
 			equivalencia.setCantidadPuntoTres(rs.getInt("EQP3"));
-			equivalencia.setMontoUno(rs.getDouble("CODIGO"));
-			equivalencia.setMontoDos(rs.getDouble("CODIGO"));
-			equivalencia.setMontoTres(rs.getDouble("CODIGO"));
+			equivalencia.setMontoUno(rs.getDouble("EQM1"));
+			equivalencia.setMontoDos(rs.getDouble("EQM2"));
+			equivalencia.setMontoTres(rs.getDouble("EQM3"));
 			equivalenciaListado.setElemento(equivalencia);
 			producto.setListaPuntaje(equivalenciaListado);
 			lista.setElemento(producto);

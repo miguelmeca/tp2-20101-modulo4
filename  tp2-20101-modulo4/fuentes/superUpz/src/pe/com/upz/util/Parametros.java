@@ -52,8 +52,12 @@ public class Parametros {
 	 */
 	public static int CANTIDAD_PRODUCTOS_X_ORDEN=2;
 	
+	/**
+	 * meses del anio.
+	 */
 	public static String[] NOMBRE_MES = { "enero", "febrero", "marzo", "abril",
 			"mayo", "junio", "julio", "agosto", "septiembre", "octubre",
 			"noviembre", "diciembre" };
+	
 }
 

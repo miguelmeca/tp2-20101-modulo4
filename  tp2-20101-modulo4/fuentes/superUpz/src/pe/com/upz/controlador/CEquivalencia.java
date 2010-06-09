@@ -7,9 +7,14 @@
  */
 package pe.com.upz.controlador;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
+import pe.com.upz.bean.BEquivalencia;
+import pe.com.upz.bean.BUsuario;
+import pe.com.upz.dao.DEquivalencia;
 import pe.com.upz.dao.DProducto;
+import pe.com.upz.daoInterface.IEquivalencia;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Lista;
 
@@ -26,6 +31,16 @@ public class CEquivalencia {
 		listadoProducto = daoProducto.obtenerListadoProductosPuntaje(soloActivos,filtro);
 		
 		return listadoProducto;
+	}
+	public void alamcenarNuevaEquivalencia(BUsuario usuario,BEquivalencia equivalencia, Connection conn, int codProducto)throws SQLException{
+		
+		IEquivalencia dEquivalencia = new DEquivalencia();
+		
+		//primero elimino
+		dEquivalencia.eliminarEquivalenciasActivasProducto(usuario, conn, codProducto);
+		//ahora almaceno
+		dEquivalencia.almacenarEquivalencia(usuario, conn, equivalencia, codProducto);
+		
 	}
 	
 }

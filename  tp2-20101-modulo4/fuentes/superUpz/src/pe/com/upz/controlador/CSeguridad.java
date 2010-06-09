@@ -13,9 +13,11 @@ import pe.com.upz.bean.BRol;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DOpcion;
 import pe.com.upz.dao.DRol;
+import pe.com.upz.dao.DSucursal;
 import pe.com.upz.dao.DUsuario;
 import pe.com.upz.daoInterface.IOpcion;
 import pe.com.upz.daoInterface.IRol;
+import pe.com.upz.daoInterface.ISucursal;
 import pe.com.upz.daoInterface.IUsuario;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
@@ -113,5 +115,11 @@ public class CSeguridad {
 		}
 		// obteniendo el menu
 		return usuarioDao.obtenerMenu(usuario);
+	}
+	
+	public Lista obtenerSucursalesLogeo()throws Exception{
+		ISucursal dSucursal = new DSucursal();
+		
+		return dSucursal.obtenerListadoSucursales();
 	}
 }
