@@ -287,7 +287,7 @@ public class SAbastecimiento extends HttpServlet {
 			
 			if(cAbastecimiento.mostrarIngresoOrden(validado)){
 				CMantenimiento  cMantenimiento = new CMantenimiento();
-				listadoProducto = cMantenimiento.obtenerListadoProductos(true,0);
+				listadoProducto = cMantenimiento.obtenerListadoProductos(true,0,"");
 				ruta = "/jsp/abastecimiento/aba_GenerarOrden.jsp";
 				mostrarValidacion = false;
 			}else{

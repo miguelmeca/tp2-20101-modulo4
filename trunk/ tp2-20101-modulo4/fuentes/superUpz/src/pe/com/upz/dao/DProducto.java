@@ -17,10 +17,10 @@ import pe.com.upz.util.Lista;
 public class DProducto implements IProducto{
 
 	/* (non-Javadoc)
-	 * @see pe.com.upz.daoInterface.IProducto#obtenerListadoProductos(boolean)
+	 * @see pe.com.upz.daoInterface.IProducto#obtenerListadoProductos(boolean, int)
 	 */
 	@Override
-	public Lista obtenerListadoProductos(boolean soloActivos,int filtro)
+	public Lista obtenerListadoProductos(boolean soloActivos,int filtro, String valorAux)
 			throws SQLException {
 		
 		Connection conn = ConnectDS.obtenerConeccion();
@@ -43,9 +43,23 @@ public class DProducto implements IProducto{
 		if(soloActivos){
 			sql.append("AND      PD.ESTADO           = 1 \n");
 		}
+		if(filtro == 1){
+			sql.append("AND      PD.TIPO_PRODUCTO_ID = ? \n");
+		}else if(filtro == 2){
+			sql.append("AND      PD.NOMBRE LIKE '%'||?||'%' \n");
+		}else if(filtro == 3){
+			sql.append("AND      PD.PRODUCTO_ID = ? \n");
+		}
 		sql.append("ORDER BY PD.NOMBRE");
 		
 		pstm = conn.prepareStatement(sql.toString());
+		if(filtro == 1){
+			pstm.setInt(1, Integer.parseInt(valorAux));
+		}else if(filtro == 2){
+			pstm.setString(1, valorAux);
+		}else if(filtro == 3){
+			pstm.setInt(1, Integer.parseInt(valorAux));
+		}
 		//pstm.setInt(1, usuario.getCodigo());
 		
 		rs = pstm.executeQuery();

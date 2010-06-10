@@ -24,10 +24,11 @@ public interface IProducto {
 	 * obtiene un listado con los productos registrados.
 	 * @param soloActivos indica si solo se obtiene los productos activos.
 	 * @param filtro opcion para los filtro. 0 = sin filtro, 1 = fitro por tipo, tipo int.
+	 * @param valorAux valor para realizar la busqueda con filtro, tipo String.
 	 * @return listado de productos
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract Lista obtenerListadoProductos(boolean soloActivos, int filtro)
+	public abstract Lista obtenerListadoProductos(boolean soloActivos, int filtro, String valorAux)
     throws SQLException;
 	
 	/**
