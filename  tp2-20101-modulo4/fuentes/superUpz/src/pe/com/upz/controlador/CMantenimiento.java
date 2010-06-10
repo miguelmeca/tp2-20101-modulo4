@@ -39,14 +39,15 @@ public class CMantenimiento {
 	 * Obtiene el lsiatdo de productos segun un filtro de busqueda.
 	 * @param soloActivos indica si solo se obtiene los productos activos.
 	 * @param filtro opcion para los filtro. 0 = sin filtro, 1 = fitro por tipo, tipo int.
+	 * @param valorAux valor para realizar la busqueda con filtro, tipo String.
 	 * @return listadoProducto listado con los productos, tipo Lista.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public Lista obtenerListadoProductos(boolean soloActivos, int filtro)throws SQLException{
+	public Lista obtenerListadoProductos(boolean soloActivos, int filtro,String valorAux)throws SQLException{
 		Lista listadoProducto=null;
 		IProducto daoProducto = new DProducto();
 		
-		listadoProducto = daoProducto.obtenerListadoProductos(soloActivos,filtro);
+		listadoProducto = daoProducto.obtenerListadoProductos(soloActivos,filtro,valorAux);
 		
 		return listadoProducto;
 	}

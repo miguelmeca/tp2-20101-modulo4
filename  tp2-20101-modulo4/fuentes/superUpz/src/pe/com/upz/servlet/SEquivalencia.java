@@ -35,6 +35,8 @@ try {
 		ruta = agregarEquivalencia(request);
 	}else if(operacion.equals("almacenarEquivalencia")){
 		ruta = almacenarEquivalencia(usuario,request);
+	}else if(operacion.equals("inicioCatalogo")){
+		ruta = iniciarCatalogo(request);
 	}
 
 	if(indicador == -1){
@@ -158,6 +160,43 @@ try {
 			return iniciarAsignacionPuntos(request);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	
+	public String iniciarCatalogo(HttpServletRequest request){
+		String ruta = "";
+		try {
+			String pagina = request.getParameter("pagina");
+
+			if (pagina == null) {
+				pagina = "1";
+			}
+
+			String filtroPagina = (String) request.getParameter("selFiltro");
+			int filtro = Integer.parseInt(filtroPagina == null ? "0"
+					: filtroPagina);
+
+			Lista listadoProducto = null;
+			Lista listadoTipoProducto = null;
+
+			CEquivalencia cEquivalencia = new CEquivalencia();
+			CMantenimiento cMantenimiento = new CMantenimiento();
+			listadoProducto = cEquivalencia.obtenerListadoProductosPuntaje(true,
+					filtro);
+			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
+
+			request.setAttribute("pagina", pagina);
+			request.setAttribute("listadoProducto", listadoProducto);
+			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
+
+			ruta = "/jsp/equivalenciaPtos/equ_Catalogo.jsp";
+		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
 					+ "; Parametros=" + Parametros.URL + ":"

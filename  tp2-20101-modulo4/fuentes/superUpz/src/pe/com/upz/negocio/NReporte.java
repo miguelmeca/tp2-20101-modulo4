@@ -28,6 +28,7 @@ import pe.com.upz.util.Parametros;
  * Clase que contiene metodos del negocio para la generacion de reportes
  * 
  */
+
 public class NReporte {
 
 	/**

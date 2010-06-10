@@ -141,24 +141,35 @@ public class SMantenimiento extends HttpServlet {
 	private String mostrarListadoProductos(HttpServletRequest request) {
 		String ruta = "";
 		try {
-			String pagina = request.getParameter("pagina");
+			String valorAuxiliar="";
+			String pagina = request.getParameter("hddPagina");
 
-			if (pagina == null) {
+			if (pagina == null || pagina.equals("")) {
 				pagina = "1";
 			}
 
-			String filtroPagina = (String) request.getParameter("selFiltro");
+			String filtroPagina = (String) request.getParameter("selTipoBusqueda");
 			int filtro = Integer.parseInt(filtroPagina == null ? "0"
 					: filtroPagina);
 
+			if(filtro == 1){
+				valorAuxiliar = request.getParameter("selTipoBuscar");
+			}else if(filtro == 2){
+				valorAuxiliar = request.getParameter("txtNombreBuscar");
+			}else if(filtro == 3){
+				valorAuxiliar = request.getParameter("txtCodigoBuscar");
+			}
+			
 			Lista listadoProducto = null;
 			Lista listadoTipoProducto = null;
 
 			CMantenimiento cMantenimiento = new CMantenimiento();
 			listadoProducto = cMantenimiento.obtenerListadoProductos(true,
-					filtro);
+					filtro, valorAuxiliar);
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
 
+			request.setAttribute("filtroPagina", filtro+"");
+			request.setAttribute("valorAuxiliar", valorAuxiliar);
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoProducto", listadoProducto);
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
