@@ -49,9 +49,19 @@ String mensajeMantenimiento = (String)request.getAttribute("mensajeMantenimiento
 if(mensajeMantenimiento == null){
 	mensajeMantenimiento = "";
 }
+//parametro del filtro
+String filtroPagina = (String)request.getAttribute("filtroPagina");
+String valorAuxiliar = (String)request.getAttribute("valorAuxiliar");
 
+if(filtroPagina == null){
+	filtroPagina = "0";
+}
+if(valorAuxiliar == null){
+	valorAuxiliar = "";
+}
 %>
-<html>
+
+<%@page import="pe.com.upz.bean.BTipoProducto"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Mantener Producto</title>
@@ -95,22 +105,32 @@ body {
             <td width="24%" class="ui-accordion-content" ><div align="center" class="Estilo1">
                 <div align="left">
                   <select name="selTipoBusqueda" class="ui-icon-document" style="width:200PX;heigth:10px" onChange="javascript: ocultarPaneles();" >
-                      <option value="01">tipo</option>
-                      <option value="02">descripción</option>
-					  <option value="03">código</option>
+                      <option value="0" <%=filtroPagina.equals("0")?"Selected":"" %> >--Seleccione--</option>
+                      <option value="1" <%=filtroPagina.equals("1")?"Selected":"" %> >tipo</option>
+                      <option value="2" <%=filtroPagina.equals("2")?"Selected":"" %> >descripción</option>
+					  <option value="3" <%=filtroPagina.equals("3")?"Selected":"" %> >código</option>
                         </select>
                 </div>
             </div></td>
             <td width="62%" class="ui-accordion-content"><table width="100%" border="0">
               <tr>
-                <td height="38" class="Estilo1"><div id="divDescripcion">Nombre de producto: 
-                    <input name="txtNombreBuscar" type="text"  maxlength="100"></div>
-                  <div id="divTipo"><select name="selTipoBuscar">
-                    <option value="1">tipo 1</option>
-                  </select></div>
-                  <div id="divCodigo">C&oacute;digo: 
-                    <input name="txtCodigoBuscar" type="text"  maxlength="100"></div></td>
-                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
+                <td width="55%" height="50px" class="Estilo1">
+				<div id="divDescripcion" style="position:relative;top: 20px;left: 0px ">Nombre de producto:
+                      <input name="txtNombreBuscar" type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
+                </div>                    
+                  <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
+                      
+                      <%for( int i=1 ; i<listadoTipoProducto.getTamanio();i++){ %>
+                      <% BTipoProducto tipoProducto = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
+                      <option value="<%=tipoProducto.getCodigo() %>" <%=valorAuxiliar.equals(tipoProducto.getCodigo()+"")?"Selected":"" %> ><%=tipoProducto.getDescripcion() %></option>
+                      <%} %>
+                    </select></div>
+                    <div id="divCodigo" style="position:relative;top: -20px;left: 0px ">C&oacute;digo: 
+                      <input name="txtCodigoBuscar" type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
+					  <div id="divVacio" style="position:relative;top: -35px;left: 0px "> </div></td><td width="45%" class="Estilo1">
+                      <input name="btnBuscar" type="button"   
+                      onclick="javascript:buscarPorParametro()" 
+                      id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
               </tr>
             </table></td>
             </tr>
@@ -120,7 +140,7 @@ body {
           <tr>
             <td><div align="right" class="ui-state-default" > total de items : <%=listadoProducto.getTamanio()%> &lt;&lt; Tolal de paginas : 
             <%if(listadoProducto.getNumPagina() > 1 ){ %>
-            <a href="SMantenimiento?hddOperacion=ingresoMantenerProductos&pagina=<%=listadoProducto.getNumPagina()-1%>">Anterior</a> 
+            <a onClick="javascript:paginar(<%=listadoProducto.getNumPagina()-1%>)" style='cursor:hand' >Anterior</a> 
             <%} %>
             [ 
             <%for(int i=listadoProducto.getNumPaginaInicialEnPaginacion();i< listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas();i++){ 
@@ -131,7 +151,7 @@ body {
             		</span>,
             		<%
             	}else{%>
-            		<a href="SMantenimiento?hddOperacion=ingresoMantenerProductos&pagina=<%=i%>"><%=i%></a>
+            		<a  onClick="javascript:paginar(<%=i%>);" style='cursor:hand' ><%=i%></a>
             		<%if(i+1 < listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas()){ %>
             			,
             		<%} %>
@@ -140,7 +160,7 @@ body {
             <%} %>
             ] 
             <%if(listadoProducto.getNumPagina() < listadoProducto.getCantidadPaginasDeListado() ){ %>
-            <a href="SMantenimiento?hddOperacion=ingresoMantenerProductos&pagina=<%=listadoProducto.getNumPagina()+1%>">Siguiente </a>
+            <a onClick="javascript:paginar(<%=listadoProducto.getNumPagina()+1%>)" style='cursor:hand' >Siguiente </a>
             <%} %>
             &gt;&gt; </div></td>
           </tr>
@@ -207,6 +227,8 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
+<input type="hidden" name="hddPagina" id="hddPagina" value="" />
+<input type="hidden" name="hddValorAuxiliar" id="hddValorAuxiliar" value="" />
 </form>
 </div>
 </body>
@@ -235,18 +257,31 @@ function agregarPuntaje(){
 	frmListaProducto.action="SMantenimiento?hddOperacion=ingresoNuevoProducto";
 	frmListaProducto.submit();
 }
+function buscarPorParametro(){
+	frmListaProducto.hddOperacion.value="ingresoMantenerProductos";
+	frmListaProducto.action="SMantenimiento";
+	frmListaProducto.submit();
+}
+
 function ocultarPaneles(){
 	var seleccion = frmListaProducto.selTipoBusqueda.value;
 
-	if(seleccion == "01"){
-		MM_showHideLayers('divDescripcion','','hide','divTipo','','show','divCodigo','','hide');
-	}else if(seleccion == "02"){
-		MM_showHideLayers('divDescripcion','','show','divTipo','','hide','divCodigo','','hide');
-	}else if(seleccion == "03"){
-		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','show');
+	if(seleccion == "0"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','hide','divVacio','','show');
+	}else if(seleccion == "1"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','show','divCodigo','','hide','divVacio','','hide');
+	}else if(seleccion == "2"){
+		MM_showHideLayers('divDescripcion','','show','divTipo','','hide','divCodigo','','hide','divVacio','','hide');
+	}else if(seleccion == "3"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','show','divVacio','','hide');
 	}
 }
-
+function paginar(pagina){
+	frmListaProducto.hddOperacion.value="ingresoMantenerProductos";
+	frmListaProducto.hddPagina.value=pagina;
+	frmListaProducto.action="SMantenimiento";
+	frmListaProducto.submit();
+}
 //-----------------------------------------------------------
 function MM_findObj(n, d)
 { //v4.0
