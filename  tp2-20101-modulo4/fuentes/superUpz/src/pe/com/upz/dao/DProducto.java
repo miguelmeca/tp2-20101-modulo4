@@ -173,7 +173,7 @@ public class DProducto implements IProducto{
 	/* (non-Javadoc)
 	 * @see pe.com.upz.daoInterface.IProducto#obtenerListadoProductosPuntaje(boolean, int)
 	 */
-	public Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro)
+	public Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro, String valorAuxiliar)
 			throws SQLException {
 		Connection conn = ConnectDS.obtenerConeccion();
 		BProducto producto;
@@ -201,10 +201,25 @@ public class DProducto implements IProducto{
 		}
 		sql.append("AND    PR.PRODUCTO_ID      = EQ.PRODUCTO_ID(+) \n");
 		sql.append("AND    EQ.ESTADO(+)        = 1");
+		
+		if(filtro == 1){
+			sql.append("AND      PR.TIPO_PRODUCTO_ID = ? \n");
+		}else if(filtro == 2){
+			sql.append("AND      PR.NOMBRE LIKE '%'||?||'%' \n");
+		}else if(filtro == 3){
+			sql.append("AND      PR.PRODUCTO_ID = ? \n");
+		}
 		sql.append("ORDER BY PR.NOMBRE");
 		
 		pstm = conn.prepareStatement(sql.toString());
-		//pstm.setInt(1, usuario.getCodigo());
+
+		if(filtro == 1){
+			pstm.setInt(1, Integer.parseInt(valorAuxiliar));
+		}else if(filtro == 2){
+			pstm.setString(1, valorAuxiliar);
+		}else if(filtro == 3){
+			pstm.setInt(1, Integer.parseInt(valorAuxiliar));
+		}
 		
 		rs = pstm.executeQuery();
 		

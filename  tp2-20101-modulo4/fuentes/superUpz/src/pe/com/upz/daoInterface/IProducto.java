@@ -65,6 +65,6 @@ public interface IProducto {
 	 * @return listado de productos
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro)
+	public abstract Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro, String  valorAuxiliar)
     throws SQLException;
 }
