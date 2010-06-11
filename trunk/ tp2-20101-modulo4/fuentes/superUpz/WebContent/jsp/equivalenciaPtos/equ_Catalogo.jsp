@@ -8,12 +8,9 @@
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
 <%@page import="pe.com.upz.bean.BEquivalencia"%>  
+<%@page import="pe.com.upz.bean.BTipoProducto"%>
 <%
 String ruta = request.getContextPath(); 
-//Para el Nro. de Pagina.
-int numPagina=0;
-//Si la pagina es nula entonces debe ser 1;
-numPagina=(request.getAttribute("pagina")==null?1:Integer.parseInt((String)request.getAttribute("pagina")));
 
 Lista listadoProducto = (Lista)request.getAttribute("listadoProducto");
 Lista listadoTipoProducto = (Lista)request.getAttribute("listadoTipoProducto");
@@ -23,12 +20,28 @@ if(listadoProducto ==null){
 if(listadoTipoProducto ==null){
 	listadoTipoProducto = new Lista();
 }
-//Numero de registro por páginas
-int tamanoPagina=5;
+//Para el Nro. de Pagina.
+int numPagina=0;
+//Si la pagina es nula entonces debe ser 1;
+numPagina=(request.getAttribute("pagina")==null?1:Integer.parseInt((String)request.getAttribute("pagina")));
+
+//Numero de registro por páginas.
+int tamanoPagina=10;
 //iTamanoPagina=Integer.parseInt(String.valueOf(application.getAttribute("AppTamanoPagina")));
 listadoProducto.setTamPagina(tamanoPagina);
 listadoProducto.setNumPagina(numPagina);
 listadoProducto.setCantidadPaginasMostradas(5);
+
+//parametro del filtro
+String filtroPagina = (String)request.getAttribute("filtroPagina");
+String valorAuxiliar = (String)request.getAttribute("valorAuxiliar");
+
+if(filtroPagina == null){
+	filtroPagina = "0";
+}
+if(valorAuxiliar == null){
+	valorAuxiliar = "";
+}
 %>
 <html >
 
@@ -56,6 +69,7 @@ body {
 <body>
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%">
+<form name="frmCatalogo" >
 <table width="1010px" border="0" align="center" >
 <tr>
   <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Consultar Puntos x Producto </td>
@@ -68,25 +82,37 @@ body {
             </div></td>
             <td width="24%" class="ui-accordion-content" ><div align="center" class="Estilo1">
                 <div align="left">
-                  <select name="select" class="ui-icon-document" style="width:200PX;heigth:10px"  >
-                      <option value="01">tipo</option>
-                      <option value="02">descripción</option>
-					  <option value="02">código</option>
+                  <select name="selTipoBusqueda" class="ui-icon-document" style="width:200PX;heigth:10px" onChange="javascript: ocultarPaneles();" >
+                      <option value="0" <%=filtroPagina.equals("0")?"Selected":"" %> >--Seleccione--</option>
+                      <option value="1" <%=filtroPagina.equals("1")?"Selected":"" %> >tipo</option>
+                      <option value="2" <%=filtroPagina.equals("2")?"Selected":"" %> >descripción</option>
+					  <option value="3" <%=filtroPagina.equals("3")?"Selected":"" %> >código</option>
                         </select>
                 </div>
             </div></td>
             <td width="62%" class="ui-accordion-content"><table width="100%" border="0">
               <tr>
-                <td height="38" class="Estilo1"><div align="right"> </div>                  
-                  <div align="right"> DESCRIPCION: (*) </div></td>
-                <td class="Estilo1"><div align="center">
-                  <input type="text" name="textfield2" style="width:150px" class="text  ui-corner-all" />                
-                </div>
-                <div align="right"> </div>                </td>
-                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
+                <td width="55%" height="50px" class="Estilo1">
+				<div id="divDescripcion" style="position:relative;top: 20px;left: 0px ">Nombre de producto:
+                      <input name="txtNombreBuscar" type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
+                </div>                    
+                  <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
+                      
+                      <%for( int i=1 ; i<listadoTipoProducto.getTamanio();i++){ %>
+                      <% BTipoProducto tipoProducto = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
+                      <option value="<%=tipoProducto.getCodigo() %>" <%=valorAuxiliar.equals(tipoProducto.getCodigo()+"")?"Selected":"" %> ><%=tipoProducto.getDescripcion() %></option>
+                      <%} %>
+                    </select></div>
+                    <div id="divCodigo" style="position:relative;top: -20px;left: 0px ">C&oacute;digo: 
+                      <input name="txtCodigoBuscar" type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
+					  <div id="divVacio" style="position:relative;top: -35px;left: 0px "> </div></td><td width="45%" class="Estilo1">
+                      <input name="btnBuscar" type="button"   
+                      onclick="javascript:buscarPorParametro()" 
+                      id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
               </tr>
             </table></td>
             </tr>
+
         </table>
 	</td>
 </tr>
@@ -94,33 +120,29 @@ body {
     <td >
 	<center>
 		<br>
-		<form name="frmCatalogo" >
 		<table width="700" border="0">
           <tr>
             <tr>
-            <td><div align="right" class="ui-state-default" > total de items : <%=listadoProducto.getTamanio()%> &lt;&lt; Tolal de paginas : 
+            <td><input type="hidden" name="hddPagina" id="hddPagina" value="" />
+            <div align="right" class="ui-state-default" > total de items : <%=listadoProducto.getTamanio()%> &lt;&lt; Tolal de paginas : 
             <%if(listadoProducto.getNumPagina() > 1 ){ %>
-            <a href="SEquivalencia?hddOperacion=inicioCatalogo&pagina=<%=listadoProducto.getNumPagina()-1%>">Anterior</a> 
+            <a onClick="javascript:paginar('<%=listadoProducto.getNumPagina()-1%>')" style='cursor:hand' >Anterior</a> 
             <%} %>
             [ 
-            <%for(int i=listadoProducto.getNumPaginaInicialEnPaginacion();i< listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas();i++){ 
-            	if(i==listadoProducto.getNumPagina()){
-            		%>
+            <%for(long i=listadoProducto.getNumPaginaInicialEnPaginacion();i< listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas() && i <= listadoProducto.getCantidadPaginasDeListado() ;i++){ 
+            	if(i==listadoProducto.getNumPagina()){%>
             		<span class="ui-state-active">
             		<%=i %>
-            		</span>,
+            		</span>&nbsp;
             		<%
             	}else{%>
-            		<a href="SEquivalencia?hddOperacion=inicioCatalogo&pagina=<%=i%>"><%=i%></a>
-            		<%if(i+1 < listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas()){ %>
-            			,
-            		<%} %>
+            		<a  onClick="javascript:paginar('<%=i%>');" style='cursor:hand' ><%=i%></a>&nbsp;
             	<%}%>
             	
             <%} %>
             ] 
             <%if(listadoProducto.getNumPagina() < listadoProducto.getCantidadPaginasDeListado() ){ %>
-            <a href="SEquivalencia?hddOperacion=inicioCatalogo&pagina=<%=listadoProducto.getNumPagina()+1%>">Siguiente </a>
+            <a onClick="javascript:paginar('<%=listadoProducto.getNumPagina()+1%>')" style='cursor:hand' >Siguiente </a>
             <%} %>
             &gt;&gt; </div></td>
           
@@ -162,7 +184,6 @@ body {
           </tr>    
           <%} %>      	 		  		 
         </table>
-        </form >
 	    <p>&nbsp;</p>
 	</center>	</td>
 </tr>
@@ -173,8 +194,58 @@ body {
        </div></td>
 </tr>
 </table>
- 
+ <input type="hidden" name="hddOperacion" id="hddOperacion" value="">
+</form>
 </div>
-<input type="hidden" name="id" id="id" value="">
 </body>
+<script language="JavaScript">
+function buscarPorParametro(){
+	frmCatalogo.hddOperacion.value="inicioCatalogo";
+	frmCatalogo.action="SEquivalencia";
+	frmCatalogo.submit();
+}
+
+function ocultarPaneles(){
+	var seleccion = frmListaProducto.selTipoBusqueda.value;
+
+	if(seleccion == "0"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','hide','divVacio','','show');
+	}else if(seleccion == "1"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','show','divCodigo','','hide','divVacio','','hide');
+	}else if(seleccion == "2"){
+		MM_showHideLayers('divDescripcion','','show','divTipo','','hide','divCodigo','','hide','divVacio','','hide');
+	}else if(seleccion == "3"){
+		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','show','divVacio','','hide');
+	}
+}
+//-----------------------------------------------------------
+function MM_findObj(n, d)
+{ //v4.0
+     var p,i,x;
+     if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length)
+     {
+       d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);
+     }
+     if(!(x=d[n])&&d.all) x=d.all[n];
+
+     for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+
+     for(i=0;!x&&d.layers&&i<d.layers.length;i++)
+       x=MM_findObj(n,d.layers[i].document);
+
+     if(!x && document.getElementById)
+       x=document.getElementById(n); return x;
+}
+
+function MM_showHideLayers()
+{ var i,p,v,obj,args=MM_showHideLayers.arguments;
+     for (i=0; i<(args.length-2); i+=3)
+       if ((obj=MM_findObj(args[i]))!=null)
+       { v=args[i+2];
+         if (obj.style)
+         {  obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v;  }
+         obj.visibility=v;
+       }
+}
+</script>
 </html>

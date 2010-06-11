@@ -7,6 +7,7 @@
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
+<%@page import="pe.com.upz.bean.BTipoProducto"%>
 <%
 String ruta = request.getContextPath(); 
 String variable = (String)request.getAttribute("mostrar");
@@ -24,10 +25,6 @@ if(mantenimiento !=null && mantenimiento.equals("0")){
 if(cambiarPuntaje !=null && cambiarPuntaje.equals("1")){
 	mostrarPuntaje = true;
 }
-//Para el Nro. de Pagina.
-int numPagina=0;
-//Si la pagina es nula entonces debe ser 1;
-numPagina=(request.getAttribute("pagina")==null?1:Integer.parseInt((String)request.getAttribute("pagina")));
 
 Lista listadoProducto = (Lista)request.getAttribute("listadoProducto");
 Lista listadoTipoProducto = (Lista)request.getAttribute("listadoTipoProducto");
@@ -37,6 +34,16 @@ if(listadoProducto ==null){
 if(listadoTipoProducto ==null){
 	listadoTipoProducto = new Lista();
 }
+//mensaje a mostrar
+String mensajeMantenimiento = (String)request.getAttribute("mensajeMantenimiento");
+if(mensajeMantenimiento == null){
+	mensajeMantenimiento = "";
+}
+//Para el Nro. de Pagina.
+int numPagina=0;
+//Si la pagina es nula entonces debe ser 1;
+numPagina=(request.getAttribute("pagina")==null?1:Integer.parseInt((String)request.getAttribute("pagina")));
+
 //Numero de registro por páginas.
 int tamanoPagina=10;
 //iTamanoPagina=Integer.parseInt(String.valueOf(application.getAttribute("AppTamanoPagina")));
@@ -44,11 +51,7 @@ listadoProducto.setTamPagina(tamanoPagina);
 listadoProducto.setNumPagina(numPagina);
 listadoProducto.setCantidadPaginasMostradas(5);
 
-//mensaje a mostrar
-String mensajeMantenimiento = (String)request.getAttribute("mensajeMantenimiento");
-if(mensajeMantenimiento == null){
-	mensajeMantenimiento = "";
-}
+
 //parametro del filtro
 String filtroPagina = (String)request.getAttribute("filtroPagina");
 String valorAuxiliar = (String)request.getAttribute("valorAuxiliar");
@@ -61,7 +64,7 @@ if(valorAuxiliar == null){
 }
 %>
 
-<%@page import="pe.com.upz.bean.BTipoProducto"%><html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Mantener Producto</title>
@@ -98,7 +101,8 @@ body {
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
       <tr class="ui-widget">
-        <td><table width="100%" border="0" class="ui-priority-primary"  >
+        <td>
+        <table width="100%" border="0" class="ui-priority-primary"  >
 			<td width="14%" class="ui-accordion-content" ><div align="center" class="demo-config-on Estilo1">
               <div align="left">TIPO DE B&Uacute;SQUEDA </div>
             </div></td>
@@ -138,29 +142,27 @@ body {
         </table></td>
       </tr>
           <tr>
-            <td><div align="right" class="ui-state-default" > total de items : <%=listadoProducto.getTamanio()%> &lt;&lt; Tolal de paginas : 
+            <td>
+			<input type="hidden" name="hddPagina" id="hddPagina" value="" />
+            <div align="right" class="ui-state-default" > total de items : <%=listadoProducto.getTamanio()%> &lt;&lt; Tolal de paginas : 
             <%if(listadoProducto.getNumPagina() > 1 ){ %>
-            <a onClick="javascript:paginar(<%=listadoProducto.getNumPagina()-1%>)" style='cursor:hand' >Anterior</a> 
+            <a onClick="javascript:paginar('<%=listadoProducto.getNumPagina()-1%>')" style='cursor:hand' >Anterior</a> 
             <%} %>
             [ 
-            <%for(int i=listadoProducto.getNumPaginaInicialEnPaginacion();i< listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas();i++){ 
-            	if(i==listadoProducto.getNumPagina()){
-            		%>
+            <%for(long i=listadoProducto.getNumPaginaInicialEnPaginacion();i< listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas() && i <= listadoProducto.getCantidadPaginasDeListado() ;i++){ 
+            	if(i==listadoProducto.getNumPagina()){%>
             		<span class="ui-state-active">
             		<%=i %>
-            		</span>,
+            		</span>&nbsp;
             		<%
             	}else{%>
-            		<a  onClick="javascript:paginar(<%=i%>);" style='cursor:hand' ><%=i%></a>
-            		<%if(i+1 < listadoProducto.getNumPaginaInicialEnPaginacion() + listadoProducto.getCantidadPaginasMostradas()){ %>
-            			,
-            		<%} %>
+            		<a  onClick="javascript:paginar('<%=i%>');" style='cursor:hand' ><%=i%></a>&nbsp;
             	<%}%>
             	
             <%} %>
             ] 
             <%if(listadoProducto.getNumPagina() < listadoProducto.getCantidadPaginasDeListado() ){ %>
-            <a onClick="javascript:paginar(<%=listadoProducto.getNumPagina()+1%>)" style='cursor:hand' >Siguiente </a>
+            <a onClick="javascript:paginar('<%=listadoProducto.getNumPagina()+1%>')" style='cursor:hand' >Siguiente </a>
             <%} %>
             &gt;&gt; </div></td>
           </tr>
@@ -227,7 +229,6 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
-<input type="hidden" name="hddPagina" id="hddPagina" value="" />
 <input type="hidden" name="hddValorAuxiliar" id="hddValorAuxiliar" value="" />
 </form>
 </div>
@@ -263,6 +264,13 @@ function buscarPorParametro(){
 	frmListaProducto.submit();
 }
 
+
+function paginar(pagina){
+	frmListaProducto.hddOperacion.value="ingresoMantenerProductos";
+	frmListaProducto.hddPagina.value=pagina;
+	frmListaProducto.action="SMantenimiento";
+	frmListaProducto.submit();
+}
 function ocultarPaneles(){
 	var seleccion = frmListaProducto.selTipoBusqueda.value;
 
@@ -275,12 +283,6 @@ function ocultarPaneles(){
 	}else if(seleccion == "3"){
 		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','show','divVacio','','hide');
 	}
-}
-function paginar(pagina){
-	frmListaProducto.hddOperacion.value="ingresoMantenerProductos";
-	frmListaProducto.hddPagina.value=pagina;
-	frmListaProducto.action="SMantenimiento";
-	frmListaProducto.submit();
 }
 //-----------------------------------------------------------
 function MM_findObj(n, d)
