@@ -70,7 +70,7 @@ try {
 			CEquivalencia cEquivalencia = new CEquivalencia();
 			CMantenimiento cMantenimiento = new CMantenimiento();
 			listadoProducto = cEquivalencia.obtenerListadoProductosPuntaje(true,
-					filtro);
+					filtro,"");
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
 
 			request.setAttribute("pagina", pagina);
@@ -172,25 +172,37 @@ try {
 	public String iniciarCatalogo(HttpServletRequest request){
 		String ruta = "";
 		try {
-			String pagina = request.getParameter("pagina");
+			String valorAuxiliar="";
+			String pagina = request.getParameter("hddPagina");
 
 			if (pagina == null) {
 				pagina = "1";
 			}
 
-			String filtroPagina = (String) request.getParameter("selFiltro");
+			String filtroPagina = (String) request.getParameter("selTipoBusqueda");
 			int filtro = Integer.parseInt(filtroPagina == null ? "0"
 					: filtroPagina);
 
+			if(filtro == 1){
+				valorAuxiliar = request.getParameter("selTipoBuscar");
+			}else if(filtro == 2){
+				valorAuxiliar = request.getParameter("txtNombreBuscar");
+			}else if(filtro == 3){
+				valorAuxiliar = request.getParameter("txtCodigoBuscar");
+			}
+			
+			
 			Lista listadoProducto = null;
 			Lista listadoTipoProducto = null;
 
 			CEquivalencia cEquivalencia = new CEquivalencia();
 			CMantenimiento cMantenimiento = new CMantenimiento();
 			listadoProducto = cEquivalencia.obtenerListadoProductosPuntaje(true,
-					filtro);
+					filtro, valorAuxiliar);
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
 
+			request.setAttribute("filtroPagina", filtro+"");
+			request.setAttribute("valorAuxiliar", valorAuxiliar);
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoProducto", listadoProducto);
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);

@@ -193,27 +193,28 @@ public class Lista {
 	}
 	/**
 	 * Obtiene el numero inicial de las paginas a mostrar.
-	 * @return numero de paginas a mostrar, tipo int.
+	 * @return numero de paginas a mostrar, tipo long.
 	 */
-	public int getNumPaginaInicialEnPaginacion() {
-		int intPaginas;
+	public long getNumPaginaInicialEnPaginacion() {
+		
+		long numero= 1;
+		/*int intPaginas;
 		int totalPaginas = (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
-		
-		int numero;
-		
-		if(numPagina - 2 <= 1){
+		*/
+		/*if(numPagina - 2 <= 1){
 			numero = 1;
 		}else if (numPagina + 2 > totalPaginas){
 			numero = (numPagina-cantidadPaginasMostradas)+(totalPaginas- numPagina + 1);
 		}else{
 			numero = numPagina-2;
-		}
+		}*/
+		
+		if(numPagina-Math.round((cantidadPaginasMostradas/2)-0.5)>0)
+			numero=numPagina-Math.round((cantidadPaginasMostradas/2)-0.5);  
 		
 		return numero;
 		
 		
-		//return (int) Math.ceil((double) getTamanio() / (double) getTamPagina());
-
 	}
 	/**
 	 * Procedimiento que actualiza los datos en la navegacion de una página anterior.

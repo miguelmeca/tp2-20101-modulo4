@@ -24,11 +24,11 @@ import pe.com.upz.util.Lista;
  */
 public class CEquivalencia {
 
-	public Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro)throws SQLException{
+	public Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro, String  valorAuxiliar)throws SQLException{
 		Lista listadoProducto=null;
 		IProducto daoProducto = new DProducto();
 		
-		listadoProducto = daoProducto.obtenerListadoProductosPuntaje(soloActivos,filtro);
+		listadoProducto = daoProducto.obtenerListadoProductosPuntaje(soloActivos,filtro,  valorAuxiliar);
 		
 		return listadoProducto;
 	}
