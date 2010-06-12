@@ -1,44 +1,22 @@
 
-Conectado a: Oracle Database 10g Express Edition Release 10.2.0.1.0 - Production
-Exportación realizada en el juego de caracteres WE8MSWIN1252 y el juego de caracteres NCHAR AL16UTF16
+Connected to: Oracle Database 10g Express Edition Release 10.2.0.1.0 - Production
 
-Exportando los usuarios especificados ...
-. exportando acciones y objetos de procedimiento pre-esquema
-. exportando nombres de biblioteca de funciones ajenas para el usuario FIDELIZACION 
-. exportando sinónimos de tipo público
-. exportando sinónimos de tipo privado
-. exportando definiciones de tipos de objetos para el usuario FIDELIZACION 
-Exportando los objetos de FIDELIZACION  ...
-. exportando enlaces a la base de datos
-. exportando números de secuencia
-. exportando definiciones de cluster
-. exportando las tablas de FIDELIZACION a través de la Ruta de Acceso Convencional ...
-. exportando la tabla                          AUTOR          0 filas exportadas
-. exportando la tabla                 DETALLE_PEDIDO         44 filas exportadas
-. exportando la tabla                   EQUIVALENCIA          9 filas exportadas
-. exportando la tabla                         OPCION         17 filas exportadas
-. exportando la tabla                         PEDIDO         23 filas exportadas
-. exportando la tabla                       PRODUCTO        105 filas exportadas
-. exportando la tabla                            ROL          7 filas exportadas
-. exportando la tabla                     ROL_OPCION         18 filas exportadas
-. exportando la tabla                       SUCURSAL          1 filas exportadas
-. exportando la tabla                  TIPO_PRODUCTO          3 filas exportadas
-. exportando la tabla                        USUARIO          2 filas exportadas
-. exportando la tabla                    USUARIO_ROL          7 filas exportadas
-. exportando sinónimos
-. exportando vistas
-. exportando procedimientos almacenados
-. exportando operadores
-. exportando restricciones de integridad referencial
-. exportando disparadores
-. exportando tipos de índice
-. exportando índices bitmap, funcionales y extensibles
-. exportando acciones de posttables
-. exportando vistas materializadas
-. exportando logs de instantáneas
-. exportando colas de trabajo
-. exportando grupos de refrescamiento y secundarios
-. exportando dimensiones
-. exportando acciones y objetos de procedimiento post-esquema
-. exportando estadísticas
-La exportación ha terminado correctamente y sin advertencias.
+Export file created by EXPORT:V10.02.01 via conventional path
+import done in WE8ISO8859P1 character set and AL16UTF16 NCHAR character set
+import server uses WE8MSWIN1252 character set (possible charset conversion)
+export client uses WE8MSWIN1252 character set (possible charset conversion)
+. importing FIDELIZACION's objects into FIDELIZACION
+. . importing table                        "AUTOR"          0 rows imported
+. . importing table               "DETALLE_PEDIDO"         44 rows imported
+. . importing table                 "EQUIVALENCIA"          9 rows imported
+. . importing table                       "OPCION"         17 rows imported
+. . importing table                       "PEDIDO"         23 rows imported
+. . importing table                     "PRODUCTO"        105 rows imported
+. . importing table                          "ROL"          7 rows imported
+. . importing table                   "ROL_OPCION"         18 rows imported
+. . importing table                     "SUCURSAL"          1 rows imported
+. . importing table                "TIPO_PRODUCTO"          3 rows imported
+. . importing table                      "USUARIO"          2 rows imported
+. . importing table                  "USUARIO_ROL"          7 rows imported
+About to enable constraints...
+Import terminated successfully without warnings.
