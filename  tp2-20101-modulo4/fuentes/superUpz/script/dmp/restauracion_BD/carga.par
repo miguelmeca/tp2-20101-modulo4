@@ -1,0 +1,6 @@
+FROMUSER=SYSLEGAL
+TOUSER=SYSLEGAL
+FILE="D:\ejecutar\dmp_rcpj\20100526.dmp"
+LOG="D:\ejecutar\dmp_rcpj\20100526.log"
+BUFFER=10240000
+IGNORE=Y

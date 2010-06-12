@@ -1,0 +1,8 @@
+SET ECHO OFF
+SET HEADING OFF
+SET FEEDBACK OFF
+SET VERIFY OFF
+SET PAGESIZE 50000
+SPOOL carga2.sql
+@D:\ejecutar\restauracion_BD\drop_objects.sql
+EXIT;
