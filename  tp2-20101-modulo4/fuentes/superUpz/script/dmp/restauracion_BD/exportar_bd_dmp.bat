@@ -1,1 +1,0 @@
-exp system/password@XE file=c:\restauracion_BD\20100526.dmp log=c:\restauracion_BD\20100526.log owner=FIDELIZACION
