@@ -10,6 +10,7 @@ package pe.com.upz.controlador;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BRol;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DOpcion;
 import pe.com.upz.dao.DRol;
@@ -117,9 +118,25 @@ public class CSeguridad {
 		return usuarioDao.obtenerMenu(usuario);
 	}
 	
+	/**
+	 * Obtiene la lista de sucursales.
+	 * @return Lista de sucursales, tipo Lista.
+	 * @throws Exception captura las excepciones.
+	 */
 	public Lista obtenerSucursalesLogeo()throws Exception{
 		ISucursal dSucursal = new DSucursal();
 		
 		return dSucursal.obtenerListadoSucursales();
+	}
+	/**
+	 * Retorna una determinada sucursl por su codigo.
+	 * @param codSucursal codigo de sucursal a buscar, tipo int.
+	 * @return sucursl, tipo BSucursal.
+	 * @throws Exception captura las excepciones.
+	 */
+	public BSucursal obtenerSucursalesLogeo(int codSucursal)throws Exception{
+		ISucursal dSucursal = new DSucursal();
+		
+		return dSucursal.obtenerSucursal(codSucursal);
 	}
 }

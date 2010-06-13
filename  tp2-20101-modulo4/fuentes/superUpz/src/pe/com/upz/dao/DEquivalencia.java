@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DEquivalencia.
+ * Descripción                : Clase DAO de equivalencia de puntos.
+ * Fecha de Creación          : 15/05/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -8,9 +15,15 @@ import pe.com.upz.bean.BUsuario;
 import pe.com.upz.bean.BEquivalencia;
 import pe.com.upz.daoInterface.IEquivalencia;
 
+/**
+ * Clase DAO de equivalencia de puntos.
+ *
+ */
 public class DEquivalencia implements IEquivalencia {
 
-	@Override
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IEquivalencia#almacenarEquivalencia(pe.com.upz.bean.BUsuario, java.sql.Connection, pe.com.upz.bean.BEquivalencia, int)
+	 */
 	public void almacenarEquivalencia(BUsuario usuario, Connection conn,
 			BEquivalencia equivalencia, int codProducto) throws SQLException {
 		// TODO Auto-generated method stub
@@ -64,6 +77,9 @@ public class DEquivalencia implements IEquivalencia {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IEquivalencia#eliminarEquivalenciasActivasProducto(pe.com.upz.bean.BUsuario, java.sql.Connection, int)
+	 */
 	public void eliminarEquivalenciasActivasProducto(BUsuario usuario,
 			Connection conn, int codProducto) throws SQLException {
 		// TODO Auto-generated method stub
@@ -83,7 +99,9 @@ public class DEquivalencia implements IEquivalencia {
 		pstm.executeUpdate();
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IEquivalencia#obtenerMaximaCodificacion(java.sql.Connection)
+	 */
 	public int obtenerMaximaCodificacion(Connection conn) throws SQLException {
 		// TODO Auto-generated method stub
 		PreparedStatement pstm = null;

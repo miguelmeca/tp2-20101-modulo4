@@ -27,10 +27,10 @@ public class BTipoProducto extends Bean{
 	 * estado de vigencia
 	 */
 	private int estado;
-
 	
-	
-	
+	/**
+	 * constructor.
+	 */
 	public BTipoProducto() {
 		super();
 		codigo = -1;

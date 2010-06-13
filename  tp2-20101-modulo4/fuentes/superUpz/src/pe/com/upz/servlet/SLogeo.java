@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import pe.com.upz.bean.BRol;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.controlador.CSeguridad;
 import pe.com.upz.dao.DOpcion;
@@ -125,10 +126,11 @@ public class SLogeo extends HttpServlet {
 
 			String sLogin;
 			String sClave;
-
+			int sucursalCodigo;
 			sLogin = request.getParameter("txtUsuario");
 			sClave = request.getParameter("txtClave");
-
+			sucursalCodigo = Integer.parseInt(request.getParameter("selSucursal"));
+			
 			CSeguridad cSeguridad = new CSeguridad();
 
 			if (!cSeguridad.validarExisteUsuario(sLogin)) {
@@ -162,8 +164,10 @@ public class SLogeo extends HttpServlet {
 				 */
 				// obteniendo el menu
 				menu = cSeguridad.obtenerOpcionesMenu(usuario);
-
+				//obteniendo la sucursal.
+				BSucursal sucursales = cSeguridad.obtenerSucursalesLogeo(sucursalCodigo);
 				HttpSession session = request.getSession(true);
+				session.setAttribute("sucursalSesion", sucursales);
 				session.setAttribute("usuarioSesion", usuario);
 				session.setAttribute("menu", menu);
 

@@ -80,8 +80,11 @@ public class DProducto implements IProducto{
 			lista.setElemento(producto);
 		}
 		
-		return lista;
+		rs.close();
+		pstm.close();
+		conn.close();
 		
+		return lista;
 	}
 
 	/* (non-Javadoc)
