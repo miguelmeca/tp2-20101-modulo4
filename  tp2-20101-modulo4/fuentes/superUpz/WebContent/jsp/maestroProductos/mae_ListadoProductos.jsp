@@ -124,7 +124,7 @@ body {
                 </div>                    
                   <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
                       
-                      <%for( int i=1 ; i<listadoTipoProducto.getTamanio();i++){ %>
+                      <%for( int i=0 ; i<listadoTipoProducto.getTamanio();i++){ %>
                       <% BTipoProducto tipoProducto = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
                       <option value="<%=tipoProducto.getCodigo() %>" <%=valorAuxiliar.equals(tipoProducto.getCodigo()+"")?"Selected":"" %> ><%=tipoProducto.getDescripcion() %></option>
                       <%} %>

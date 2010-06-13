@@ -113,7 +113,7 @@ if(sucursal ==null){
 								  </tr>
 									<tr>
 									  <td align="left">Sucursal: </td>
-								      <td align="left"><select name="select">
+								      <td align="left"><select name="selSucursal">
 								        <%for(int i=0;i<sucursal.getTamanio();i++){ %>
 								        	<%BSucursal suc = (BSucursal)sucursal.getElemento(i); %>
 								        <option value="<%=suc.getCodigo() %>"><%=suc.getDescripcion() %></option>
