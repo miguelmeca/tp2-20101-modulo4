@@ -66,7 +66,7 @@ body {
 </style>
 </head>
 
-<body>
+<body onload="javascript:ocultarPaneles();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%">
 <form name="frmCatalogo" >
@@ -98,7 +98,7 @@ body {
                 </div>                    
                   <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
                       
-                      <%for( int i=1 ; i<listadoTipoProducto.getTamanio();i++){ %>
+                      <%for( int i=0 ; i<listadoTipoProducto.getTamanio();i++){ %>
                       <% BTipoProducto tipoProducto = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
                       <option value="<%=tipoProducto.getCodigo() %>" <%=valorAuxiliar.equals(tipoProducto.getCodigo()+"")?"Selected":"" %> ><%=tipoProducto.getDescripcion() %></option>
                       <%} %>
@@ -204,9 +204,14 @@ function buscarPorParametro(){
 	frmCatalogo.action="SEquivalencia";
 	frmCatalogo.submit();
 }
-
+function paginar(pagina){
+	frmCatalogo.hddOperacion.value="inicioCatalogo";
+	frmCatalogo.hddPagina.value=pagina;
+	frmCatalogo.action="SEquivalencia";
+	frmCatalogo.submit();
+}
 function ocultarPaneles(){
-	var seleccion = frmListaProducto.selTipoBusqueda.value;
+	var seleccion = frmCatalogo.selTipoBusqueda.value;
 
 	if(seleccion == "0"){
 		MM_showHideLayers('divDescripcion','','hide','divTipo','','hide','divCodigo','','hide','divVacio','','show');
