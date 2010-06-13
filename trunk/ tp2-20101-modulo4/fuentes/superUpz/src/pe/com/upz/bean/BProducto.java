@@ -45,6 +45,9 @@ public class BProducto extends Bean{
 	 */
 	private String rutaImagen;
 	
+	/**
+	 * Listado de equivalencia de puntos.
+	 */
 	private Lista listaPuntaje;
 
 	/**
