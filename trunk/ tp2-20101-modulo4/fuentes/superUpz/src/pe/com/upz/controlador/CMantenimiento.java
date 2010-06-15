@@ -36,7 +36,7 @@ public class CMantenimiento {
 
 	
 	/**
-	 * Obtiene el lsiatdo de productos segun un filtro de busqueda.
+	 * Obtiene el listado de productos segun un filtro de busqueda.
 	 * @param soloActivos indica si solo se obtiene los productos activos.
 	 * @param filtro opcion para los filtro. 0 = sin filtro, 1 = fitro por tipo, tipo int.
 	 * @param valorAux valor para realizar la busqueda con filtro, tipo String.
