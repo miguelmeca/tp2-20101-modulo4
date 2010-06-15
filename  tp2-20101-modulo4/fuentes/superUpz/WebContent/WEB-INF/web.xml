@@ -57,6 +57,14 @@
           pe.com.upz.servlet.SMantenimiento
       </servlet-class>
     </servlet>
+      <servlet>
+      <servlet-name>
+          SMantenimientoCliente
+      </servlet-name>
+      <servlet-class>
+          pe.com.upz.servlet.SMantenimientoCliente
+      </servlet-class>
+    </servlet>
     <servlet>
       <servlet-name>
           SEquivalencia
@@ -97,6 +105,14 @@
         </servlet-name>
         <url-pattern>
             /SMantenimiento
+        </url-pattern>
+    </servlet-mapping>  
+         <servlet-mapping>
+        <servlet-name>
+            SMantenimientoCliente
+        </servlet-name>
+        <url-pattern>
+            /SMantenimientoCliente
         </url-pattern>
     </servlet-mapping>  
          <servlet-mapping>

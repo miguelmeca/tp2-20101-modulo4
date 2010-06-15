@@ -176,9 +176,9 @@ body {
 				</td>
                 </tr>
               <tr>
-                <td width="127"> <div align="right">Stock disponible: </div></td>
+                <td width="127"> <div align="right"> </div></td>
                 <td width="17">&nbsp;</td>
-                <td width="167"><div align="left">100 unidades </div></td>
+                <td width="167"><div align="left"> </div></td>
               </tr>
             </table></td>
           </tr>    
