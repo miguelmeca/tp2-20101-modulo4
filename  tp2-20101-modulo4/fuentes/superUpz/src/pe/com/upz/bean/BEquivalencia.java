@@ -1,7 +1,18 @@
+/**
+ * Resumen.
+ * Objeto                     : BEquivalencia.
+ * Descripción                : Bean de equivalencia.
+ * Fecha de Creación          : 15/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.bean;
 
 import pe.com.upz.util.Bean;
 
+/**
+ * Bean de equivalencia.
+ *
+ */
 public class BEquivalencia extends Bean{
 
 	/**

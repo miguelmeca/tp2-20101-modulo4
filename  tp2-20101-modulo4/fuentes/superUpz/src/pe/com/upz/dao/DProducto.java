@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DProducto.
+ * Descripción                : Clase DAO de productos del sistema.
+ * Fecha de Creación          : 15/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -14,6 +21,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de productos del sistema.
+ *
+ */
 public class DProducto implements IProducto{
 
 	/* (non-Javadoc)

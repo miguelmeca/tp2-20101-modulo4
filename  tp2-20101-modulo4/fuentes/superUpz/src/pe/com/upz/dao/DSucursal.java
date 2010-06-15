@@ -94,7 +94,7 @@ public class DSucursal implements ISucursal {
 		rs = pstm.executeQuery();
 
 		sucursal = new BSucursal();
-
+		rs.next();
 		sucursal.setCodigo(rs.getInt("CODIGO"));
 		sucursal.setDescripcion(rs.getString("NOMBRE"));
 		sucursal.setEstado(rs.getInt("ESTADO"));
