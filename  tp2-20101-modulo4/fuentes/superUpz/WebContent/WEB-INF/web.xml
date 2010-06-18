@@ -1,126 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>superUpz</display-name>
-  <description>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>superUpz</display-name>
+	<description>
       Modulo de fidelizacion del Supermercado UPZ
     </description>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <!--parametros de la aplicacion -->
-    <context-param>
-      <param-name>widthScreen</param-name>
-      <param-value>1015</param-value>
-    </context-param>  
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
 
-    <!--==== DEFINICION DE SERVLETS DE LA APILICACION ====-->
-    <!-- DEFINICION FISICA--> 	
+	<!--parametros de la aplicacion -->
+	<context-param>
+		<param-name>widthScreen</param-name>
+		<param-value>1015</param-value>
+	</context-param>
 
-     <servlet>
-      <servlet-name>
-          SLogeo
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SLogeo
-      </servlet-class>
-    </servlet>
+	<!--==== DEFINICION DE SERVLETS DE LA APILICACION ====-->
+	<!-- DEFINICION FISICA-->
 
-     <servlet>
-      <servlet-name>
-          SAbastecimiento
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SAbastecimiento
-      </servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>SLogeo</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SLogeo</servlet-class>
+	</servlet>
 
-      <servlet>
-      <servlet-name>
-          SReporte
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SReporte
-      </servlet-class>
-    </servlet>    
+	<servlet>
+		<servlet-name>SAbastecimiento</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SAbastecimiento</servlet-class>
+	</servlet>
 
-      <servlet>
-      <servlet-name>
-          SMantenimiento
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SMantenimiento
-      </servlet-class>
-    </servlet>
-      <servlet>
-      <servlet-name>
-          SMantenimientoCliente
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SMantenimientoCliente
-      </servlet-class>
-    </servlet>
-    <servlet>
-      <servlet-name>
-          SEquivalencia
-      </servlet-name>
-      <servlet-class>
-          pe.com.upz.servlet.SEquivalencia
-      </servlet-class>
-    </servlet>
-    <!-- DEFINICION WEB (LOGICA) -->
-   
-    <servlet-mapping>
-        <servlet-name>
-            SLogeo
-        </servlet-name>
-        <url-pattern>
+	<servlet>
+		<servlet-name>SReporte</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SReporte</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>SMantenimiento</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SMantenimiento</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SMantenimientoCliente</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SMantenimientoCliente</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SEquivalencia</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SEquivalencia</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServicioUtilitario</servlet-name>
+		<servlet-class>pe.com.upz.util.ServicioUtilitario</servlet-class>
+	</servlet>
+	<!-- DEFINICION WEB (LOGICA) -->
+
+	<servlet-mapping>
+		<servlet-name>SLogeo</servlet-name>
+		<url-pattern>
             /SLogeo
         </url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>
-            SAbastecimiento
-        </servlet-name>
-        <url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SAbastecimiento</servlet-name>
+		<url-pattern>
             /SAbastecimiento
         </url-pattern>
-    </servlet-mapping>
-     <servlet-mapping>
-        <servlet-name>
-            SReporte
-        </servlet-name>
-        <url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SReporte</servlet-name>
+		<url-pattern>
             /SReporte
         </url-pattern>
-    </servlet-mapping>   
-         <servlet-mapping>
-        <servlet-name>
-            SMantenimiento
-        </servlet-name>
-        <url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SMantenimiento</servlet-name>
+		<url-pattern>
             /SMantenimiento
         </url-pattern>
-    </servlet-mapping>  
-         <servlet-mapping>
-        <servlet-name>
-            SMantenimientoCliente
-        </servlet-name>
-        <url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SMantenimientoCliente</servlet-name>
+		<url-pattern>
             /SMantenimientoCliente
         </url-pattern>
-    </servlet-mapping>  
-         <servlet-mapping>
-        <servlet-name>
-            SEquivalencia
-        </servlet-name>
-        <url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SEquivalencia</servlet-name>
+		<url-pattern>
             /SEquivalencia
         </url-pattern>
-    </servlet-mapping>  
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServicioUtilitario</servlet-name>
+		<url-pattern>
+            /ServicioUtilitario
+        </url-pattern>
+	</servlet-mapping>
 </web-app>

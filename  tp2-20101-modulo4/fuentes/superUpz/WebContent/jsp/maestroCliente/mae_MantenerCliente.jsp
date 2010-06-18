@@ -5,8 +5,14 @@
 * Fecha de Creacion     : 10/06/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
+<%@page import="pe.com.upz.util.Lista"%>
+<%@page import="pe.com.upz.bean.BUbigeo"%>
 <%
 String ruta = request.getContextPath(); 
+Lista listaDepartamento = (Lista)request.getAttribute("listaDepartamento");
+if(listaDepartamento ==null){
+	listaDepartamento = new Lista();
+}
 %>
 <html>
 <head>
@@ -75,6 +81,7 @@ body {
 								<td width="150">
 								<div align="left"><input name="txtNumeroDocumento"
 									type="text" class="text  ui-corner-all" id="txtNumero22"
+									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="10" /></div>
 								</td>
 								<td colspan="2"><input name="btnValidar" type="button"
@@ -92,6 +99,7 @@ body {
 								<td>
 								<div align="left"><input name="txtApellidoPaterno"
 									type="text" class="text  ui-corner-all" id="txtApellidoPaterno"
+									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									style="width: 150px" maxlength="100" /></div>
 								</td>
 								<td width="55">&nbsp;</td>
@@ -101,6 +109,7 @@ body {
 								<td>
 								<div align="left"><input name="txtApellidoMaterno"
 									type="text" class="text  ui-corner-all" id="txtApellidoMaterno"
+									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									style="width: 150px" maxlength="100" /></div>
 								</td>
 							</tr>
@@ -111,6 +120,7 @@ body {
 								<td>
 								<div align="left"><input name="txtNombre" type="text"
 									class="text  ui-corner-all" id="txtNombre" style="width: 150px"
+									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									maxlength="100" /></div>
 								</td>
 								<td>&nbsp;</td>
@@ -118,9 +128,12 @@ body {
 								<div align="left">Departamento: (*)</div>
 								</td>
 								<td>
-								<div align="left"><select id="select4" name="selMonto"
-									style="width: 79px">
-									<option selected="selected"></option>
+								<div align="left"><select id="selDepartamento" name="selDepartamento" onChange="buscaProvincia()" >
+									<option selected="selected" value='-1'>--Seleccionar--</option>
+									<%for(int i=0;i< listaDepartamento.getTamanio();i++){ %>
+										<%BUbigeo ubigeo = (BUbigeo)listaDepartamento.getElemento(i); %>
+										<option value='<%=ubigeo.getDepartamento()%>'><%=ubigeo.getNombre()%></option>
+									<%} %>
 								</select></div>
 								</td>
 							</tr>
@@ -128,15 +141,15 @@ body {
 								<td>
 								<div align="left">e-mail:</div>
 								</td>
-								<td><input type="text" name="txtEMail" id="txtNumero82"
+								<td><input type="text" name="txtEMail" id="txtEMail"
+									onKeyPress="Upper();"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
 								<td>
 								<div align="left">Provincia: (*)</div>
 								</td>
 								<td>
-								<div align="left"><select id="select" name="select"
-									style="width: 79px">
+								<div align="left"><select id="selProvincia" onChange="buscarDistrito()" name="selProvincia" >
 									<option selected="selected"></option>
 								</select></div>
 								</td>
@@ -147,14 +160,14 @@ body {
 								</td>
 								<td><input name="txtTelefono" type="text"
 									class="text  ui-corner-all" id="txtTelefono"
+									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="20" /></td>
 								<td>&nbsp;</td>
 								<td>
 								<div align="left">Distrito: (*)</div>
 								</td>
 								<td>
-								<div align="left"><select id="select2" name="select3"
-									style="width: 79px">
+								<div align="left"><select id="selDistrito" name="selDistrito" >
 									<option selected="selected"></option>
 								</select></div>
 								</td>
@@ -166,6 +179,7 @@ body {
 								<td>
 								<div align="left"><input name="txtCelular" type="text"
 									class="text  ui-corner-all" id="txtCelular"
+									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="20" /></div>
 								</td>
 								<td>&nbsp;</td>
@@ -175,6 +189,7 @@ body {
 								<td>
 								<div align="left"><input name="txtDireccion" type="text"
 									class="text  ui-corner-all" id="txtDireccion"
+									onKeyPress="Upper();permitirLetraNumeroEspeciales();"  
 									style="width: 150px" maxlength="200" /></div>
 								</td>
 							</tr>
@@ -196,7 +211,7 @@ body {
 			<tr>
 				<td class="ui-widget-header">
 				<div align="right"><input type="button" name="btnAceptar"
-					value="Aceptar" onclick="javascript:guardar()" style="width: 120px"
+					value="Aceptar" onClick="guardar()" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
 					name="btnCancelar" value="Cancelar" style="width: 120px"
 					class="ui-state-default btnCancelar" /></div>
@@ -209,24 +224,20 @@ body {
 		</td>
 	</tr>
 </table>
+<input type="hidden" name="hddOperacion" id="hddOperacion" value="almacenarCliente" />
 </form>
 </div>
 </body>
 <script language="JavaScript">
 function guardar(){
-	var dni = frmNuevoCliente.txtNumeroDocumento.value();
-	var nombre = frmNuevoCliente.txtNombre.value();
-	var paterno = frmNuevoCliente.txtApellidoPaterno.value();
-	var materno = frmNuevoCliente.txtApellidoMaterno.value();
-	var direccion = frmNuevoCliente.txtDireccion.value();
+	var dni = frmNuevoCliente.txtNumeroDocumento.value;
+	var nombre = frmNuevoCliente.txtNombre.value;
+	var paterno = frmNuevoCliente.txtApellidoPaterno.value;
+	var materno = frmNuevoCliente.txtApellidoMaterno.value;
+	var direccion = frmNuevoCliente.txtDireccion.value;
 	if(dni == ""){
 		alert("Debe ingresar un número de documento.");
 			frmNuevoCliente.txtNumeroDocumento.focus();
-			return;
-	}
-	if(nombre == ""){
-		alert("Debe ingresar un nombre.");
-			frmNuevoCliente.txtNombre.focus();
 			return;
 	}
 	if(paterno == ""){
@@ -239,15 +250,88 @@ function guardar(){
 			frmNuevoCliente.txtApellidoMaterno.focus();
 			return;
 	}
+	if(nombre == ""){
+		alert("Debe ingresar un nombre.");
+			frmNuevoCliente.txtNombre.focus();
+			return;
+	}
+	 if(frmNuevoCliente.selDepartamento.selectedIndex<=0){
+	     alert("Debe seleccionar un departamento.");
+	     frmNuevoCliente.selDepartamento.focus();
+	     return false;
+	}
+	 if(frmNuevoCliente.selProvincia.selectedIndex<=0){
+	     alert("Debe seleccionar una provincia.");
+	     frmNuevoCliente.selProvincia.focus();
+	     return false;
+	}
+	 if(frmNuevoCliente.selDistrito.selectedIndex<=0){
+	     alert("Debe seleccionar un distrito.");
+	     frmNuevoCliente.selDistrito.focus();
+	     return false;
+	}
 	if(direccion == ""){
 		alert("Debe ingresar la dirección.");
 			frmNuevoCliente.txtDireccion.focus();
 			return;
 	}
+	frmNuevoCliente.action="SMantenimientoCliente";
+	frmNuevoCliente.submit();
 }
 
-function ddd(){
-}
+function buscaProvincia(){   
 
+    frmNuevoCliente.selProvincia.length = 0; //Borra los datos
+	frmNuevoCliente.selDistrito.length = 0; //Borra los datos
+    if(frmNuevoCliente.selDepartamento.selectedIndex==0){
+        frmNuevoCliente.selProvincia.length = 0; //Borra los datos
+        return;
+    }
+    
+    var departamento = 
+            frmNuevoCliente.selDepartamento.
+                    options[frmNuevoCliente.selDepartamento.selectedIndex].value;
+    //colocaNombre(frmNuevoCliente.selDepartamento, frmNuevoCliente.txtNomUbigeoDest)
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestRefrescaProvincia" +
+                  "&selDepartamento="+ departamento; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK__NoExiste")   {
+        ret = ret.substr(3);
+        llenarComboListaCodTexto(ret,";","|",frmNuevoCliente.selProvincia);
+    }
+     
+}
+function buscarDistrito(){    
+    
+    if(frmNuevoCliente.selProvincia.selectedIndex==0){
+        frmNuevoCliente.selDistrito.length = 0; //Borra los datos
+        return;
+    }
+    
+    var departamento = frmNuevoCliente.selDepartamento.value;
+    var provincia = frmNuevoCliente.selProvincia.value;
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestRefrescaDistrito" +
+                  "&selDepartamento="+ departamento+
+				  "&selProvincia="+provincia;
+	
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK__NoExiste")   {
+        ret = ret.substr(3);
+        llenarComboListaCodTexto(ret,";","|",frmNuevoCliente.selDistrito);
+    }
+}
 </script>
 </html>
