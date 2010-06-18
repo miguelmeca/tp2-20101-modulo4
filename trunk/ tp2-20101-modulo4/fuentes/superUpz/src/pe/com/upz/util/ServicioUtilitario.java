@@ -78,7 +78,7 @@ public class ServicioUtilitario extends ServiceSession {
 			BUbigeo distrito = new BUbigeo();
 			String departamento = (String) request
 					.getParameter("selDepartamento");
-			String provincia = (String) request.getParameter("selProvinica");
+			String provincia = (String) request.getParameter("selProvincia");
 
 			IUbigeo dUbigeo = new DUbigeo();
 
