@@ -23,7 +23,7 @@ if(variable !=null && variable.equals("0")){
     href="<%=ruta%>/submenu/jqueryslidemenu.css" />
 
 <script type="text/javascript" src="<%=ruta%>/JQUERYMIN/jquery.min.js"></script>
-
+<script type="text/javascript" src="<%=ruta%>/js/funcionesVarias.js"></script>
 <script type="text/javascript" src="<%=ruta%>/submenu/jqueryslidemenu.js"></script>
 <link type="text/css" href="<%=ruta%>/themes/redmond/ui.all.css"
     rel="stylesheet" />
