@@ -8,17 +8,25 @@
 package pe.com.upz.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BTipoProducto;
+import pe.com.upz.bean.BUbigeo;
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.controlador.CMantenimiento;
 import pe.com.upz.controlador.CMantenimientoCliente;
+import pe.com.upz.dao.DCliente;
+import pe.com.upz.dao.DUbigeo;
+import pe.com.upz.daoInterface.ICliente;
+import pe.com.upz.daoInterface.IUbigeo;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
 
@@ -41,7 +49,7 @@ try {
 	} else if (operacion.equals("nuevoCliente")) {
 		ruta = inicioNuevoActualizaCliente(request);
 	}else if (operacion.equals("almacenarCliente")) {
-		ruta = almacenarCliente(request);
+		ruta = almacenarCliente(usuario,request);
 	}
 	if (indicador == -1) {
 		getServletConfig().getServletContext().getRequestDispatcher(
@@ -114,7 +122,12 @@ try {
 	private String inicioNuevoActualizaCliente(HttpServletRequest request) {
 		String ruta = "";
 		try {
-
+			Lista listaDepartamento;
+			
+			IUbigeo dUbigeo = new DUbigeo();
+			
+			listaDepartamento = dUbigeo.obtenerDepartamentos();
+			request.setAttribute("listaDepartamento", listaDepartamento);
 			ruta = "/jsp/maestroCliente/mae_MantenerCliente.jsp";
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
@@ -125,9 +138,13 @@ try {
 		}
 		return ruta;
 	}
-	private String almacenarCliente(HttpServletRequest request) {
+	private String almacenarCliente(BUsuario usuario,HttpServletRequest request) {
 		String ruta = "";
+		Connection conn = null;
 		try {
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
+			BCliente cliente;
 			String nombre;
 			String paterno;
 			String materno;
@@ -136,10 +153,45 @@ try {
 			String correo;
 			String telefono1;
 			String telefono2;
+			String departamento;
+			String provincia;
+			String distrito;
 			
+			nombre = request.getParameter("txtNombre");
+			paterno = request.getParameter("txtApellidoPaterno");
+			materno = request.getParameter("txtApellidoMaterno");
+			direccion = request.getParameter("txtDireccion");
+			numDocumento = request.getParameter("txtNumeroDocumento");
+			correo = request.getParameter("txtEMail");
+			telefono1 = request.getParameter("txtTelefono");
+			telefono2 = request.getParameter("txtCelular");
+			departamento = request.getParameter("selDepartamento");
+			provincia = request.getParameter("selProvincia");
+			distrito = request.getParameter("selDistrito");
+			
+			cliente = new BCliente();
+			cliente.setNumeroDocumento(numDocumento);
+			cliente.setNombre(nombre);
+			cliente.setApellidoPaterno(paterno);
+			cliente.setApellidoPaterno(materno);
+			cliente.setCorreo(correo);
+			cliente.setDireccion(direccion);
+			cliente.setTelefono(telefono1);
+			cliente.setTelefonoDos(telefono2);
+			BUbigeo ubigeo = new BUbigeo();
+			IUbigeo daoUbigeo = new DUbigeo();
+			ubigeo.setCodigo(daoUbigeo.obtenerCodigoUbigeo(departamento, provincia, distrito));
+			cliente.setUbigeo(ubigeo);
+			
+			ICliente daoCliente = new DCliente();
+			
+			daoCliente.almacenarCliente(conn, cliente, usuario);
+			
+			ConnectDS.aceptarTrasaccion(conn);
 			
 			ruta = "/jsp/maestroCliente/mae_MantenerCliente.jsp";
 		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
 					+ "; Parametros=" + Parametros.URL + ":"

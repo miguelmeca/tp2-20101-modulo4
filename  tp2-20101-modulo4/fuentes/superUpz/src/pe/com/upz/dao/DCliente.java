@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BUbigeo;
+import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.ICliente;
 import pe.com.upz.util.Lista;
@@ -84,4 +85,59 @@ public class DCliente implements ICliente {
 		return lista;
 	}
 
+	@Override
+	public int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		int codigo = obtenerMaximoNumeroCliente(conn)+1;
+		
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("INSERT INTO FIDELIZACION.CLIENTE \n");
+		sql.append("  (CLIENTE_ID,NOMBRE,APELLIDO_PATERNO,APELLIDO_MATERNO,NUMERO_DOCUMENTO,TELEFONO, \n");
+		sql.append("   TELEFONO_DOS,UBIGEO_ID,TIPO_CLIENTE_ID,USUARIO_CREACION,USUARIO_MODIFICACION,FECHA_CREACION, \n");
+		sql.append("   FECHA_MODIFICACION,ESTADO,DIRECCION,CORREO) \n");
+		sql.append("VALUES \n");
+				sql.append(" (?,   ?,   ?,   ?,   ?,   ?, \n");
+						sql.append("   ?,   ?,   0,   ?,   null,   sysdate, \n");
+								sql.append("   null,   1,   ?,   ?) ");		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1,codigo);
+		pstm.setString(2,cliente.getNombre());
+		pstm.setString(3,cliente.getApellidoPaterno());
+		pstm.setString(4,cliente.getApellidoPaterno());
+		pstm.setString(5,cliente.getNumeroDocumento());
+		pstm.setString(6,cliente.getTelefono());
+		pstm.setString(7,cliente.getTelefonoDos());
+		pstm.setInt(8,cliente.getUbigeo().getCodigo());
+		pstm.setString(9,usuario.getLogin());
+		pstm.setString(10,cliente.getDireccion());
+		pstm.setString(11,cliente.getCorreo());
+		pstm.executeUpdate();
+		
+		return codigo;
+	}
+	public int obtenerMaximoNumeroCliente(Connection conn)throws SQLException{
+		// TODO Auto-generated method stub
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int codigoCliente=0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT NVL(MAX(PE.CLIENTE_ID),0) AS MAXIMO \n");
+		sql.append("FROM   FIDELIZACION.CLIENTE PE");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		
+		rs = pstm.executeQuery();
+		
+		if (rs.next()) {
+			codigoCliente=(rs.getInt("MAXIMO"));
+			
+		}
+		rs.close();
+		pstm.close();
+		
+		return codigoCliente;
+	}
 }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * Clase para el manejo de listas y paginacion en los jsp.
  */
 public class Lista {
-
 	/**
 	 * lista de elmentos
 	 */
