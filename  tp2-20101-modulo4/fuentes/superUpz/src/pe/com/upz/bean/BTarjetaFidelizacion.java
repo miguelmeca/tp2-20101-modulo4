@@ -7,6 +7,7 @@ public class BTarjetaFidelizacion extends Bean{
 	private BCliente cliente;
 	private String numero;
 	private int estado;
+	private int tipoCliente;
 	public BCliente getCliente() {
 		return cliente;
 	}
@@ -24,6 +25,12 @@ public class BTarjetaFidelizacion extends Bean{
 	}
 	public void setEstado(int estado) {
 		this.estado = estado;
+	}
+	public int getTipoCliente() {
+		return tipoCliente;
+	}
+	public void setTipoCliente(int tipoCliente) {
+		this.tipoCliente = tipoCliente;
 	}
 	
 	

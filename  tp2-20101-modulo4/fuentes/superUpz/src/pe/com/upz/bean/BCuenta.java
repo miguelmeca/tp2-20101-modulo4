@@ -49,6 +49,18 @@ public class BCuenta extends Bean {
 	public void setTarjeta(Lista tarjeta) {
 		this.tarjeta = tarjeta;
 	}
+	public BCliente obtenerClientePrincipal(){
+		BCliente clinete = new BCliente();
+		for(int i = 0; i < tarjeta.getTamanio();i++){
+			BTarjetaFidelizacion miTarjeta = (BTarjetaFidelizacion)tarjeta.getElemento(i);
+			
+			if(miTarjeta.getTipoCliente() == 1){
+				clinete = miTarjeta.getCliente();
+			}
+			
+		}
 	
+		return clinete;
+	}
 	
 }
