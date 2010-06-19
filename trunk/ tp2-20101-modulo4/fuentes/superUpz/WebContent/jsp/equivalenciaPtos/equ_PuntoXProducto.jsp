@@ -88,13 +88,15 @@ body {
                 <td width="73"><div align="left">
                   <input type="text" name="txtMonto1" id="txtMonto1" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoUno()%>" 
+				  onKeyPress="FiltroDecimal(this.value);" 
                   style="width:60px" class="text  ui-corner-all" />
                 </div></td>
                 <td width="81"><div align="left">Puntos:(<span class="style3">*</span>) </div></td>
                 <td width="67"><div align="left">
                   <input type="text" name="txtPuntos1" id="txtPuntos1" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoUno()%>" 
-                  style="width:60px" class="text  ui-corner-all" />
+                  onKeyPress="Upper();SoloNumeros();" 
+				  style="width:60px" class="text  ui-corner-all" />
                 </div></td>
               </tr>
               <tr>
@@ -103,13 +105,15 @@ body {
                 <td><div align="left">
                   <input type="text" name="txtMonto2" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoDos()%>" 
+				  onKeyPress="FiltroDecimal(this.value);" 
                   id="txtMonto2" style="width:60px" class="text  ui-corner-all" />
                 </div></td>
                 <td><div align="left">Puntos:</div></td>
                 <td><div align="left">
                   <input type="text" name="txtPuntos2" id="txtPuntos2" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoDos()%>" 
-                  style="width:60px" class="text  ui-corner-all" />
+                  onKeyPress="Upper();SoloNumeros();" 
+				  style="width:60px" class="text  ui-corner-all" />
                 </div></td>
               </tr>
               <tr>
@@ -118,13 +122,15 @@ body {
                 <td><div align="left">
                   <input type="text" name="txtMonto3" id="txtMonto3" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoTres()%>" 
+				  onKeyPress="FiltroDecimal(this.value);" 
                   style="width:60px" class="text  ui-corner-all" />
                 </div></td>
                 <td><div align="left">Puntos:</div></td>
                 <td><div align="left">
                   <input type="text" name="txtPuntos3" id="txtPuntos3" 
                   value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoTres()%>" 
-                  style="width:60px" class="text  ui-corner-all" />
+                  onKeyPress="Upper();SoloNumeros();" 
+				  style="width:60px" class="text  ui-corner-all" />
                 </div></td>
               </tr>
             </table></td>

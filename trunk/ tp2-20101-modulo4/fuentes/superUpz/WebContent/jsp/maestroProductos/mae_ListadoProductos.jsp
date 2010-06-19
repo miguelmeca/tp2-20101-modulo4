@@ -120,7 +120,9 @@ body {
               <tr>
                 <td width="55%" height="50px" class="Estilo1">
 				<div id="divDescripcion" style="position:relative;top: 20px;left: 0px ">Nombre de producto:
-                      <input name="txtNombreBuscar" type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
+                      <input name="txtNombreBuscar" 
+					  onKeyPress="Upper();permitirLetraNumeroEspeciales();"  
+					  type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
                 </div>                    
                   <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
                       
@@ -130,7 +132,9 @@ body {
                       <%} %>
                     </select></div>
                     <div id="divCodigo" style="position:relative;top: -20px;left: 0px ">C&oacute;digo: 
-                      <input name="txtCodigoBuscar" type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
+                      <input name="txtCodigoBuscar" 
+					  onKeyPress="Upper();SoloNumeros();" 
+					  type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
 					  <div id="divVacio" style="position:relative;top: -35px;left: 0px "> </div></td><td width="45%" class="Estilo1">
                       <input name="btnBuscar" type="button"   
                       onclick="javascript:buscarPorParametro()" 

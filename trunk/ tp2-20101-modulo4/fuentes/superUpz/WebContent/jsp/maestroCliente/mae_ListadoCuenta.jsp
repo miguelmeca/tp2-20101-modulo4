@@ -1,12 +1,12 @@
 <%--
 *Resumen
-*Objeto                 : mae_ListadoClientes.jsp.
-* Descripcion           : pagina para listar los clientes.
+*Objeto                 : mae_ListadoCuenta.jsp.
+* Descripcion           : pagina para listar las cuentas.
 * Fecha de Creacion     : 16/06/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
-<%@page import="pe.com.upz.bean.BCliente"%>
+<%@page import="pe.com.upz.bean.BCuenta"%>
 <%
 String ruta = request.getContextPath(); 
 String variable = request.getParameter("mostrar");
@@ -85,7 +85,7 @@ body {
 <table width="900px" border="0" >
 <%} %>
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Mantener Cliente</td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Mantener Cuenta</td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
@@ -99,7 +99,7 @@ body {
                   <select name="selTipoBusqueda" class="ui-icon-document" style="width:200PX;heigth:10px" onChange="javascript: ocultarPaneles();" >
                       <option value="0" <%=filtroPagina.equals("0")?"Selected":"" %> >--Seleccione--</option>
                       <option value="1" <%=filtroPagina.equals("1")?"Selected":"" %> >Núm. Documento</option>
-                      <option value="2" <%=filtroPagina.equals("2")?"Selected":"" %> >Nombre</option>
+                      <option value="2" <%=filtroPagina.equals("2")?"Selected":"" %> >Núm. Tarjeta</option>
                         </select>
                 </div>
             </div></td>
@@ -108,31 +108,19 @@ body {
                 <td height="38" class="Estilo1"> 
 				<div id="divDocumento" style="position:relative;top: 0px;left: 0px ">N&uacute;mero:
                       <input name="txtDNIBuscar" 
-					  onKeyPress="Upper();SoloNumeros();" 
+					  onKeyPress="Upper();permitirLetrasEspeciales();" 
 					  type="text" size="25px"  maxlength="100" value="" >
                 </div>
 				<div id="divNombres" style="position:relative;top: 0px;left: 0px ">
-					<div id="divNombreCliente">Nombre:&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						  <input name="txtNombreBuscar" 
-						  onKeyPress="Upper();permitirLetrasEspeciales();" 
-						  type="text" size="25px"  maxlength="100" value="" >
-					</div>
-					<div id="divPaternoCliente">Apellido Paterno:&nbsp;
-						  <input name="txtPaternoBuscar" 
-						  onKeyPress="Upper();permitirLetrasEspeciales();" 
-						  type="text" size="25px"  maxlength="100" value="" >
-					</div>
-					<div id="divMaternoCliente">Apellido Materno:
-						  <input name="txtMaternoBuscar" 
+					<div id="divNombreCliente">N&uacute;mero:
+						  <input name="txtNumeroTarjeta" 
 						  onKeyPress="Upper();permitirLetrasEspeciales();" 
 						  type="text" size="25px"  maxlength="100" value="" >
 					</div>
                 </div>
 				<div id="divVacio" style="position:relative;top: 0px;left: 0px "></div>
 				</td>
-                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   
-                      onclick="javascript:buscarPorParametro()" 
-                      id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
+                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
               </tr>
             </table></td>
 			</tr>
@@ -169,7 +157,7 @@ body {
         <td height="171" valign="top" class="ui-tabs-nav" align="center"><table width="877" border="1">
           <tr>
             <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Num</td>
-            <td width="21%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Dni</div></td>
+            <td width="21%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">N&uacute;mero</div></td>
             <td width="25%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Paterno</div></td>
             <td width="22%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Materno </div></td>
             <td width="24%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Nombres</div></td>
@@ -178,22 +166,12 @@ body {
  			<%for(int i=listadoCliente.getFirstElementPage(numPagina)-1;i<=listadoCliente.getLastElementPage(numPagina)-1;i++){%>
  			<%	BCliente cliente = (BCliente) listadoCliente.getElemento(i); %> 
           <tr >
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div>
-			<input type="hidden" name="hddCodigoCliente<%=cliente.getCodigo()%>" value="<%=cliente.getCodigo()%>" />
-			</td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNumeroDocumento()%></div>
-			<input type="hidden" name="hddNumeroDocumento<%=cliente.getCodigo()%>" value="<%=cliente.getNumeroDocumento()%>" />
-			</td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoPaterno()%> </div>
-			<input type="hidden" name="hddApellidoPaterno<%=cliente.getCodigo()%>" value="<%=cliente.getApellidoPaterno()%>" />
-			</td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoMaterno()%></div>
-			<input type="hidden" name="hddApellidoMaterno<%=cliente.getCodigo()%>" value="<%=cliente.getApellidoMaterno()%>" />
-			</td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNombre()%> </div>
-			<input type="hidden" name="hddNombre<%=cliente.getCodigo()%>" value="<%=cliente.getNombre()%>" />
-			</td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cliente.getCodigo()%>"  /></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNumeroDocumento()%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoPaterno()%> </div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoMaterno()%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNombre()%> </div></td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cliente.getCodigo()%>" onclick="obtenerId('1')" /></td>
             </tr>   
             <%} %>
         </table>          
@@ -206,12 +184,12 @@ body {
           <input type="button" name="btnNuevo" value="Nuevo" style="width:120px" 
           onclick="javascript:agregarNuevo()" 
           class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default btnEditar"  />
+		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default btnEliminar"  />
           <%}else{ %>
-		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default"  />          
+		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default btnCancelar"  />          
           <%}%>
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default" />
+          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar" />
         </div></td>
       </tr>
       <tr>
@@ -225,42 +203,6 @@ body {
 </div>
 </body>
 <script language="JavaScript">
-function buscarPorParametro(){
-	
-	var seleccion = frmListaClientes.selTipoBusqueda.value;
-	
-	if(seleccion == 1){
-		if(frmListaClientes.txtDNIBuscar.value == ""){
-			alert("Debe ingresar un número de documento");
-			frmListaClientes.txtDNIBuscar.focus();
-			return;
-		}
-	}
-	if(seleccion == 2){
-		var nombre = frmListaClientes.txtNombreBuscar.value;
-		var paterno = frmListaClientes.txtPaternoBuscar.value;
-		var materno = frmListaClientes.txtMaternoBuscar.value;
-		if(paterno == ""){
-			alert("Debe ingresar un apellido paterno.");
-				frmListaClientes.txtPaternoBuscar.focus();
-				return;
-		}
-		if(materno == ""){
-			alert("Debe ingresar un apellido materno.");
-				frmListaClientes.txtMaternoBuscar.focus();
-				return;
-		}
-		if(nombre == ""){
-			alert("Debe ingresar un nombre.");
-				frmListaClientes.txtNombreBuscar.focus();
-				return;
-		}
-	}
-	
-	frmListaClientes.hddOperacion.value="ingresoMantenerClientes";
-	frmListaClientes.action="SMantenimientoCliente";
-	frmListaClientes.submit();
-}
 function agregarNuevo(){
 	frmListaClientes.hddOperacion.value="nuevoCliente";
 	frmListaClientes.action="SMantenimientoCliente?hddOperacion=nuevoCliente";

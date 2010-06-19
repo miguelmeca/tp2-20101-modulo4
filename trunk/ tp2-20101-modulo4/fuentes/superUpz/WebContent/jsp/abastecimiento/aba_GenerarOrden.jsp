@@ -120,8 +120,7 @@ MM_reloadPage(true);
 								BProducto producto = (BProducto) listadoProducto.getElemento(i);
 						%>
 						<tr>
-							<td width="6%" class="ui-accordion-content"><input
-								name="chkProducto" value ="<%=producto.getCodigo()%>" type="checkbox" value="0" onclick="javascript:validarNoMasDeXProductos(this,'<%=producto.getCodigo()%>')" /></td>
+							<td width="6%" class="ui-accordion-content"><input name="chkProducto" value ="<%=producto.getCodigo()%>" type="checkbox" value="0" onclick="javascript:validarNoMasDeXProductos(this,'<%=producto.getCodigo()%>')" /></td>
 							<td width="10%" class="ui-accordion-content">
 							<div align="center" class="Estilo4"><%=producto.getCodigo()%></div>
 							</td>
@@ -136,8 +135,9 @@ MM_reloadPage(true);
 							<td width="19%" class="ui-accordion-content">
 							<div align="center" class="Estilo4">
 							<div align="center"><input name="txtCantidad<%=producto.getCodigo()%>" type="text"
+								onKeyPress="Upper();SoloNumeros();" 
 								class="text  ui-corner-all" id="txtCantidad<%=producto.getCodigo()%>" style="width: 50px"
-								value="<%=producto.obtenerMaximoSolicitar()%>" size="5" maxlength="5"
+								value="<%=producto.obtenerMaximoSolicitar()%>" size="5" maxlength="5" 
 								onkeyup="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
 								onblur="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
 								disabled />
