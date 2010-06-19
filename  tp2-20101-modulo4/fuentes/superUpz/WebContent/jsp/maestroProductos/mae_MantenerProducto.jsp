@@ -120,6 +120,7 @@ body {
 								<td align="left" style="height: 31px; width: 420px;"><input
 									name="txtNombre" type="text" class="text  ui-corner-all"
 									id="txtNombre" style="width: 150px"
+									onKeyPress="Upper();permitirLetraNumeroEspeciales();" 
 									value="<%=producto.getNombre() %>" maxlength="100" /></td>
 							</tr>
 							<tr>
