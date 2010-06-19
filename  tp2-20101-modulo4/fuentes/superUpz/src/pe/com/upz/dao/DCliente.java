@@ -42,9 +42,9 @@ public class DCliente implements ICliente {
 		if (filtro == 1) {
 			sql.append("AND    NUMERO_DOCUMENTO    = ? \n");
 		}else if (filtro == 2) {
-			sql.append("AND    NOMBRE           LIKE '%?%' \n");
-			sql.append("AND    APELLIDO_PATERNO LIKE '%?%' \n");
-			sql.append("AND    APELLIDO_MATERNO LIKE '%?%'");
+			sql.append("AND    NOMBRE           LIKE '%'||?||'%' \n");
+			sql.append("AND    APELLIDO_PATERNO LIKE '%'||?||'%' \n");
+			sql.append("AND    APELLIDO_MATERNO LIKE '%'||?||'%'");
 		}
 		sql.append("ORDER BY APELLIDO_PATERNO, APELLIDO_MATERNO, NOMBRE");
 
