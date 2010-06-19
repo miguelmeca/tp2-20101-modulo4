@@ -7,11 +7,16 @@
  */
 package pe.com.upz.controlador;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
+import pe.com.upz.bean.BCliente;
+import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DCliente;
+import pe.com.upz.dao.DCuenta;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.daoInterface.ICliente;
+import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Lista;
 
@@ -33,6 +38,20 @@ public class CMantenimientoCliente {
 		ICliente daoCliente = new DCliente();
 		
 		listadoCliente = daoCliente.obtenerListadoClientes(soloActivos, filtro, valorAux, valorAux2, valorAux3);
+		
+		return listadoCliente;
+	}
+	
+	public int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException{
+		ICliente daoCliente = new DCliente();
+
+		return daoCliente.almacenarCliente(conn, cliente, usuario);
+	}
+	public Lista obtenerListadoCuenta(boolean soloActivos, int filtro,String valorAux,String valorAux2)throws SQLException{
+		Lista listadoCliente=null;
+		ICuenta daoCliente = new DCuenta();
+		
+		listadoCliente = daoCliente.obtenerListadoCuenta(soloActivos, filtro, valorAux, valorAux2);
 		
 		return listadoCliente;
 	}

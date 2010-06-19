@@ -54,6 +54,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = iniciarListadoClientes(request);
 			} else if (operacion.equals("ingresoMantenerCuenta")) {
 				ruta = iniciarListadoCuenta(request);
+			} else if (operacion.equals("nuevoCuenta")) {
+				ruta = inicioNuevoActualizaCuenta(request);
 			}
 			if (indicador == -1) {
 				getServletConfig().getServletContext().getRequestDispatcher(
@@ -94,22 +96,21 @@ public class SMantenimientoCliente extends HttpServlet {
 				valorAux = request.getParameter("txtNumeroTarjeta");
 			}
 
-			Lista listadoCliente = null;
+			Lista listadoCuenta = null;
 
 			CMantenimientoCliente cMantenimiento = new CMantenimientoCliente();
-			listadoCliente = cMantenimiento.obtenerListadoClientes(true,
-					filtro, valorAux, valorAux2, valorAux3);
+			listadoCuenta = cMantenimiento.obtenerListadoCuenta(true,
+					filtro, valorAux, valorAux2);
 
 			request.setAttribute("filtroPagina", filtro + "");
 			request.setAttribute("valorAux", valorAux);
 			request.setAttribute("valorAux2", valorAux2);
-			request.setAttribute("valorAux3", valorAux3);
 			request.setAttribute("pagina", pagina);
-			request.setAttribute("listadoCliente", listadoCliente);
+			request.setAttribute("listadoCuenta", listadoCuenta);
 			request.setAttribute("mantenimiento", mostrarMantenimiento);
 			request.setAttribute("mostrar", "1");
 
-			ruta = "/jsp/maestroCliente/mae_ListadoClientes.jsp";
+			ruta = "/jsp/maestroCliente/mae_ListadoCuenta.jsp";
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
@@ -247,7 +248,7 @@ public class SMantenimientoCliente extends HttpServlet {
 					provincia, distrito));
 			cliente.setUbigeo(ubigeo);
 
-			ICliente daoCliente = new DCliente();
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
 
 			daoCliente.almacenarCliente(conn, cliente, usuario);
 
@@ -256,6 +257,20 @@ public class SMantenimientoCliente extends HttpServlet {
 			ruta = "/jsp/maestroCliente/mae_MantenerCliente.jsp";
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	private String inicioNuevoActualizaCuenta(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			
+			ruta = "/jsp/maestroCliente/mae_MantenerCuenta.jsp";
+		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
 					+ "; Parametros=" + Parametros.URL + ":"
