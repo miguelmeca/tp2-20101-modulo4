@@ -7,6 +7,7 @@
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BCuenta"%>
+<%@page import="pe.com.upz.bean.BCliente"%>
 <%
 String ruta = request.getContextPath(); 
 String variable = request.getParameter("mostrar");
@@ -19,9 +20,9 @@ if(variable !=null && variable.equals("0")){
 if(mantenimiento !=null && mantenimiento.equals("0")){
 	mostrarMantenimineto = false;
 }
-Lista listadoCliente = (Lista)request.getAttribute("listadoCliente");
-if(listadoCliente ==null){
-	listadoCliente = new Lista();
+Lista listadoCuenta = (Lista)request.getAttribute("listadoCuenta");
+if(listadoCuenta ==null){
+	listadoCuenta = new Lista();
 }
 
 //mensaje a mostrar
@@ -37,9 +38,9 @@ numPagina=(request.getAttribute("pagina")==null?1:Integer.parseInt((String)reque
 //Numero de registro por páginas.
 int tamanoPagina=10;
 //iTamanoPagina=Integer.parseInt(String.valueOf(application.getAttribute("AppTamanoPagina")));
-listadoCliente.setTamPagina(tamanoPagina);
-listadoCliente.setNumPagina(numPagina);
-listadoCliente.setCantidadPaginasMostradas(5);
+listadoCuenta.setTamPagina(tamanoPagina);
+listadoCuenta.setNumPagina(numPagina);
+listadoCuenta.setCantidadPaginasMostradas(5);
 
 
 //parametro del filtro
@@ -130,13 +131,13 @@ body {
       <tr>
          <td>
 		 <input type="hidden" name="hddPagina" id="hddPagina" value="" />
-            <div align="right" class="ui-state-default" > total de items : <%=listadoCliente.getTamanio()%> &lt;&lt; Tolal de paginas : 
-            <%if(listadoCliente.getNumPagina() > 1 ){ %>
-            <a onClick="javascript:paginar('<%=listadoCliente.getNumPagina()-1%>')" style='cursor:hand' >Anterior</a> 
+            <div align="right" class="ui-state-default" > total de items : <%=listadoCuenta.getTamanio()%> &lt;&lt; Tolal de paginas : 
+            <%if(listadoCuenta.getNumPagina() > 1 ){ %>
+            <a onClick="javascript:paginar('<%=listadoCuenta.getNumPagina()-1%>')" style='cursor:hand' >Anterior</a> 
             <%} %>
             [ 
-            <%for(long i=listadoCliente.getNumPaginaInicialEnPaginacion();i< listadoCliente.getNumPaginaInicialEnPaginacion() + listadoCliente.getCantidadPaginasMostradas() && i <= listadoCliente.getCantidadPaginasDeListado() ;i++){ 
-            	if(i==listadoCliente.getNumPagina()){%>
+            <%for(long i=listadoCuenta.getNumPaginaInicialEnPaginacion();i< listadoCuenta.getNumPaginaInicialEnPaginacion() + listadoCuenta.getCantidadPaginasMostradas() && i <= listadoCuenta.getCantidadPaginasDeListado() ;i++){ 
+            	if(i==listadoCuenta.getNumPagina()){%>
             		<span class="ui-state-active">
             		<%=i %>
             		</span>&nbsp;
@@ -147,8 +148,8 @@ body {
             	
             <%} %>
             ] 
-            <%if(listadoCliente.getNumPagina() < listadoCliente.getCantidadPaginasDeListado() ){ %>
-            <a onClick="javascript:paginar('<%=listadoCliente.getNumPagina()+1%>')" style='cursor:hand' >Siguiente </a>
+            <%if(listadoCuenta.getNumPagina() < listadoCuenta.getCantidadPaginasDeListado() ){ %>
+            <a onClick="javascript:paginar('<%=listadoCuenta.getNumPagina()+1%>')" style='cursor:hand' >Siguiente </a>
             <%} %>
             &gt;&gt; </div>
 		 </td>
@@ -163,15 +164,16 @@ body {
             <td width="24%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Nombres</div></td>
             <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel</td>
 			</tr>
- 			<%for(int i=listadoCliente.getFirstElementPage(numPagina)-1;i<=listadoCliente.getLastElementPage(numPagina)-1;i++){%>
- 			<%	BCliente cliente = (BCliente) listadoCliente.getElemento(i); %> 
+ 			<%for(int i=listadoCuenta.getFirstElementPage(numPagina)-1;i<=listadoCuenta.getLastElementPage(numPagina)-1;i++){%>
+ 			<%	BCuenta cuenta = (BCuenta) listadoCuenta.getElemento(i); %> 
+ 			<%	BCliente miCliente = cuenta.obtenerClientePrincipal(); %> 
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNumeroDocumento()%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoPaterno()%> </div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getApellidoMaterno()%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNombre()%> </div></td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cliente.getCodigo()%>" onclick="obtenerId('1')" /></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cuenta.getCodigo()%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div></td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" onclick="obtenerId('1')" /></td>
             </tr>   
             <%} %>
         </table>          
@@ -204,8 +206,8 @@ body {
 </body>
 <script language="JavaScript">
 function agregarNuevo(){
-	frmListaClientes.hddOperacion.value="nuevoCliente";
-	frmListaClientes.action="SMantenimientoCliente?hddOperacion=nuevoCliente";
+	frmListaClientes.hddOperacion.value="nuevoCuenta";
+	frmListaClientes.action="SMantenimientoCliente?hddOperacion=nuevoCuenta";
 	frmListaClientes.submit();
 }
 function mostrarMensaje(){
