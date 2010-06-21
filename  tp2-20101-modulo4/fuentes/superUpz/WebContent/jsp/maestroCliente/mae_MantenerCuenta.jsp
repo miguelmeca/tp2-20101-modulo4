@@ -48,7 +48,9 @@ body {
             </tr>
 		  <tr >
             <td align="left" style="height: 21px; width: 175px;" > Cliente: (*) </td>
-            <td align="left" style="width: 420px; height: 21px;" ><input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />                  
+            <td align="left" style="width: 420px; height: 21px;" >
+			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true"  /> 
+			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />                  
               <input type="button" name="btnBuscarCliente" value="Buscar" 
 			  onclick="javascript:mostrarClientes()" 
 			  style="width:70px" class="ui-state-default"  /></td></tr>
@@ -58,7 +60,10 @@ body {
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
-			<td align="left" style="height: 31px; width: 420px;" ><input type="text" name="txtNumeroTarjeta" id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" />&nbsp;&nbsp;<input type="button" name="btnAsignar" id="btnAsignar" value="Asignar" style="width:120px" class="ui-state-default btnAsignar" /></td>
+			<td align="left" style="height: 31px; width: 420px;" ><input type="text" name="txtNumeroTarjeta" id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" />&nbsp;&nbsp;
+			<input type="button" name="btnAsignar" id="btnAsignar" 
+			onclick="javascript:agregarTarjeta()" 
+			value="Asignar" style="width:120px" class="ui-state-default btnAsignar" /></td>
           </tr>
 
 
@@ -88,25 +93,44 @@ body {
     </table></td>
   </tr>
 </table>
+<input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="0" />
 </form>
 </div>
 </body>
 <script language="JavaScript">
-function mostrarClientes(){
-
-
+function agregarTarjeta(){
 	frmCanje.target="VENTANA";
+	frmCanje.hddOperacion.value="asignarTarjeta";
+	//frmCanje.action="<%=ruta%>/jsp/maestroCliente/mae_AsignarTarjeta.jsp?mostrar=0";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=asignarTarjeta";
 
-	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=buscarCliente&mantenimiento=0";
-	alert("aca ta");
 	var opciones = "fullscreen=" + 0 + 
 	                 ",toolbar=" + 0 + 
 	                 ",status=" + 0 + 
 	                 ",menubar=" + 0 + 
 	                 ",scrollbars=" + 1 + 
 	                 ",resizable=" + 0 + 
-	                 ",width=" + 900 + 
-	                 ",height=" + 700; 
+	                 ",width=" + 520 + 
+	                 ",height=" + 250; 
+	window.open("","VENTANA",opciones,1); 
+	frmCanje.submit();
+}
+function mostrarClientes(){
+
+
+	frmCanje.target="VENTANA";
+	frmCanje.hddOperacion.value="buscarCliente";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=buscarCliente&hddMantenimiento=0";
+
+	var opciones = "fullscreen=" + 0 + 
+	                 ",toolbar=" + 0 + 
+	                 ",status=" + 0 + 
+	                 ",menubar=" + 0 + 
+	                 ",scrollbars=" + 1 + 
+	                 ",resizable=" + 0 + 
+	                 ",width=" + 950 + 
+	                 ",height=" + 600; 
 	window.open("","VENTANA",opciones,1); 
 	frmCanje.submit();
 }
