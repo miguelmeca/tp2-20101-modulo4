@@ -22,6 +22,7 @@ body {
 	margin-right: 0px;
 	margin-bottom: 0px;
 }
+
 .Estilo4 {font-size: 11px; color: #000033; }
 .style3 {font-size: 11px}
 -->
@@ -32,7 +33,6 @@ body {
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%" align="center">
 
- <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 <form name="frmTarjeta" >
 <% if(mostrarDiv){%>
 <table width="1010px" border="0" >
@@ -77,8 +77,14 @@ body {
       
       <tr>
         <td class="ui-widget-header"><div align="right">
-          <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default btnAceptar"  />
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar" />
+          <input type="button" name="btnAceptar" 
+		  onclick="javascript:aceptarSeleccionPadre()" 
+		  value="Aceptar" style="width:120px" 
+		  
+		  class="ui-state-default"  />
+          <input type="button" name="btnCancelar" 
+		  onclick="javascript:cerrar()" 
+		  value="Cancelar" style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -91,4 +97,20 @@ body {
 </div>
 <input type="hidden" name="id" id="id" value="">
 </body>
+<script language="JavaScript">
+function cerrar(){
+	window.close();
+}
+function aceptarSeleccionPadre(){
+	var codigo = frmTarjeta.txtNumeroTarjeta.value;
+	if(codigo == ""){
+		alert("Debe ingresar un número de tarjeta.");
+		return;
+	}
+	var vm=window.opener;
+	vm.document.getElementById("txtNumeroTarjeta").value =  codigo;
+	cerrar();
+	
+}
+</script>
 </html>

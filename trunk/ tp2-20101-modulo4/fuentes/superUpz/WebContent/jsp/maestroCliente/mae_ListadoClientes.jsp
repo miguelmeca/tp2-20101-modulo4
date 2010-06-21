@@ -9,8 +9,8 @@
 <%@page import="pe.com.upz.bean.BCliente"%>
 <%
 String ruta = request.getContextPath(); 
-String variable = request.getParameter("mostrar");
-String mantenimiento = request.getParameter("mantenimiento");
+String variable = (String)request.getAttribute("mostrar");
+String mantenimiento = (String)request.getAttribute("mantenimiento");
 boolean mostrarDiv=true;
 boolean mostrarMantenimineto=true;
 if(variable !=null && variable.equals("0")){
@@ -79,13 +79,13 @@ body {
 <div class="demos-nav" style="width:100%" align="center">
 
 <form name="frmListaClientes">
-<% if(mostrarDiv){%>
+<% if(mostrarMantenimineto){%>
 <table width="1010px" border="0" >
 <%}else{ %>
 <table width="900px" border="0" >
 <%} %>
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Mantener Cliente</td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"><%=mostrarMantenimineto?"Mantener Cliente":"Listado de Clientes" %></td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
@@ -193,7 +193,9 @@ body {
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cliente.getNombre()%> </div>
 			<input type="hidden" name="hddNombre<%=cliente.getCodigo()%>" value="<%=cliente.getNombre()%>" />
 			</td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cliente.getCodigo()%>"  /></td>
+            <td class="ui-accordion-content"><input name="chkProducto" 
+			onclick="javascript:seleccionar('<%=cliente.getCodigo()%>')" 
+			type="radio" value ="<%=cliente.getCodigo()%>"  /></td>
             </tr>   
             <%} %>
         </table>          
@@ -209,9 +211,13 @@ body {
 		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
 		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
           <%}else{ %>
-		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default"  />          
+		  <input type="button" name="btnAceptar" 
+		  onclick="javascript:aceptarSeleccionPadre()" 
+		  value="Aceptar" style="width:120px" class="ui-state-default"  />          
           <%}%>
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default" />
+          <input type="button" name="btnCancelar" 
+          onclick="javascript:cerrar()" 
+          value="Cancelar" style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -221,10 +227,34 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
+<input type="text" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="<%=mantenimiento%>" />
 </form>
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	window.close();
+}
+function seleccionar(codigo){
+	frmListaClientes.hddCodigoSeleccionado.value=codigo;
+}
+function aceptarSeleccionPadre(){
+	var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	var vm=window.opener;
+	nombre = document.getElementById("hddApellidoPaterno"+codigo).value +" "+
+			document.getElementById("hddApellidoMaterno"+codigo).value+", "+
+			document.getElementById("hddNombre"+codigo).value;
+	//var codigoCliente = document.getElementById("hddCodigoCliente"+codigo);
+	vm.document.getElementById("hddCodigoCliente").value =  codigo;
+	vm.document.getElementById("txtCliente").value =  nombre;
+	cerrar();
+	
+}
 function buscarPorParametro(){
 	
 	var seleccion = frmListaClientes.selTipoBusqueda.value;
