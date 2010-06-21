@@ -56,6 +56,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = iniciarListadoCuenta(request);
 			} else if (operacion.equals("nuevoCuenta")) {
 				ruta = inicioNuevoActualizaCuenta(request);
+			}else if (operacion.equals("asignarTarjeta")) {
+				ruta = asignarTarjeta(request);
 			}
 			if (indicador == -1) {
 				getServletConfig().getServletContext().getRequestDispatcher(
@@ -128,7 +130,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			String valorAux2 = "";
 			String valorAux3 = "";
 			String pagina = request.getParameter("hddPagina");
-			String mostrarMantenimiento = request.getParameter("mantenimiento");
+			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
 			if (mostrarMantenimiento == null) {
 				mostrarMantenimiento = "1";
 			}
@@ -162,9 +164,9 @@ public class SMantenimientoCliente extends HttpServlet {
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoCliente", listadoCliente);
 			request.setAttribute("mantenimiento", mostrarMantenimiento);
-			request.setAttribute("mostrar", "1");
+			//request.setAttribute("mostrar", "0");
 
-			ruta = "/jsp/maestroCliente/mae_ListadoClientes.jsp";
+			ruta = "/jsp/maestroCliente/mae_ListadoClientes.jsp?mostrar="+mostrarMantenimiento;
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
@@ -270,6 +272,20 @@ public class SMantenimientoCliente extends HttpServlet {
 		try {
 			
 			ruta = "/jsp/maestroCliente/mae_MantenerCuenta.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	private String asignarTarjeta(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			
+			ruta = "/jsp/maestroCliente/mae_AsignarTarjeta.jsp?mostrar=0";
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
