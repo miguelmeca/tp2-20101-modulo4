@@ -255,6 +255,12 @@ function aceptarSeleccionPadre(){
 	cerrar();
 	
 }
+function paginar(pagina){
+	frmListaClientes.hddOperacion.value="ingresoMantenerClientes";
+	frmListaClientes.hddPagina.value=pagina;
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
 function buscarPorParametro(){
 	
 	var seleccion = frmListaClientes.selTipoBusqueda.value;

@@ -109,19 +109,21 @@ body {
                 <td height="38" class="Estilo1"> 
 				<div id="divDocumento" style="position:relative;top: 0px;left: 0px ">N&uacute;mero:
                       <input name="txtDNIBuscar" 
-					  onKeyPress="Upper();permitirLetrasEspeciales();" 
+					  onKeyPress="Upper();SoloNumeros();" 
 					  type="text" size="25px"  maxlength="100" value="" >
                 </div>
 				<div id="divNombres" style="position:relative;top: 0px;left: 0px ">
 					<div id="divNombreCliente">N&uacute;mero:
 						  <input name="txtNumeroTarjeta" 
-						  onKeyPress="Upper();permitirLetrasEspeciales();" 
+						  onKeyPress="Upper();SoloNumeros();" 
 						  type="text" size="25px"  maxlength="100" value="" >
 					</div>
                 </div>
 				<div id="divVacio" style="position:relative;top: 0px;left: 0px "></div>
 				</td>
-                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
+                <td width="19%" class="Estilo1"><input name="btnBuscar" type="button"   
+				onclick="javascript:buscarPorParametro()" 
+				id="btnBuscar" style="width:120px" class="ui-state-default" value="Buscar"/></td>
               </tr>
             </table></td>
 			</tr>
@@ -167,9 +169,10 @@ body {
  			<%for(int i=listadoCuenta.getFirstElementPage(numPagina)-1;i<=listadoCuenta.getLastElementPage(numPagina)-1;i++){%>
  			<%	BCuenta cuenta = (BCuenta) listadoCuenta.getElemento(i); %> 
  			<%	BCliente miCliente = cuenta.obtenerClientePrincipal(); %> 
+			<%	String numeroTarjeta = cuenta.obtenerTarjetaPrincipal(); %> 
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=cuenta.getCodigo()%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div></td>
@@ -205,6 +208,30 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function buscarPorParametro(){
+	
+	var seleccion = frmListaClientes.selTipoBusqueda.value;
+	
+	if(seleccion == 1){
+		if(frmListaClientes.txtDNIBuscar.value == ""){
+			alert("Debe ingresar un número de documento");
+			frmListaClientes.txtDNIBuscar.focus();
+			return;
+		}
+	}
+	if(seleccion == 2){
+		if(frmListaClientes.txtNumeroTarjeta.value == ""){
+			alert("Debe ingresar un número de tarjeta");
+			frmListaClientes.txtNumeroTarjeta.focus();
+			return;
+		}
+	}
+
+	
+	frmListaClientes.hddOperacion.value="ingresoMantenerCuenta";
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
 function agregarNuevo(){
 	frmListaClientes.hddOperacion.value="nuevoCuenta";
 	frmListaClientes.action="SMantenimientoCliente?hddOperacion=nuevoCuenta";
