@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BCliente;
+import pe.com.upz.bean.BCuenta;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
@@ -40,4 +42,7 @@ public interface ICliente {
 	public abstract int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException;
 	
 	public abstract int obtenerMaximoNumeroCliente(Connection conn)throws SQLException;
+
+
+
 }

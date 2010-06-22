@@ -11,13 +11,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BCliente;
+import pe.com.upz.bean.BCuenta;
+import pe.com.upz.bean.BSucursal;
+import pe.com.upz.bean.BTarjetaFidelizacion;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DCliente;
 import pe.com.upz.dao.DCuenta;
 import pe.com.upz.dao.DProducto;
+import pe.com.upz.dao.DTarjetaFidelizacion;
 import pe.com.upz.daoInterface.ICliente;
 import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.IProducto;
+import pe.com.upz.daoInterface.ITarjetaFidelizacion;
 import pe.com.upz.util.Lista;
 
 /**
@@ -54,5 +59,14 @@ public class CMantenimientoCliente {
 		listadoCliente = daoCliente.obtenerListadoCuenta(soloActivos, filtro, valorAux, valorAux2);
 		
 		return listadoCliente;
+	}
+	public int almacenarCuenta(Connection conn, BCuenta cuenta, BUsuario usuario, BSucursal sucursal)throws SQLException{
+		ICuenta daoCliente = new DCuenta();
+		ITarjetaFidelizacion tarjetaFidel = new DTarjetaFidelizacion();
+		int codigoCuenta = daoCliente.almacenarCuenta(conn, cuenta, usuario,sucursal);
+		
+		tarjetaFidel.almacenarTarjeta(conn, (BTarjetaFidelizacion)cuenta.getTarjeta().getElemento(0), usuario, sucursal, codigoCuenta);
+		
+		return codigoCuenta;
 	}
 }

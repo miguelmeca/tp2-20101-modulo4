@@ -76,7 +76,15 @@ public class ConnectDS {
 	public static String obtenerFecha(){
 		return obtenerFechaFormato(FORMATO_FECHA_DDMMYYYY);
 	}
-	
+	public static void cerrarConexion(Connection conn){
+		try{
+			if(conn!=null && !conn.isClosed()){
+				conn.close();
+			}
+		}catch(Exception e){
+			
+		}
+	}
 	/**
 	 * Realiza commit a la BD.
 	 * @param conn conexion a la BD, tipo Connection.

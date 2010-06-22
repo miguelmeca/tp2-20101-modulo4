@@ -295,6 +295,8 @@ public class SMantenimiento extends HttpServlet {
 					+ "; Parametros=" + Parametros.URL + ":"
 					+ Parametros.USUARIO + ":" + Parametros.CLAVE
 					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
 		}
 		return ruta;
 	}
