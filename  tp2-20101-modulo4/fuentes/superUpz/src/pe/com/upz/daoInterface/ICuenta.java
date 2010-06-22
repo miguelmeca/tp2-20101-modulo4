@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BCuenta;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
@@ -16,4 +17,6 @@ public interface ICuenta {
 	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario)throws SQLException;
 	
 	public abstract int obtenerMaximoNumeroCuenta(Connection conn)throws SQLException;
+	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException;
+
 }

@@ -62,5 +62,17 @@ public class BCuenta extends Bean {
 	
 		return clinete;
 	}
-	
+	public String obtenerTarjetaPrincipal(){
+		String numero="";
+		for(int i = 0; i < tarjeta.getTamanio();i++){
+			BTarjetaFidelizacion miTarjeta = (BTarjetaFidelizacion)tarjeta.getElemento(i);
+			
+			if(miTarjeta.getTipoCliente() == 1){
+				numero = miTarjeta.getNumero();
+				return numero;
+			}
+			
+		}
+		return numero;
+	}
 }

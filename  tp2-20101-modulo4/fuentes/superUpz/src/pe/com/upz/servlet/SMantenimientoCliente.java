@@ -16,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pe.com.upz.bean.BCliente;
+import pe.com.upz.bean.BCuenta;
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
+import pe.com.upz.bean.BTarjetaFidelizacion;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUbigeo;
 import pe.com.upz.bean.BUsuario;
@@ -43,6 +46,8 @@ public class SMantenimientoCliente extends HttpServlet {
 			String ruta = "";
 			BUsuario usuario = ((BUsuario) request.getSession().getAttribute(
 					"usuarioSesion"));
+			BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+			"sucursalSesion"));
 			short indicador = -1;
 			if (operacion.equals("ingresoMantenerClientes")) {
 				ruta = iniciarListadoClientes(request);
@@ -58,6 +63,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = inicioNuevoActualizaCuenta(request);
 			}else if (operacion.equals("asignarTarjeta")) {
 				ruta = asignarTarjeta(request);
+			}else if (operacion.equals("almacenarCuenta")) {
+				ruta = almacenarCuenta(usuario, sucursal, request);
 			}
 			if (indicador == -1) {
 				getServletConfig().getServletContext().getRequestDispatcher(
@@ -264,6 +271,8 @@ public class SMantenimientoCliente extends HttpServlet {
 					+ "; Parametros=" + Parametros.URL + ":"
 					+ Parametros.USUARIO + ":" + Parametros.CLAVE
 					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
 		}
 		return ruta;
 	}
@@ -293,6 +302,54 @@ public class SMantenimientoCliente extends HttpServlet {
 					+ Parametros.USUARIO + ":" + Parametros.CLAVE
 					+ "; Mensaje:" + e);
 		}
+		return ruta;
+	}
+	private String almacenarCuenta(BUsuario usuario, BSucursal sucursal, HttpServletRequest request) {
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
+			BCuenta cuenta;
+			BTarjetaFidelizacion tarjetaFidel;
+			BCliente cliente;
+			Lista listaTarjeta;
+			int codigoCliente;
+			String numeroTarjeta;
+
+			codigoCliente = Integer.parseInt(request.getParameter("hddCodigoCliente"));
+			numeroTarjeta = request.getParameter("txtNumeroTarjeta");
+			cliente = new BCliente();
+			cliente.setCodigo(codigoCliente);
+			tarjetaFidel = new BTarjetaFidelizacion();
+			listaTarjeta = new Lista();
+	
+			tarjetaFidel.setCliente(cliente);
+			tarjetaFidel.setTipoCliente(1);
+			tarjetaFidel.setNumero(numeroTarjeta);
+			listaTarjeta.setElemento(tarjetaFidel);
+
+			cuenta = new BCuenta();
+			cuenta.setTarjeta(listaTarjeta);
+			
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
+
+			daoCliente.almacenarCuenta(conn, cuenta, usuario,sucursal);
+
+			ConnectDS.aceptarTrasaccion(conn);
+			
+			ruta = iniciarListadoCuenta(request);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
+		
 		return ruta;
 	}
 }
