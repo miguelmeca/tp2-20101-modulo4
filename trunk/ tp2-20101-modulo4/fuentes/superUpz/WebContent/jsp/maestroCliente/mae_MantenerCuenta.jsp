@@ -60,14 +60,11 @@ body {
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
-			<td align="left" style="height: 31px; width: 420px;" ><input type="text" name="txtNumeroTarjeta" id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" />&nbsp;&nbsp;
+			<td align="left" style="height: 31px; width: 420px;" ><input name="txtNumeroTarjeta" type="text" class="text  ui-corner-all" id="txtNumeroTarjeta" style="width:150px" readonly="true" />&nbsp;&nbsp;
 			<input type="button" name="btnAsignar" id="btnAsignar" 
 			onclick="javascript:agregarTarjeta()" 
 			value="Asignar" style="width:120px" class="ui-state-default btnAsignar" /></td>
           </tr>
-
-
-
 
           <tr >
             <td colspan="2" align="left" >&nbsp;</td>
@@ -83,7 +80,9 @@ body {
       
       <tr>
         <td class="ui-widget-header"><div align="right">
-          <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default btnAceptar"  />
+          <input type="button" name="btnAceptar" value="Aceptar" 
+          onclick="javascript:guardar()" 
+          style="width:120px" class="ui-state-default btnAceptar"  />
           <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar" />
         </div></td>
       </tr>
@@ -99,6 +98,12 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function guardar(){
+	frmCanje.target="_top";
+	frmCanje.hddOperacion.value="almacenarCuenta";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarCuenta";
+	frmCanje.submit();
+}
 function agregarTarjeta(){
 	frmCanje.target="VENTANA";
 	frmCanje.hddOperacion.value="asignarTarjeta";
