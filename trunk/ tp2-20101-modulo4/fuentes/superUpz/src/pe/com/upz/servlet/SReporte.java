@@ -19,6 +19,7 @@ import javax.xml.bind.ParseConversionEvent;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.controlador.CReporte;
 import pe.com.upz.negocio.NReporte;
 import pe.com.upz.util.Parametros;
 
@@ -81,8 +82,10 @@ public class SReporte extends HttpServlet {
 		
 
 		HSSFWorkbook archivoXls = new HSSFWorkbook();
-		NReporte negocioReportes = new NReporte();
-
+		//NReporte negocioReportes = new NReporte();
+		
+		CReporte negocioReportes = new CReporte();
+		
 		try {
 			archivoXls = negocioReportes
 					.generarReporteExpAdministrativo(usuario,

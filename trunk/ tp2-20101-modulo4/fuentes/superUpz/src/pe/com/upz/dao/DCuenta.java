@@ -62,14 +62,14 @@ public class DCuenta implements ICuenta {
 		}
 		sql
 				.append("ORDER BY cl.APELLIDO_PATERNO, cl.APELLIDO_MATERNO, cl.NOMBRE");
-
+		System.out.println(sql.toString());
 		pstm = conn.prepareStatement(sql.toString());
 		if (filtro == 1) {
 			pstm.setString(1, valorAux);
 		} else if (filtro == 2) {
 			pstm.setString(1, valorAux2);
 		}
-
+		System.out.println(valorAux2);
 		rs = pstm.executeQuery();
 
 		BCliente cliente;
