@@ -227,7 +227,7 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
-<input type="text" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
+<input type="hidden" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
 <input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="<%=mantenimiento%>" />
 </form>
 </div>

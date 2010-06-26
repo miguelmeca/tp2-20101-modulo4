@@ -86,7 +86,7 @@ body {
 <table width="900px" border="0" >
 <%} %>
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Mantener Cuenta</td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Mantener Cuentas</td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">

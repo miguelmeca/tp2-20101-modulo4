@@ -1,4 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%--
+*Resumen
+*Objeto                 : mae_MantenerCuenta.jsp.
+* Descripcion           : pagina para el mantenimiento de cuenta.
+* Fecha de Creacion     : 10/06/2010
+* Autor                 : Gonzalo Azabache Carrillo
+--%>
 <html>
 <%
 String ruta = request.getContextPath(); 
