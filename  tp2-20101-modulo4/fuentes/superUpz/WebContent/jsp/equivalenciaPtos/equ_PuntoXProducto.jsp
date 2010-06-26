@@ -44,7 +44,6 @@ body {
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%" align="center">
 
- <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 <form name="frmMinimo" >
 <table width="1010px" border="0" >
 <tr>
