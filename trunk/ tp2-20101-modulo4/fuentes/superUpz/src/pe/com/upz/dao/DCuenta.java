@@ -130,7 +130,7 @@ public class DCuenta implements ICuenta {
 		sql.append("       VALUES \n");
 		sql.append("       ( \n");
 		sql.append("              ?      , \n");
-		sql.append("              0      , \n");
+		sql.append("              1000   , \n");
 		sql.append("              0      , \n");
 		sql.append("              0      , \n");
 		sql.append("              SYSDATE, \n");

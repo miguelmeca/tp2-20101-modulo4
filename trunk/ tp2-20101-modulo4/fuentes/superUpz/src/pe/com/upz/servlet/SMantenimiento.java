@@ -117,7 +117,9 @@ public class SMantenimiento extends HttpServlet {
 				ruta = mostrarListadoProductos(request);
 			} else if (operacion.equals("ingresoNuevoProducto")) {
 				ruta = inicioNuevoActualizaProducto(request);
-			} 
+			}  else if (operacion.equals("buscarProducto")) {
+				ruta = mostrarListadoProductos(request);
+			}
 			getServletConfig().getServletContext().getRequestDispatcher(ruta)
 					.forward(request, response);
 
@@ -143,7 +145,10 @@ public class SMantenimiento extends HttpServlet {
 		try {
 			String valorAuxiliar="";
 			String pagina = request.getParameter("hddPagina");
-
+			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
+			if (mostrarMantenimiento == null) {
+				mostrarMantenimiento = "1";
+			}
 			if (pagina == null || pagina.equals("")) {
 				pagina = "1";
 			}
@@ -173,10 +178,10 @@ public class SMantenimiento extends HttpServlet {
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoProducto", listadoProducto);
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
-			request.setAttribute("mantenimiento", "1");
-			request.setAttribute("mostrar", "1");
+			request.setAttribute("mantenimiento", mostrarMantenimiento);
+			//request.setAttribute("mostrar", "1");
 
-			ruta = "/jsp/maestroProductos/mae_ListadoProductos.jsp";
+			ruta = "/jsp/maestroProductos/mae_ListadoProductos.jsp?mostrar="+mostrarMantenimiento;
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"

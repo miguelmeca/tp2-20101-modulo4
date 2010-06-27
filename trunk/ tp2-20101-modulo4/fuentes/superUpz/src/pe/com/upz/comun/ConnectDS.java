@@ -8,7 +8,6 @@
 package pe.com.upz.comun;
 
 import java.sql.*;
-
 import pe.com.upz.util.Parametros;
 /**
  * Clase para la conexión a base de datos.
