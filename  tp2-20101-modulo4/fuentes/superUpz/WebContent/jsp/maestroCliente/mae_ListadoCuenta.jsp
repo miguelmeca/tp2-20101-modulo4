@@ -10,8 +10,8 @@
 <%@page import="pe.com.upz.bean.BCliente"%>
 <%
 String ruta = request.getContextPath(); 
-String variable = request.getParameter("mostrar");
-String mantenimiento = request.getParameter("mantenimiento");
+String variable = (String)request.getAttribute("mostrar");
+String mantenimiento = (String)request.getAttribute("mantenimiento");
 boolean mostrarDiv=true;
 boolean mostrarMantenimineto=true;
 if(variable !=null && variable.equals("0")){
@@ -80,7 +80,7 @@ body {
 <div class="demos-nav" style="width:100%" align="center">
 
 <form name="frmListaClientes">
-<% if(mostrarDiv){%>
+<% if(mostrarMantenimineto){%>
 <table width="1010px" border="0" >
 <%}else{ %>
 <table width="900px" border="0" >
@@ -173,10 +173,17 @@ body {
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div></td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" onclick="obtenerId('1')" /></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div>
+			<input type="hidden" name="hddApellidoPaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
+			</td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div>
+			<input type="hidden" name="hddApellidoMaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoMaterno()%>" />
+			</td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div>
+			<input type="hidden" name="hddNombre<%=cuenta.getCodigo()%>" value="<%=miCliente.getNombre()%>" />
+			</td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" 
+			onclick="javascript:seleccionar('<%=cuenta.getCodigo()%>')"  /></td>
             </tr>   
             <%} %>
         </table>          
@@ -189,12 +196,15 @@ body {
           <input type="button" name="btnNuevo" value="Nuevo" style="width:120px" 
           onclick="javascript:agregarNuevo()" 
           class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default btnEditar"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default btnEliminar"  />
+		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
           <%}else{ %>
-		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default btnCancelar"  />          
+		  <input type="button" name="btnAceptar" value="Aceptar" 
+		  onclick="javascript:aceptarSeleccionPadre()" style="width:120px" class="ui-state-default"  />          
           <%}%>
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar" />
+          <input type="button" name="btnCancelar" value="Cancelar" 
+		  onclick="javascript:cerrar()" 
+		  style="width:120px" class="ui-state-default" />
         </div></td>
       </tr>
       <tr>
@@ -204,10 +214,39 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
+<input type="hidden" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="<%=mantenimiento%>" />
 </form>
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	<% if (mostrarMantenimineto){ %>
+	frmListaClientes.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmListaClientes.submit();
+	<%}else{%>
+	window.close();
+	<%}%>
+}
+function seleccionar(codigo){
+	frmListaClientes.hddCodigoSeleccionado.value=codigo;
+}
+function aceptarSeleccionPadre(){
+	var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	var vm=window.opener;
+	nombre = document.getElementById("hddApellidoPaterno"+codigo).value +" "+
+			document.getElementById("hddApellidoMaterno"+codigo).value+", "+
+			document.getElementById("hddNombre"+codigo).value;
+	//var codigoCliente = document.getElementById("hddCodigoCliente"+codigo);
+	vm.document.getElementById("hddCodigoCliente").value =  codigo;
+	vm.document.getElementById("txtCliente").value =  nombre;
+	cerrar();
+	
+}
 function buscarPorParametro(){
 	
 	var seleccion = frmListaClientes.selTipoBusqueda.value;
