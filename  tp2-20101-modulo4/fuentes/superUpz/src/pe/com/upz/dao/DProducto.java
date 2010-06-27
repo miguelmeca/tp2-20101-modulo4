@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import pe.com.upz.bean.BEquivalencia;
 import pe.com.upz.bean.BOpcion;
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
@@ -263,6 +264,39 @@ public class DProducto implements IProducto{
 		}
 		
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IProducto#obtenerStockLocalProducto(pe.com.upz.bean.BProducto, pe.com.upz.bean.BSucursal)
+	 */
+	@Override
+	public int obtenerStockLocalProducto(BProducto bProducto,
+			BSucursal bSucursal) throws SQLException {
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		int cantidad=-1;
+		sql.append("SELECT ps.stock AS cantidad\n");
+		sql.append("FROM   fidelizacion.producto_sucursal ps \n");
+		sql.append("WHERE  ps.sucursal_id = ? \n");
+		sql.append("AND    ps.producto_id = ? \n");
+		sql.append("AND    ps.estado      = 1");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, bSucursal.getCodigo());
+		pstm.setInt(2, bProducto.getCodigo());
+		
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			cantidad = rs.getInt("cantidad");
+			
+		}
+		rs.close();
+		pstm.close();
+		ConnectDS.cerrarConexion(conn);
+		return cantidad;
 	}
 
 }

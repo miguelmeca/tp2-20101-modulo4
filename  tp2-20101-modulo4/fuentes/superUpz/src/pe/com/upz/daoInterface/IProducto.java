@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BRol;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
@@ -67,4 +68,13 @@ public interface IProducto {
 	 */
 	public abstract Lista obtenerListadoProductosPuntaje(boolean soloActivos, int filtro, String  valorAuxiliar)
     throws SQLException;
+	
+	/**
+	 * Obtiene el numero de un producto en un local de.
+	 * @param bProducto producto a buscar, tipo BProducto.
+	 * @param bSucursal sucursal a buscar, tipo BSucursal.
+	 * @return cantidad
+	 * @throws SQLException
+	 */
+	public abstract int obtenerStockLocalProducto(BProducto bProducto, BSucursal bSucursal)throws SQLException;
 }

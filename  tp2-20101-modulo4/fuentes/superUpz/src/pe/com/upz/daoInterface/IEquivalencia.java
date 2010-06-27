@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BEquivalencia;
+import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BUsuario;
 
 /**
@@ -45,5 +46,7 @@ public interface IEquivalencia {
 	 */
 	public abstract void eliminarEquivalenciasActivasProducto(BUsuario usuario,
 			Connection conn, int codProducto) throws SQLException;
+	
+	public abstract BEquivalencia obtenerEquivalenciaProducto(BProducto bProducto)throws SQLException;
 	
 }

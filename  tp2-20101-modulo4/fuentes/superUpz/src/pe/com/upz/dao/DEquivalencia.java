@@ -3,7 +3,7 @@
  * Objeto                     : DEquivalencia.
  * Descripción                : Clase DAO de equivalencia de puntos.
  * Fecha de Creación          : 15/05/2010.
-  * Autor                     : Gonzalo Azabache Carrillo.
+ * Autor                     : Gonzalo Azabache Carrillo.
  */
 package pe.com.upz.dao;
 
@@ -11,18 +11,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.bean.BEquivalencia;
+import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.IEquivalencia;
 
 /**
  * Clase DAO de equivalencia de puntos.
- *
+ * 
  */
 public class DEquivalencia implements IEquivalencia {
 
-	/* (non-Javadoc)
-	 * @see pe.com.upz.daoInterface.IEquivalencia#almacenarEquivalencia(pe.com.upz.bean.BUsuario, java.sql.Connection, pe.com.upz.bean.BEquivalencia, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pe.com.upz.daoInterface.IEquivalencia#almacenarEquivalencia(pe.com.upz
+	 * .bean.BUsuario, java.sql.Connection, pe.com.upz.bean.BEquivalencia, int)
 	 */
 	public void almacenarEquivalencia(BUsuario usuario, Connection conn,
 			BEquivalencia equivalencia, int codProducto) throws SQLException {
@@ -77,8 +84,12 @@ public class DEquivalencia implements IEquivalencia {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see pe.com.upz.daoInterface.IEquivalencia#eliminarEquivalenciasActivasProducto(pe.com.upz.bean.BUsuario, java.sql.Connection, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pe.com.upz.daoInterface.IEquivalencia#eliminarEquivalenciasActivasProducto
+	 * (pe.com.upz.bean.BUsuario, java.sql.Connection, int)
 	 */
 	public void eliminarEquivalenciasActivasProducto(BUsuario usuario,
 			Connection conn, int codProducto) throws SQLException {
@@ -99,8 +110,12 @@ public class DEquivalencia implements IEquivalencia {
 		pstm.executeUpdate();
 	}
 
-	/* (non-Javadoc)
-	 * @see pe.com.upz.daoInterface.IEquivalencia#obtenerMaximaCodificacion(java.sql.Connection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pe.com.upz.daoInterface.IEquivalencia#obtenerMaximaCodificacion(java.
+	 * sql.Connection)
 	 */
 	public int obtenerMaximaCodificacion(Connection conn) throws SQLException {
 		// TODO Auto-generated method stub
@@ -123,6 +138,46 @@ public class DEquivalencia implements IEquivalencia {
 		pstm.close();
 
 		return codigo;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IEquivalencia#obtenerEquivalenciaProducto(pe.com.upz.bean.BProducto)
+	 */
+	public BEquivalencia obtenerEquivalenciaProducto(BProducto bProducto)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		BEquivalencia equival = new BEquivalencia();
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT E.CANTIDAD_PUNTO_UNO AS P1, \n");
+		sql.append("       E.MONTO_UNO          AS M1, \n");
+		sql.append("       E.CANTIDAD_PUNTO_DOS  AS P2, \n");
+		sql.append("       E.MONTO_DOS          AS M2, \n");
+		sql.append("       E.CANTIDAD_PUNTO_TRES AS P3, \n");
+		sql.append("       E.MONTO_TRES AS M3 \n");
+		sql.append("FROM   FIDELIZACION.EQUIVALENCIA E \n");
+		sql.append("WHERE  E.PRODUCTO_ID = ? \n");
+		sql.append("AND    E.ESTADO      = 1");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, bProducto.getCodigo());
+		
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			equival.setCantidadPuntoUno(rs.getInt("P1"));
+			equival.setCantidadPuntoDos(rs.getInt("P2"));
+			equival.setCantidadPuntoTres(rs.getInt("P3"));
+			equival.setMontoUno(rs.getDouble("M1"));
+			equival.setMontoDos(rs.getDouble("M2"));
+			equival.setMontoTres(rs.getDouble("M3"));
+		}
+		rs.close();
+		pstm.close();
+		ConnectDS.cerrarConexion(conn);
+		return equival;
 	}
 
 }
