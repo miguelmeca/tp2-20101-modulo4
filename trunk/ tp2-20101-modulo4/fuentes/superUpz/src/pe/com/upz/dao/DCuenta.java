@@ -173,4 +173,27 @@ public class DCuenta implements ICuenta {
 
 		return codigoCliente;
 	}
+
+	@Override
+	public void actualizarPuntaje(Connection conn, int codcuenta, int cantidadPuntos,
+			BUsuario usuario) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE fidelizacion.cuenta cu \n");
+		sql.append("SET    cu.puntos_canjeados   = (NVL(cu.puntos_canjeados,0) + ? ), \n");
+		sql.append("       cu.fecha_modificacion = SYSDATE                          , \n");
+		sql.append("       cu.usuario_modificacion ? \n");
+		sql.append("WHERE  cu.cuenta_id = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, cantidadPuntos);
+		pstm.setString(2, usuario.getLogin());
+		pstm.setInt(3, codcuenta);
+		
+		pstm.executeUpdate();
+		
+		pstm.close();
+	}
 }

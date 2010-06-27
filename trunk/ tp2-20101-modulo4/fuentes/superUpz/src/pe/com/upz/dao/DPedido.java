@@ -26,7 +26,7 @@ public class DPedido implements IPedido {
 	 * @see pe.com.upz.daoInterface.IPedido#almacenarOrden(java.sql.Connection)
 	 */
 	@Override
-	public int almacenarOrden(Connection conn, BUsuario usuario) throws SQLException {
+	public int almacenarOrden(Connection conn, BUsuario usuario, int tipoMov) throws SQLException {
 		PreparedStatement pstm;
 		StringBuffer sql = new StringBuffer();
 		int codigo = obtenerMaximoNumeroPedido(conn)+1;
@@ -37,6 +37,7 @@ public class DPedido implements IPedido {
 		sql.append("              FECHA_PEDIDO    , \n");
 		sql.append("              USUARIO_CREACION, \n");
 		sql.append("              FECHA_CREACION  , \n");
+		sql.append("              tipo_mivimiento  , \n");
 		sql.append("              ESTADO \n");
 		sql.append("       ) \n");
 		sql.append("       VALUES \n");
@@ -45,12 +46,14 @@ public class DPedido implements IPedido {
 		sql.append("              SYSDATE, \n");
 		sql.append("              ?      , \n");
 		sql.append("              SYSDATE, \n");
+		sql.append("              ?, \n");
 		sql.append("              1 \n");
 		sql.append("       )");
 		
 		pstm = conn.prepareStatement(sql.toString());
 		pstm.setInt(1,codigo);
 		pstm.setString(2,usuario.getLogin());
+		pstm.setInt(3,tipoMov);
 		pstm.executeUpdate();
 		
 		

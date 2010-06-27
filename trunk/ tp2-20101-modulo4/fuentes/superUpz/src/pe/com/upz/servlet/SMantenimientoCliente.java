@@ -65,6 +65,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = asignarTarjeta(request);
 			}else if (operacion.equals("almacenarCuenta")) {
 				ruta = almacenarCuenta(usuario, sucursal, request);
+			}else if (operacion.equals("buscarCuenta")) {
+				ruta = iniciarListadoCuenta(request);
 			}
 			if (indicador == -1) {
 				getServletConfig().getServletContext().getRequestDispatcher(
@@ -86,10 +88,11 @@ public class SMantenimientoCliente extends HttpServlet {
 			String valorAux = "";
 			String valorAux2 = "";
 			String pagina = request.getParameter("hddPagina");
-			String mostrarMantenimiento = request.getParameter("mantenimiento");
+			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
 			if (mostrarMantenimiento == null) {
 				mostrarMantenimiento = "1";
 			}
+			
 			if (pagina == null || pagina.equals("")) {
 				pagina = "1";
 			}
@@ -117,9 +120,9 @@ public class SMantenimientoCliente extends HttpServlet {
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoCuenta", listadoCuenta);
 			request.setAttribute("mantenimiento", mostrarMantenimiento);
-			request.setAttribute("mostrar", "1");
+			//request.setAttribute("mostrar", "1");
 
-			ruta = "/jsp/maestroCliente/mae_ListadoCuenta.jsp";
+			ruta = "/jsp/maestroCliente/mae_ListadoCuenta.jsp?mostrar="+mostrarMantenimiento;
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
