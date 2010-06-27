@@ -53,6 +53,10 @@
 		<servlet-class>pe.com.upz.servlet.SEquivalencia</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>SCanje</servlet-name>
+		<servlet-class>pe.com.upz.servlet.SCanje</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>ServicioUtilitario</servlet-name>
 		<servlet-class>pe.com.upz.util.ServicioUtilitario</servlet-class>
 	</servlet>
@@ -92,6 +96,12 @@
 		<servlet-name>SEquivalencia</servlet-name>
 		<url-pattern>
             /SEquivalencia
+        </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SCanje</servlet-name>
+		<url-pattern>
+            /SCanje
         </url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
