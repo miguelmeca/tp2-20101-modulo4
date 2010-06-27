@@ -234,7 +234,12 @@ body {
 </body>
 <script language="JavaScript">
 function cerrar(){
+	<% if (mostrarMantenimineto){ %>
+	frmListaClientes.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmListaClientes.submit();
+	<%}else{%>
 	window.close();
+	<%}%>
 }
 function seleccionar(codigo){
 	frmListaClientes.hddCodigoSeleccionado.value=codigo;

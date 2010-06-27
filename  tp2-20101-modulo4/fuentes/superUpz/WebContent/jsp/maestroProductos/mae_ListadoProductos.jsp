@@ -15,15 +15,12 @@ String mantenimiento = (String)request.getAttribute("mantenimiento");
 String cambiarPuntaje = (String)request.getAttribute("puntaje");
 boolean mostrarDiv=true;
 boolean mostrarMantenimineto=true;
-boolean mostrarPuntaje=false;
+//boolean mostrarPuntaje=false;
 if(variable !=null && variable.equals("0")){
 	mostrarDiv = false;
 }
 if(mantenimiento !=null && mantenimiento.equals("0")){
 	mostrarMantenimineto = false;
-}
-if(cambiarPuntaje !=null && cambiarPuntaje.equals("1")){
-	mostrarPuntaje = true;
 }
 
 Lista listadoProducto = (Lista)request.getAttribute("listadoProducto");
@@ -90,7 +87,7 @@ body {
 
 <div class="demos-nav" style="width:100%" align = "center">
 <form action="" method="get" name="frmListaProducto"  >
-<% if(mostrarDiv){%>
+<% if(mostrarMantenimineto){%>
 <table width="1010px" border="0" >
 <%}else{ %>
 <table width="900px" border="0" >
@@ -198,7 +195,8 @@ body {
               <%=producto.getDescripcion()%>
               <input type="hidden" name="hddDescripcion<%=producto.getCodigo()%>" value="<%=producto.getDescripcion()%>" />
             </div></td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=producto.getCodigo()%>" onclick="obtenerId('1')" /></td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=producto.getCodigo()%>" 
+			onclick="javascript:seleccionar('<%=producto.getCodigo()%>')"  /></td>
             </tr>
             <%} %>
         </table>          
@@ -214,12 +212,10 @@ body {
           	class="ui-state-default btnNuevo"  />
 		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
 		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
-          <%}else if (false){ %>
-		  <input type="button" name="btnAceptar" value="Aceptar" style="width:120px" class="ui-state-default"  />          
-          <%}else if(mostrarPuntaje){%>
-          <input type="button" name="btnPuntaje" value="Asignar Puntos" 
-          onclick="javascript:agregarPuntaje()" 
-          style="width:120px" class="ui-state-default" />
+          <%}else { %>
+		  <input type="button" name="btnAceptar" 
+		  onclick="javascript:aceptarSeleccionPadre()" 
+		  value="Aceptar" style="width:120px" class="ui-state-default"  />          
           <%} %>
           <input type="button" name="btnCancelar" 
           onclick="javascript:cerrar()" 
@@ -234,13 +230,38 @@ body {
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
 <input type="hidden" name="hddValorAuxiliar" id="hddValorAuxiliar" value="" />
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="<%=mantenimiento%>" />
+<input type="hidden" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
 </form>
 </div>
 </body>
 <script language="JavaScript">
+function seleccionar(codigo){
+	frmListaProducto.hddCodigoSeleccionado.value=codigo;
+}
+function aceptarSeleccionPadre(){
+	var codigo = frmListaProducto.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un producto.");
+		return;
+	}
+	var vm=window.opener;
+	nombre = document.getElementById("hddNombre"+codigo).value;
+	//var codigoCliente = document.getElementById("hddCodigoCliente"+codigo);
+	vm.document.getElementById("hddCodigoProducto").value =  codigo;
+	vm.document.getElementById("txtProducto").value =  nombre;
+	vm.buscarStock();
+	vm.buscarPuntaje();
+	cerrar();
+	
+}
 function cerrar(){
+	<% if (mostrarMantenimineto){ %>
 	frmListaProducto.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
 	frmListaProducto.submit();
+	<%}else{%>
+	window.close();
+	<%}%>
 }
 
 function mostrarMensaje(){
