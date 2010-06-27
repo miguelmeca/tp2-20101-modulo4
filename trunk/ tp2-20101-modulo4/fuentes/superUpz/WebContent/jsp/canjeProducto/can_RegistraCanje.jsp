@@ -117,8 +117,15 @@ body {
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2" align="left">&nbsp;</td>
+								<td align="left">Cantidad de canje : (*) </td>
+							    <td align="left"><input name="txtCantidadCanje"
+									type="text" 
+									class="text  ui-corner-all" id="txtCantidadCanje" style="width: 56px"
+									onKeyPress="Upper();SoloNumeros();" value="1"  /></td>
 							</tr>
+							<tr>
+							  <td colspan="2" align="left">&nbsp;</td>
+						  </tr>
 							<tr>
 								<td colspan="2" align="left"><span class="style3">(*)
 								Campos obligatórios.&nbsp;</span></td>
@@ -136,6 +143,7 @@ body {
 				<div align="right"><input type="button" name="btnAceptar"
 					value="Aceptar" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
+					onclick="javascript:canjear()" 
 					name="btnCancelar" value="Cancelar" style="width: 120px"
 					class="ui-state-default btnCancelar" /></div>
 				</td>
@@ -148,7 +156,7 @@ body {
 	</tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
-<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="" />
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="0" />
 </form>
 </div>
 </body>
@@ -172,7 +180,7 @@ function buscarStock(){
     var ret = msxml.responseText;	 
         
     if(ret!="OK__NoExiste")   {
-    	frmCanje.txtStockProducto.value = ret.substr(3);
+    	frmCanje.txtStockProducto.value = ret.substr(2);
     }
      
 }
@@ -230,6 +238,43 @@ function mostrarProductos(){
 	                 ",width=" + 950 + 
 	                 ",height=" + 600; 
 	window.open("","VENTANA",opciones,1); 
+	frmCanje.submit();
+}
+
+function canjear(){
+	var codPersona = frmCanje.hddCodigoCliente.values;
+	var codProducto =frmCanje.hddCodigoProducto.value;
+	var stock=parseInt(frmCanje.txtStockProducto.value);
+	var puntajeSel=frmCanje.selPuntaje.selectedIndex;
+	var cantidadCanje = parseInt(frmCanje.txtCantidadCanje.value);
+	if(codPersona == ""){
+		alert("Debe seleccionar a una persona.");
+		return;
+	}
+	if(codProducto == ""){
+		alert("Debe seleccionar un producto.");
+		return;
+	}
+	if(stock <= 0){
+		alert("No hay stock para realizar el canje.");
+		return;
+	}	
+	if(puntajeSel == 0){
+		alert("Debe seleccionar un puntaje.");
+		return;
+	}	
+	if (isNaN(cantidadCanje) || cantidadCanje <= 0) {  
+        //no es entero 0  
+		alert("Debe ingresar una cantidad de canje válida.");
+		return
+  	}	
+	if(cantidadCanje > stock){
+		alert("La cantidad a canjear es mayor que el stock actual.");
+		return;
+	}
+	frmCanje.target="_top";
+	frmCanje.hddOperacion.value="almacenarCanje";
+	frmCanje.action="<%=ruta%>/SCanje?hddOperacion=almacenarCanje";
 	frmCanje.submit();
 }
 </script>
