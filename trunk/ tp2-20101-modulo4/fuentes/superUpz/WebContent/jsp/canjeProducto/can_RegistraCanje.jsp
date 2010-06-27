@@ -101,12 +101,13 @@ body {
 							<tr>
 								<td align="left" style="height: 26px; width: 175px;">Puntos:(*)
 								</td>
-								<td align="left" style="height: 26px; width: 420px;"><select
+							  <td align="left" style="height: 26px; width: 420px;"><select
 									id="selPuntaje" 
-									onChange="javascript:mostrarMonto();"
+									onChange="javascript:mostrarMonto();seleccionarPuntaje();"
 									name="selPuntaje" style="width: 79px">
 									<option value="0">-Seleccione-</option>
-								</select> </td>
+								</select>
+							    <input name="hddPuntaje" type="hidden" id="hddPuntaje"> </td>
 							</tr>
 							<tr>
 								<td align="left" style="height: 26px; width: 175px;">
@@ -161,6 +162,10 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function seleccionarPuntaje(){
+	var puntaje = frmCanje.selPuntaje.options[frmCanje.selPuntaje.selectedIndex];
+	frmCanje.hddPuntaje.value=puntaje;
+}
 function mostrarMonto(){
 	var monto = frmCanje.selPuntaje.value;
 	frmCanje.txtMonto.value=monto;
@@ -209,8 +214,8 @@ function buscarPuntaje(){
 
 function mostrarClientes(){
 	frmCanje.target="VENTANA";
-	frmCanje.hddOperacion.value="buscarCliente";
-	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=buscarCliente&hddMantenimiento=0";
+	frmCanje.hddOperacion.value="buscarCuenta";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=buscarCuenta&hddMantenimiento=0";
 
 	var opciones = "fullscreen=" + 0 + 
 	                 ",toolbar=" + 0 + 
