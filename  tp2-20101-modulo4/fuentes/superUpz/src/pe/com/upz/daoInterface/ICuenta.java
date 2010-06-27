@@ -17,6 +17,8 @@ public interface ICuenta {
 	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario)throws SQLException;
 	
 	public abstract int obtenerMaximoNumeroCuenta(Connection conn)throws SQLException;
+	
 	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException;
 
+	public abstract void actualizarPuntaje (Connection conn, int codcuenta, int cantidadPuntos,BUsuario usuario)throws SQLException;
 }

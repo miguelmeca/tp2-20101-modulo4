@@ -114,7 +114,7 @@ public class SAbastecimiento extends HttpServlet {
 			}*/
 			String[] codigo = request.getParameterValues("chkProducto");
 			CAbastecimiento cAbastecimiento = new CAbastecimiento();
-			String codigoGenerado = cAbastecimiento.alamcenarOrden(request, usuario, codigo, conn);
+			String codigoGenerado = cAbastecimiento.alamcenarOrden(request, usuario, codigo, conn,1);
 			conn.commit();
 			
 			request.setAttribute("mensajeSistema", "Se ha generado la orden número "+codigoGenerado);

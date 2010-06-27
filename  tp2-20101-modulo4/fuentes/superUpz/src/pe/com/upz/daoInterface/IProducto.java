@@ -73,8 +73,19 @@ public interface IProducto {
 	 * Obtiene el numero de un producto en un local de.
 	 * @param bProducto producto a buscar, tipo BProducto.
 	 * @param bSucursal sucursal a buscar, tipo BSucursal.
-	 * @return cantidad
-	 * @throws SQLException
+	 * @return cantidad stock del producto, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int obtenerStockLocalProducto(BProducto bProducto, BSucursal bSucursal)throws SQLException;
+	
+	/**
+	 * Actualiza el stock del producto en la sucursal
+	 * @param bProducto producto a buscar, tipo BProducto.
+	 * @param bSucursal sucursal a buscar, tipo BSucursal.
+	 * @param cantidad stock del producto, tipo int.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void actualizarStockProductoSucursal(BProducto bProducto, BSucursal bSucursal, int cantidad,Connection conn, BUsuario usuario)throws SQLException;
 }

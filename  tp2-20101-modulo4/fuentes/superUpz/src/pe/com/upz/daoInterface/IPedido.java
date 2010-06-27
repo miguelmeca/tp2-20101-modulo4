@@ -32,5 +32,5 @@ public interface IPedido {
 	 * @return numero de la orden almacenada, tipo int.
 	 * @throws SQLException SQLException captura excepciones tipo SQL.
 	 */
-	public abstract int almacenarOrden(Connection conn,BUsuario usuario) throws SQLException;;
+	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;;
 }

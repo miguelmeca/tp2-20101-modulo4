@@ -299,4 +299,29 @@ public class DProducto implements IProducto{
 		return cantidad;
 	}
 
+	@Override
+	public void actualizarStockProductoSucursal(BProducto bProducto,
+			BSucursal bSucursal, int cantidad,Connection conn, BUsuario usuario) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE fidelizacion.producto_sucursal ps \n");
+		sql.append("SET    ps.stock                = (ps.stock - ?), \n");
+		sql.append("       ps.usuario_modificacion = ?             , \n");
+		sql.append("       ps.fecha_modificacion   = SYSDATE \n");
+		sql.append("WHERE  ps.sucursal_id          = ? \n");
+		sql.append("AND    ps.producto_id          = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1,cantidad);
+		pstm.setString(2,usuario.getLogin());
+		pstm.setInt(3,bSucursal.getCodigo());
+		pstm.setInt(4,bProducto.getCodigo());
+		
+		pstm.executeUpdate();
+	
+		pstm.close();
+	}
+
 }
