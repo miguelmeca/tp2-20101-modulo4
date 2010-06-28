@@ -13,6 +13,10 @@ import pe.com.upz.bean.BRol;
 import pe.com.upz.daoInterface.IOpcion;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de opciones del sistema.
+ *
+ */
 public class DOpcion implements IOpcion {
 
 	@Override

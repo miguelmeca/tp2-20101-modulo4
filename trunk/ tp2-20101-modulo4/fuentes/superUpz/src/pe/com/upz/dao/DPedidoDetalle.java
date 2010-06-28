@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DPedidoDetalle.
+ * Descripción                : Clase DAO de detalle de pedido del sistema.
+ * Fecha de Creación          : 15/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -8,6 +15,10 @@ import pe.com.upz.bean.BPedidoDetalle;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.daoInterface.IDetallePedido;
 
+/**
+ * Clase DAO de detalle de pedido del sistema.
+ *
+ */
 public class DPedidoDetalle implements IDetallePedido {
 
 	/* (non-Javadoc)

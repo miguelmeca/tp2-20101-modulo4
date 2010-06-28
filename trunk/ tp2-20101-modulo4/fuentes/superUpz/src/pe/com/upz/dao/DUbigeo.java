@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DUsuario.
+ * Descripción                : Clase DAO de ubigeo del sistema.
+ * Fecha de Creación          : 15/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -12,6 +19,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.IUbigeo;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de ubigeo del sistema.
+ *
+ */
 public class DUbigeo implements IUbigeo{
 
 	@Override

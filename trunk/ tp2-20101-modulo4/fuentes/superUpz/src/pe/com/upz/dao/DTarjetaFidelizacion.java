@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DTipoProducto.
+ * Descripción                : Clase DAO de tarjeta de fidelizacion.
+ * Fecha de Creación          : 31/05/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -14,6 +21,10 @@ import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.ITarjetaFidelizacion;
 import pe.com.upz.util.Bean;
 
+/**
+ * Clase DAO de tarjeta de fidelizacion.
+ *
+ */
 public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 
 	@Override

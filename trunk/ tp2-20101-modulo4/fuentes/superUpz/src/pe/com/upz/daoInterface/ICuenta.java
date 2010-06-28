@@ -16,50 +16,58 @@ import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase Interface para DAO de cuenta.
+ *
+ */
 public interface ICuenta {
 	public abstract Lista obtenerListadoCuenta(boolean soloActivos,
 			int filtro, String valorAux, String valorAux2)
 			throws SQLException;
 	
 	/**
-	 * @param conn
-	 * @param cuenta
-	 * @param usuario
-	 * @return
-	 * @throws SQLException
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @param cuenta  cuenta a almacenar, tipo BCuenta.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return  codigo de cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario)throws SQLException;
 	
 	/**
-	 * @param conn
-	 * @return
-	 * @throws SQLException
+	 * Obtiene la maxima codificacion de cuenta.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @return codigo maximo de cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int obtenerMaximoNumeroCuenta(Connection conn)throws SQLException;
 	
 	/**
-	 * @param conn
-	 * @param cuenta
-	 * @param usuario
-	 * @param sucursal
-	 * @return
-	 * @throws SQLException
+	 * Almacena cuenta nueva.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @param cuenta cuenta a almacenar, tipo BCuenta.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tipo BSucursal.
+	 * @return codigo de cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int almacenarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException;
 
 	/**
-	 * @param conn
-	 * @param codcuenta
-	 * @param cantidadPuntos
-	 * @param usuario
-	 * @throws SQLException
+	 * Actualiza puntaje de cuenta
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @param codcuenta codigo de cuenta, tipo int.
+	 * @param cantidadPuntos cantidad de puntos de canje, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract void actualizarPuntaje (Connection conn, int codcuenta, int cantidadPuntos,BUsuario usuario)throws SQLException;
 
 	/**
+	 * Obtiene el puntaje de una cuenta.
 	 * @param codcuenta codigo de cuenta, tipo int.
-	 * @return 
-	 * @throws SQLException
+	 * @return puntaje de la cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int obtenerPuntajeCuenta (int codcuenta)throws SQLException;
 	
