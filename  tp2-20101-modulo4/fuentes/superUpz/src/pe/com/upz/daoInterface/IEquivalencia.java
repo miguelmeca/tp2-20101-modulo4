@@ -47,6 +47,12 @@ public interface IEquivalencia {
 	public abstract void eliminarEquivalenciasActivasProducto(BUsuario usuario,
 			Connection conn, int codProducto) throws SQLException;
 	
+	/**
+	 * Busca equivalencia de producto.
+	 * @param bProducto producto a buscar, tipo BProducto.
+	 * @return equivalencia del producto, tipo BEquivalencia.
+	 * @throws SQLException
+	 */
 	public abstract BEquivalencia obtenerEquivalenciaProducto(BProducto bProducto)throws SQLException;
 	
 }

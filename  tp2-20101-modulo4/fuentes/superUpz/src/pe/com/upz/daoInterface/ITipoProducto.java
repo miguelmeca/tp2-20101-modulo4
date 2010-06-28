@@ -1,6 +1,6 @@
 /**
  * Resumen.
- * Objeto                     : IRol.
+ * Objeto                     : ITipoProducto.
  * Descripción                : Clase Interface para DAO de tipo de producto.
  * Fecha de Creación          : 15/05/2010.
   * Autor                     : Gonzalo Azabache Carrillo.

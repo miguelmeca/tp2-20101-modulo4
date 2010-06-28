@@ -307,7 +307,7 @@ public class DProducto implements IProducto{
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE fidelizacion.producto_sucursal ps \n");
-		sql.append("SET    ps.stock                = (ps.stock - ?), \n");
+		sql.append("SET    ps.stock                = (nvl(ps.stock,0) - ?), \n");
 		sql.append("       ps.usuario_modificacion = ?             , \n");
 		sql.append("       ps.fecha_modificacion   = SYSDATE \n");
 		sql.append("WHERE  ps.sucursal_id          = ? \n");

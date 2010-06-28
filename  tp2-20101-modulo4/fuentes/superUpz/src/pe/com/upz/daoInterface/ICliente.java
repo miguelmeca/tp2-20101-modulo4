@@ -41,6 +41,12 @@ public interface ICliente {
 	
 	public abstract int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException;
 	
+	/**
+	 * Obtiene la maxima codificacion de cuenta.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @return codigo maximo de cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract int obtenerMaximoNumeroCliente(Connection conn)throws SQLException;
 
 

@@ -184,7 +184,7 @@ public class DCuenta implements ICuenta {
 		sql.append("UPDATE fidelizacion.cuenta cu \n");
 		sql.append("SET    cu.puntos_canjeados   = (NVL(cu.puntos_canjeados,0) + ? ), \n");
 		sql.append("       cu.fecha_modificacion = SYSDATE                          , \n");
-		sql.append("       cu.usuario_modificacion ? \n");
+		sql.append("       cu.usuario_modificacion = ? \n");
 		sql.append("WHERE  cu.cuenta_id = ?");
 		
 		pstm = conn.prepareStatement(sql.toString());
@@ -195,5 +195,90 @@ public class DCuenta implements ICuenta {
 		pstm.executeUpdate();
 		
 		pstm.close();
+	}
+
+	@Override
+	public int obtenerPuntajeCuenta(int codcuenta) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int puntaje = 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT (cu.puntos_acumulados - cu.puntos_canjeados) AS puntaje \n");
+		sql.append("FROM   fidelizacion.cuenta cu \n");
+		sql.append("WHERE  cu.cuenta_id = ?");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, codcuenta);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			puntaje = (rs.getInt("puntaje"));
+
+		}
+		rs.close();
+		pstm.close();
+		conn.close();
+		return puntaje;
+	}
+
+	@Override
+	public int obtenerCantidadCuentasCreadasMes(BSucursal sucursal,int mes) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int cantidad = 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COUNT('X') AS cantidad \n");
+		sql.append("FROM   fidelizacion.cuenta cu \n");
+		sql.append("WHERE  cu.sucursal_creacion                       = ? \n");
+		sql.append("AND    to_number(TO_CHAR(cu.fecha_creacion,'MM')) = ? \n");
+		sql.append("AND    to_number(TO_CHAR(cu.fecha_creacion,'YY')) = to_number(TO_CHAR(SYSDATE,'YY'))");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, sucursal.getCodigo());
+		pstm.setInt(2, mes);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			cantidad = (rs.getInt("cantidad"));
+
+		}
+		rs.close();
+		pstm.close();
+		conn.close();
+		return cantidad;
+	}
+
+	@Override
+	public int obtenerCantidadCuentasBajaMes(BSucursal sucursal, int mes)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int cantidad = 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COUNT('X') AS cantidad \n");
+		sql.append("FROM   fidelizacion.cuenta cu \n");
+		sql.append("WHERE  cu.sucursal_baja                       = ? \n");
+		sql.append("AND    to_number(TO_CHAR(cu.fecha_modificacion,'MM')) = ? \n");
+		sql.append("AND    to_number(TO_CHAR(cu.fecha_modificacion,'YY')) = to_number(TO_CHAR(SYSDATE,'YY'))");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, sucursal.getCodigo());
+		pstm.setInt(2, mes);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			cantidad = (rs.getInt("cantidad"));
+
+		}
+		rs.close();
+		pstm.close();
+		conn.close();
+		return cantidad;
 	}
 }

@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : ServiceSession.
+ * Descripción                : Clase para servicio de la sesion.
+ * Fecha de Creación          : 26/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.util;
 
 import java.io.IOException;
@@ -7,6 +14,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Clase para servicio de la sesion.
+ *
+ */
 public class ServiceSession extends HttpServlet
 {
 
