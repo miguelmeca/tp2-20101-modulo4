@@ -19,6 +19,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.IRol;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de roles del sistema.
+ *
+ */
 public class DRol implements IRol {
 
 	/* (non-Javadoc)

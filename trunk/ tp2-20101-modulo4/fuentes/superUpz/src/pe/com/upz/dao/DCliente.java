@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DCliente.
+ * Descripción                : Clase DAO de clientes
+ * Fecha de Creación          : 15/05/2010.
+ * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -14,6 +21,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.ICliente;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de clientes
+ *
+ */
 public class DCliente implements ICliente {
 	public Lista obtenerListadoClientes(boolean soloActivos, int filtro,
 			String valorAux, String valorAux2, String valorAux3)
