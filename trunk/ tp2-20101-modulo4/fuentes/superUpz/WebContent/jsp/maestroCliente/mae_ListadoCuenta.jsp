@@ -244,6 +244,7 @@ function aceptarSeleccionPadre(){
 	//var codigoCliente = document.getElementById("hddCodigoCliente"+codigo);
 	vm.document.getElementById("hddCodigoCliente").value =  codigo;
 	vm.document.getElementById("txtCliente").value =  nombre;
+	vm.buscarPuntajeCuenta();
 	cerrar();
 	
 }
