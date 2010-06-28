@@ -39,6 +39,9 @@ import pe.com.upz.util.Parametros;
  */
 public class SMantenimientoCliente extends HttpServlet {
 
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -82,6 +85,12 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Inicia el listado de cuentas.
+	 * @param request
+	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String iniciarListadoCuenta(HttpServletRequest request) {
 		String ruta = "";
 		try {
@@ -133,6 +142,12 @@ public class SMantenimientoCliente extends HttpServlet {
 		return ruta;
 	}
 	
+	/**
+	 * Inicia el listado de clientes.
+	 * @param request
+	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String iniciarListadoClientes(HttpServletRequest request) {
 		String ruta = "";
 		try {
@@ -214,6 +229,12 @@ public class SMantenimientoCliente extends HttpServlet {
 		return ruta;
 	}
 
+	/**
+	 * Almacena cliente nuevo.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String almacenarCliente(BUsuario usuario, HttpServletRequest request) {
 		String ruta = "";
 		Connection conn = null;
@@ -279,6 +300,11 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 		return ruta;
 	}
+	/**
+	 * Muetra la pagina de nueva cuenta.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String inicioNuevoActualizaCuenta(HttpServletRequest request) {
 		String ruta = "";
 		try {
@@ -293,6 +319,11 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 		return ruta;
 	}
+	/**
+	 * Muetra la pagina de tarjeta de fidelizacion.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String asignarTarjeta(HttpServletRequest request) {
 		String ruta = "";
 		try {
@@ -307,6 +338,13 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 		return ruta;
 	}
+	/**
+	 * Almacena la cuenta de un cliente.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tio BSucursal.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
 	private String almacenarCuenta(BUsuario usuario, BSucursal sucursal, HttpServletRequest request) {
 		String ruta = "";
 		Connection conn = null;

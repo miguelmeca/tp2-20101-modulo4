@@ -31,7 +31,7 @@ public interface IUsuario {
 	 * @param sCodigo login del usuario, tipo String.
 	 * @param sPassword clave del usuario, tipo String.
 	 * @return usuario del sistema, tipo BUsuario.
-	 * @throws SQLException
+	 * @throws SQLException captura las excepciones del sistema.
 	 */
 	public abstract BUsuario validarUsuario(String sCodigo, String sPassword)
     throws SQLException;
@@ -40,7 +40,7 @@ public interface IUsuario {
 	/**
 	 * retorna la lista de usuarios del sistema.
 	 * @return lista de usuarios, tipo Lista.
-	 * @throws Exception
+	 * @throws Exception captura las excepciones del sistema.
 	 */
 	public abstract Lista obtenerUsuarios() throws Exception;
 	
@@ -48,7 +48,7 @@ public interface IUsuario {
 	 * Retorna un listado con los usuarios de un tipo.
 	 * @param tipo tipo de usuario, tipo String.
 	 * @return listado de usuarios, tipo Lista.
-	 * @throws Exception
+	 * @throws Exception captura las excepciones del sistema.
 	 */
 	public abstract Lista obtenerUsuariosxTipo(String tipo) throws Exception;
 	

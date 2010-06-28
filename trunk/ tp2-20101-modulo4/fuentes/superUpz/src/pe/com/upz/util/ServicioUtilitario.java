@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : ServicioUtilitario.
+ * Descripción                : Clase que contiene llamadas a metodos generales.
+ * Fecha de Creación          : 28/06/2010.
+  * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.util;
 
 import javax.servlet.*;
@@ -7,15 +14,66 @@ import pe.com.upz.bean.BEquivalencia;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUbigeo;
+import pe.com.upz.dao.DCuenta;
 import pe.com.upz.dao.DEquivalencia;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DUbigeo;
+import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.IEquivalencia;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.daoInterface.IUbigeo;
 
+/**
+ * Clase que contiene llamadas a metodos generales.
+ *
+ */
 public class ServicioUtilitario extends ServiceSession {
 
+	/**
+	 * Metodo que obtiene el puntaje de una cuenta.
+	 * 
+	 * @param HttpServletRequest
+	 *            Parametro de peticiones, tipo response.
+	 * @param HttpServletResponse
+	 *            Parametro de respuestas, tipo request.
+	 * @return sRuta Cadena de aceptacion, tipo String.
+	 */
+	public String requestObtenerPuntajeCuenta(HttpServletRequest request,
+			HttpServletResponse response) {
+		String sRuta = "0";
+		try {
+						
+			String codCuenta = (String) request
+					.getParameter("codCuenta");
+
+	
+			
+			ICuenta dCuenta = new DCuenta();
+			
+			sRuta = dCuenta.obtenerPuntajeCuenta(Integer.parseInt(codCuenta))+"";
+			
+			if (sRuta == null) {
+				sRuta = "_NoExiste";
+			}
+
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: ServicioUtilitario; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return sRuta;
+	}
+	/**
+	 * Metodo que obtiene el stock de un producto en sucursal.
+	 * 
+	 * @param HttpServletRequest
+	 *            Parametro de peticiones, tipo response.
+	 * @param HttpServletResponse
+	 *            Parametro de respuestas, tipo request.
+	 * @return sRuta Cadena de aceptacion, tipo String.
+	 */
+	
 	public String requestObtenerStock(HttpServletRequest request,
 			HttpServletResponse response) {
 		String sRuta = "0";
@@ -47,9 +105,13 @@ public class ServicioUtilitario extends ServiceSession {
 		return sRuta;
 	}
 	/**
-	 * @param request
-	 * @param response
-	 * @return
+	 * Metodo que obtiene los puntajes de un producto.
+	 * 
+	 * @param HttpServletRequest
+	 *            Parametro de peticiones, tipo response.
+	 * @param HttpServletResponse
+	 *            Parametro de respuestas, tipo request.
+	 * @return sRuta Cadena de aceptacion, tipo String.
 	 */
 	public String requestObtenerPuntaje(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -72,16 +134,16 @@ public class ServicioUtilitario extends ServiceSession {
 				// pasando las provincias a cadena
 				StringBuffer cadena = new StringBuffer("_");
 				if(equival.getCantidadPuntoUno() > 0){
-					cadena.append(equival.getCantidadPuntoUno()+"|");
-					cadena.append(equival.getMontoUno()+";");
+					cadena.append(equival.getMontoUno()+"|");
+					cadena.append(equival.getCantidadPuntoUno()+";");
 				}
 				if(equival.getCantidadPuntoDos() > 0){
-					cadena.append(equival.getCantidadPuntoDos()+"|");
-					cadena.append(equival.getMontoDos()+";");
+					cadena.append(equival.getMontoDos()+"|");
+					cadena.append(equival.getCantidadPuntoDos()+";");
 				}
 				if(equival.getCantidadPuntoDos() > 0){
-					cadena.append(equival.getCantidadPuntoTres()+"|");
-					cadena.append(equival.getMontoTres()+"");
+					cadena.append(equival.getMontoTres()+"|");
+					cadena.append(equival.getCantidadPuntoTres()+"");
 				}
 				sRuta = cadena.toString();
 			}

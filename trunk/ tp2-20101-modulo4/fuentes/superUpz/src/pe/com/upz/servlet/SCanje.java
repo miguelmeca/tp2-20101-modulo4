@@ -100,10 +100,12 @@ public class SCanje extends HttpServlet {
 			int codigoCuenta= Integer.parseInt(request.getParameter("hddCodigoCliente"));
 			
 			int cantidad =Integer.parseInt(request.getParameter("txtCantidadCanje"));
-			int puntaje=Integer.parseInt(request.getParameter("hddPuntaje"));
+			String x=request.getParameter("hddPuntaje");
+			int puntaje=Integer.parseInt(x);
 			double monto= Double.parseDouble(request.getParameter("txtMonto"));
 			
-				
+			puntaje = puntaje*cantidad;
+			
 			CCanje cAba = new CCanje();
 			//actualiza el puntaje
 			cAba.actualizarPuntaje(conn, codigoCuenta, puntaje, usuario);
