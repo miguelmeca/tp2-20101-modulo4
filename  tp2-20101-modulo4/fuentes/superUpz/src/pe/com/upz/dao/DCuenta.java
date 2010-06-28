@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : DCuenta.
+ * Descripción                : Clase DAO de cuenta de programa.
+ * Fecha de Creación          : 15/05/2010.
+ * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.dao;
 
 import java.sql.Connection;
@@ -15,6 +22,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de cuenta de programa.
+ *
+ */
 public class DCuenta implements ICuenta {
 
 	@Override
