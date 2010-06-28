@@ -19,6 +19,10 @@ import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.ISucursal;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase DAO de sucursales.
+ *
+ */
 public class DSucursal implements ISucursal {
 
 	/*
