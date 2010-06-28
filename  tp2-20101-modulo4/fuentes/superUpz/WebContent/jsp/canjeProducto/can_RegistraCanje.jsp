@@ -66,11 +66,15 @@ body {
 							<tr>
 								<td align="left" style="height: 21px; width: 175px;">
 								Cliente: (*)</td>
-								<td align="left" style="width: 420px; height: 21px;"><input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true"  />
-                                  <input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />
-                                  <input type="button" name="btnBuscarCliente" value="Buscar" 
-			  onclick="javascript:mostrarClientes()" 
-			  style="width:70px" class="ui-state-default"  /></td>
+								<td align="left" style="width: 420px; height: 21px;"><input
+									name="hddCodigoCliente" type="hidden"
+									class="text  ui-corner-all" id="hddCodigoCliente"
+									style="width: 150px" readonly="true" /> <input
+									name="txtCliente" type="text" class="text  ui-corner-all"
+									id="txtCliente" style="width: 250px" readonly="true" /> <input
+									type="button" name="btnBuscarCliente" value="Buscar"
+									onclick="javascript:mostrarClientes()" style="width: 70px"
+									class="ui-state-default" /></td>
 							</tr>
 							<tr>
 								<td align="left" style="height: 26px; width: 175px;">
@@ -80,53 +84,49 @@ body {
 									name="txtProducto" type="text" class="text  ui-corner-all"
 									id="txtProducto" style="width: 250px" readonly="true" /> <input
 									type="button" name="btnBuscarProducto" value="Buscar"
-									onclick="javascript:mostrarProductos()" 
-									style="width: 70px" class="ui-state-default btnBuscarProducto" /></td>
+									onclick="javascript:mostrarProductos()" style="width: 70px"
+									class="ui-state-default btnBuscarProducto" /></td>
 							</tr>
 							<tr>
-								<td align="left" style="height: 31px; width: 175px;">
-								Descripción:</td>
-								<td align="left" style="height: 31px; width: 420px;"><textarea
-									name="txtDescripcionProducto" cols="" rows="" readonly="readonly"
-									class="text  ui-corner-all" id="txtDescripcionProducto" style="width: 200px"></textarea></td>
-							</tr>
+							  <td align="left" style="height: 31px; width: 175px;">Total de puntos:</td>
+							  <td align="left" style="height: 31px; width: 420px;"><input name="hddPuntajeCuenta" type="text" id="hddPuntajeCuenta" readonly="true" /></td>
+						  </tr>
 							<tr>
-								<td align="left" style="height: 26px; width: 175px;">
-								Stock Actual:</td>
+								<td align="left" style="height: 26px; width: 175px;">Stock
+								Actual:</td>
 								<td align="left" style="height: 26px; width: 420px;"><input
 									name="txtStockProducto" type="text" class="text  ui-corner-all"
-									id="txtStockProducto" style="width: 54px" value="100" readonly="readOnly" />
-								</td>
+									id="txtStockProducto" style="width: 54px" value="100"
+									readonly="readOnly" /></td>
 							</tr>
 							<tr>
 								<td align="left" style="height: 26px; width: 175px;">Puntos:(*)
 								</td>
-							  <td align="left" style="height: 26px; width: 420px;"><select
-									id="selPuntaje" 
+								<td align="left" style="height: 26px; width: 420px;"><select
+									id="selPuntaje"
 									onChange="javascript:mostrarMonto();seleccionarPuntaje();"
 									name="selPuntaje" style="width: 79px">
 									<option value="0">-Seleccione-</option>
-								</select>
-							    <input name="hddPuntaje" type="hidden" id="hddPuntaje"> </td>
-							</tr>
-							<tr>
-								<td align="left" style="height: 26px; width: 175px;">
-								Monto S/. :</td>
-								<td align="left" style="height: 26px; width: 420px;"><input
-									type="text" name="txtMonto" id="txtMonto" style="width: 56px"
-									class="text  ui-corner-all" readonly="true" /> 
+								</select> <input name="hddPuntaje" type="hidden" id="hddPuntaje">
 								</td>
 							</tr>
 							<tr>
-								<td align="left">Cantidad de canje : (*) </td>
-							    <td align="left"><input name="txtCantidadCanje"
-									type="text" 
-									class="text  ui-corner-all" id="txtCantidadCanje" style="width: 56px"
-									onKeyPress="Upper();SoloNumeros();" value="1"  /></td>
+								<td align="left" style="height: 26px; width: 175px;">Monto
+								S/. :</td>
+								<td align="left" style="height: 26px; width: 420px;"><input
+									type="text" name="txtMonto" id="txtMonto" style="width: 56px"
+									class="text  ui-corner-all" readonly="true" /></td>
 							</tr>
 							<tr>
-							  <td colspan="2" align="left">&nbsp;</td>
-						  </tr>
+								<td align="left">Cantidad de canje : (*)</td>
+								<td align="left"><input name="txtCantidadCanje" type="text"
+									class="text  ui-corner-all" id="txtCantidadCanje"
+									style="width: 56px" onKeyPress="Upper();SoloNumeros();"
+									value="1" /></td>
+							</tr>
+							<tr>
+								<td colspan="2" align="left">&nbsp;</td>
+							</tr>
 							<tr>
 								<td colspan="2" align="left"><span class="style3">(*)
 								Campos obligatórios.&nbsp;</span></td>
@@ -142,9 +142,8 @@ body {
 			<tr>
 				<td class="ui-widget-header">
 				<div align="right"><input type="button" name="btnAceptar"
-					value="Aceptar" style="width: 120px"
+					onclick="javascript:canjear()" value="Aceptar" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
-					onclick="javascript:canjear()" 
 					name="btnCancelar" value="Cancelar" style="width: 120px"
 					class="ui-state-default btnCancelar" /></div>
 				</td>
@@ -157,18 +156,37 @@ body {
 	</tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
-<input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="0" />
-</form>
+<input type="hidden" name="hddMantenimiento" id="hddMantenimiento"
+	value="0" /></form>
 </div>
 </body>
 <script language="JavaScript">
 function seleccionarPuntaje(){
-	var puntaje = frmCanje.selPuntaje.options[frmCanje.selPuntaje.selectedIndex];
+	var puntaje = frmCanje.selPuntaje.options[frmCanje.selPuntaje.selectedIndex].text;
 	frmCanje.hddPuntaje.value=puntaje;
 }
 function mostrarMonto(){
 	var monto = frmCanje.selPuntaje.value;
 	frmCanje.txtMonto.value=monto;
+}
+function buscarPuntajeCuenta(){   
+
+	var codCuenta = frmCanje.hddCodigoCliente.value;
+    
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestObtenerPuntajeCuenta" +
+                  "&codCuenta="+ codCuenta; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK__NoExiste")   {
+    	frmCanje.hddPuntajeCuenta.value = ret.substr(2);
+    }
+     
 }
 function buscarStock(){   
 
@@ -247,11 +265,14 @@ function mostrarProductos(){
 }
 
 function canjear(){
-	var codPersona = frmCanje.hddCodigoCliente.values;
+	var codPersona = frmCanje.hddCodigoCliente.value;
 	var codProducto =frmCanje.hddCodigoProducto.value;
 	var stock=parseInt(frmCanje.txtStockProducto.value);
 	var puntajeSel=frmCanje.selPuntaje.selectedIndex;
+	var puntaje=frmCanje.hddPuntaje.value;
 	var cantidadCanje = parseInt(frmCanje.txtCantidadCanje.value);
+	var totalPuntos = parseInt(frmCanje.hddPuntajeCuenta.value);
+		
 	if(codPersona == ""){
 		alert("Debe seleccionar a una persona.");
 		return;
@@ -276,6 +297,10 @@ function canjear(){
 	if(cantidadCanje > stock){
 		alert("La cantidad a canjear es mayor que el stock actual.");
 		return;
+	}
+	if(totalPuntos < (cantidadCanje * parseInt(puntaje) )){
+		alert("No dispone de suficientes puntos para realizar el canje.");
+		return;	
 	}
 	frmCanje.target="_top";
 	frmCanje.hddOperacion.value="almacenarCanje";
