@@ -58,7 +58,7 @@ public class DProducto implements IProducto{
 		if(filtro == 1){
 			sql.append("AND      PD.TIPO_PRODUCTO_ID = ? \n");
 		}else if(filtro == 2){
-			sql.append("AND      PD.NOMBRE LIKE '%'||?||'%' \n");
+			sql.append("AND      UPPER(PD.NOMBRE) LIKE '%'||?||'%' \n");
 		}else if(filtro == 3){
 			sql.append("AND      PD.PRODUCTO_ID = ? \n");
 		}
@@ -220,7 +220,7 @@ public class DProducto implements IProducto{
 		if(filtro == 1){
 			sql.append("AND      PR.TIPO_PRODUCTO_ID = ? \n");
 		}else if(filtro == 2){
-			sql.append("AND      PR.NOMBRE LIKE '%'||?||'%' \n");
+			sql.append("AND      UPPER(PR.NOMBRE) LIKE '%'||?||'%' \n");
 		}else if(filtro == 3){
 			sql.append("AND      PR.PRODUCTO_ID = ? \n");
 		}

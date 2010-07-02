@@ -114,7 +114,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			if (filtro == 1) {
 				valorAux = request.getParameter("txtDNIBuscar");
 			} else if (filtro == 2) {
-				valorAux = request.getParameter("txtNumeroTarjeta");
+				valorAux2 = request.getParameter("txtNumeroTarjeta");
 			}
 
 			Lista listadoCuenta = null;

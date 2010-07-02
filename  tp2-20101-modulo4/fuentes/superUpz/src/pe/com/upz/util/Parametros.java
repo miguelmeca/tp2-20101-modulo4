@@ -50,7 +50,7 @@ public class Parametros {
 	/**
 	 * Cantidad de productos permitida en una orden de pedido.
 	 */
-	public static int CANTIDAD_PRODUCTOS_X_ORDEN=2;
+	public static int CANTIDAD_PRODUCTOS_X_ORDEN=20;
 	
 	/**
 	 * meses del anio.
