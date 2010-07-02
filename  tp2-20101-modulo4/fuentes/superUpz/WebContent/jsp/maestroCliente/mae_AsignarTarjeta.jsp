@@ -1,3 +1,10 @@
+<%--
+*Resumen
+*Objeto                 : mae_AsignarTarjeta.jsp.
+* Descripcion           : pagina para asignar una tarjeta a una cuenta.
+* Fecha de Creacion     : 01/07/2010
+* Autor                 : Gonzalo Azabache Carrillo
+--%>
 <%
 String ruta = request.getContextPath(); 
 String variable = request.getParameter("mostrar");

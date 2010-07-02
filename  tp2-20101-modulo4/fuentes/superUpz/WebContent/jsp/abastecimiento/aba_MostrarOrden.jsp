@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" errorPage="" %>
 <%--
 *Resumen
 *Objeto                 : aba_MostrarOrden.jsp.
@@ -6,6 +5,7 @@
 * Fecha de Creacion     : 24/05/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
+<%@ page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" errorPage="" %>
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
 <%@page import="pe.com.upz.bean.BUsuario"%>

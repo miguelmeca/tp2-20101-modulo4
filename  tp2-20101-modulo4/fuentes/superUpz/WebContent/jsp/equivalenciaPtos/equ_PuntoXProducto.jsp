@@ -1,6 +1,6 @@
 <%--
 *Resumen
-*Objeto                 : equi_PuntoXProducto.jsp.
+*Objeto                 : equ_PuntoXProducto.jsp.
 * Descripcion           : pagina para el puntaje de productos.
 * Fecha de Creacion     : 10/06/2010
 * Autor                 : Gonzalo Azabache Carrillo

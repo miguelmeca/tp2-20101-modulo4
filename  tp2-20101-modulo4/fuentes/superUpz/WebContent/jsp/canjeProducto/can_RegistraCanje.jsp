@@ -1,7 +1,14 @@
-<html>
+<%--
+*Resumen
+*Objeto                 : can_RegistraCanje.jsp.
+* Descripcion           : pagina para registrar los canjes de productos.
+* Fecha de Creacion     : 10/06/2010
+* Autor                 : Gonzalo Azabache Carrillo
+--%>
 <%
 String ruta = request.getContextPath(); 
 %>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Canjear Puntos</title>
