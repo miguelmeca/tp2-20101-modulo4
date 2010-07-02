@@ -39,6 +39,14 @@ public interface ICliente {
 			int filtro, String valorAux, String valorAux2, String valorAux3)
 			throws SQLException;
 	
+	/**
+	 * Almacena un cliente nuevo.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param cliente cliente a almacenar, tipo BCliente.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return codigo de cliente almacenado, tipo int.
+	 * @throws SQLException
+	 */
 	public abstract int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException;
 	
 	/**

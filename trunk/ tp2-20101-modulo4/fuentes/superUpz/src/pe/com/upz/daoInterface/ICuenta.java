@@ -21,6 +21,15 @@ import pe.com.upz.util.Lista;
  *
  */
 public interface ICuenta {
+	/**
+	 * Obtiene el lsitado de cuentas.
+	 * @param soloActivos indica obtener solo los activos, tipo boolean.
+	 * @param filtro indica el filtro a aplicar, tipo int.
+	 * @param valorAux valor del filtro 1, tipo String.
+	 * @param valorAux2 valor del filtro 2, tipo String.
+	 * @return listado de clientes de cuenta, tipo Lista.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract Lista obtenerListadoCuenta(boolean soloActivos,
 			int filtro, String valorAux, String valorAux2)
 			throws SQLException;

@@ -47,11 +47,28 @@ public class CMantenimientoCliente {
 		return listadoCliente;
 	}
 	
+	/**
+	 * Almacena un cliente nuevo.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param cliente cliente a almacenar, tipo BCliente.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return codigo de cliente almacenado, tipo int.
+	 * @throws SQLException
+	 */
 	public int almacenarCliente(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException{
 		ICliente daoCliente = new DCliente();
 
 		return daoCliente.almacenarCliente(conn, cliente, usuario);
 	}
+	/**
+	 * Obtiene el lsitado de cuentas.
+	 * @param soloActivos indica obtener solo los activos, tipo boolean.
+	 * @param filtro indica el filtro a aplicar, tipo int.
+	 * @param valorAux valor del filtro 1, tipo String.
+	 * @param valorAux2 valor del filtro 2, tipo String.
+	 * @return listado de clientes de cuenta, tipo Lista.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public Lista obtenerListadoCuenta(boolean soloActivos, int filtro,String valorAux,String valorAux2)throws SQLException{
 		Lista listadoCliente=null;
 		ICuenta daoCliente = new DCuenta();
@@ -60,6 +77,15 @@ public class CMantenimientoCliente {
 		
 		return listadoCliente;
 	}
+	/**
+	 * Almacena una nueva cuenta de cliente.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param cuenta cuenta a almacenar, tipo BCuenta
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tipo BSucursal.
+	 * @return codigoCuenta codigo generado, tipo int.
+	 * @throws SQLException  captura excepciones tipo SQL.
+	 */
 	public int almacenarCuenta(Connection conn, BCuenta cuenta, BUsuario usuario, BSucursal sucursal)throws SQLException{
 		ICuenta daoCliente = new DCuenta();
 		ITarjetaFidelizacion tarjetaFidel = new DTarjetaFidelizacion();
