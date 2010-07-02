@@ -1,3 +1,10 @@
+/**
+ * Resumen.
+ * Objeto                     : CCanje.
+ * Descripción                : Clase controladora para el modulo de canje. 
+ * Fecha de Creación          : 20/06/2010.
+ * Autor                     : Gonzalo Azabache Carrillo.
+ */
 package pe.com.upz.controlador;
 
 import java.sql.Connection;
@@ -21,6 +28,10 @@ import pe.com.upz.daoInterface.IPedido;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Lista;
 
+/**
+ * Clase controladora para el modulo de canje. 
+ *
+ */
 public class CCanje {
 	/**
 	 * Almacena la orden generada.
@@ -74,6 +85,14 @@ public class CCanje {
 		return codigoGenerado;
 	}
 	
+	/**
+	 * Actualiza el puntaje de una cuenta.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param codcuenta codigo de la cuenta, tipo int.
+	 * @param cantidadPuntos cantidad de puntos descontar, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public void actualizarPuntaje(Connection conn, int codcuenta, int cantidadPuntos,BUsuario usuario)throws SQLException {
 		ICuenta daoCuenta = new DCuenta();
 		
