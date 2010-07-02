@@ -108,11 +108,7 @@ function Upper() {
 }
 
 function SoloNumeros() {
-	/*
-	 Autor		:	Claudio Zarate 07/03/2001
-	 Descripcion	:	Permite el ingreso unicamente de Numeros.
-	 */
-
+	
 	if (window.event.keyCode != 13) {
 		var Tecla;
 		Tecla = String.fromCharCode(window.event.keyCode);

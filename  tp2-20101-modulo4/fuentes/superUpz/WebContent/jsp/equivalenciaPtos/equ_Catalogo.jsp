@@ -94,7 +94,9 @@ body {
               <tr>
                 <td width="55%" height="50px" class="Estilo1">
 				<div id="divDescripcion" style="position:relative;top: 20px;left: 0px ">Nombre de producto:
-                      <input name="txtNombreBuscar" type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
+                      <input name="txtNombreBuscar" 
+					  onKeyPress="Upper();permitirLetraNumeroEspeciales();"  
+					  type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
                 </div>                    
                   <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
                       
@@ -104,7 +106,10 @@ body {
                       <%} %>
                     </select></div>
                     <div id="divCodigo" style="position:relative;top: -20px;left: 0px ">C&oacute;digo: 
-                      <input name="txtCodigoBuscar" type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
+                      <input name="txtCodigoBuscar" type="text"  
+					  onKeyPress="Upper();SoloNumeros();" 
+					  maxlength="6" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" >
+                    </div>
 					  <div id="divVacio" style="position:relative;top: -35px;left: 0px "> </div></td><td width="45%" class="Estilo1">
                       <input name="btnBuscar" type="button"   
                       onclick="javascript:buscarPorParametro()" 
@@ -167,10 +172,10 @@ body {
                 </tr>
               <tr>
                 <td colspan="3"> <%=equiva.getCantidadPuntoUno() %> ptos + S/. <%=equiva.getMontoUno() %> 
-								<%if (equiva.getCantidadPuntoDos() != 0 && equiva.getMontoDos()!=0 ){ %>
+								<%if (equiva.getCantidadPuntoDos() != 0 ){ %>
 								<br><%=equiva.getCantidadPuntoDos() %> ptos + S/. <%=equiva.getMontoDos() %>
 								<%} %>
-								<%if (equiva.getCantidadPuntoTres() != 0 && equiva.getMontoTres()!=0 ){ %>
+								<%if (equiva.getCantidadPuntoTres() != 0 ){ %>
 								<br><%=equiva.getCantidadPuntoTres() %> ptos + S/. <%=equiva.getMontoTres() %>
 								<%} %>
 				</td>
@@ -190,7 +195,9 @@ body {
 <tr>
     <td class="ui-widget-header">
 		<div align="right">
-          <input type="button" name="btnCancelar" value="Cancelar" style="width:120px" class="ui-state-default btnCancelar"  />
+          <input type="button" name="btnCancelar" 
+		  onclick="javascript:cerrar()" 
+		  value="Cancelar" style="width:120px" class="ui-state-default btnCancelar"  />
        </div></td>
 </tr>
 </table>
@@ -199,6 +206,10 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	frmCatalogo.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmCatalogo.submit();
+}
 function buscarPorParametro(){
 	frmCatalogo.hddOperacion.value="inicioCatalogo";
 	frmCatalogo.action="SEquivalencia";

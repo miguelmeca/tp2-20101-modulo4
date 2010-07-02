@@ -101,7 +101,9 @@ body {
               <tr>
                 <td width="55%" height="50px" class="Estilo1">
 				<div id="divDescripcion" style="position:relative;top: 20px;left: 0px ">Nombre de producto:
-                      <input name="txtNombreBuscar" type="text" size="300px"  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
+                      <input name="txtNombreBuscar" type="text" size="300px"  
+					  onKeyPress="Upper();permitirLetraNumeroEspeciales();"  
+					  maxlength="100" value="<%=filtroPagina.equals("2")?valorAuxiliar:"" %>" >
                 </div>                    
                   <div id="divTipo" style="position:relative;top: 0px;left: 0px ">Tipo: <select name="selTipoBuscar">
                       
@@ -111,7 +113,10 @@ body {
                       <%} %>
                     </select></div>
                     <div id="divCodigo" style="position:relative;top: -20px;left: 0px ">C&oacute;digo: 
-                      <input name="txtCodigoBuscar" type="text"  maxlength="100" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" ></div>
+                      <input name="txtCodigoBuscar" type="text"  
+					  onKeyPress="Upper();SoloNumeros();" 
+					  maxlength="6" value = "<%=filtroPagina.equals("3")?valorAuxiliar:"" %>" >
+                    </div>
 					  <div id="divVacio" style="position:relative;top: -35px;left: 0px "> </div></td><td width="45%" class="Estilo1">
                       <input name="btnBuscar" type="button"   
                       onclick="javascript:buscarPorParametro()" 
@@ -230,8 +235,23 @@ function mostrarMensaje(){
 		alert("Se actualizó el producto.");
 	}
 }
-
+function validarProductosSeleccionados(){
+	var seleccionado = false;
+	
+	for (i=0; i < frmListaProducto.chkProducto.length; i++) {
+		if (frmListaProducto.chkProducto[i].checked) {
+			seleccionado = true;
+			break;
+		}
+	}	
+	return seleccionado;
+}
 function agregarPuntaje(){
+	if(!validarProductosSeleccionados()){
+		alert("Debe seleccionar un producto");
+		return;
+	}
+	
 	frmListaProducto.hddOperacion.value="agregarEquivalencia";
 	frmListaProducto.action="SEquivalencia";
 	frmListaProducto.submit();
