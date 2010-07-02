@@ -145,6 +145,7 @@ body {
 					onclick="javascript:canjear()" value="Aceptar" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
 					name="btnCancelar" value="Cancelar" style="width: 120px"
+					onclick="javascript:cerrar()" 
 					class="ui-state-default btnCancelar" /></div>
 				</td>
 			</tr>
@@ -161,6 +162,10 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function cerrar(){
+	frmCanje.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmCanje.submit();
+}
 function seleccionarPuntaje(){
 	var puntaje = frmCanje.selPuntaje.options[frmCanje.selPuntaje.selectedIndex].text;
 	frmCanje.hddPuntaje.value=puntaje;

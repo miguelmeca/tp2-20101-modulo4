@@ -85,51 +85,51 @@ body {
                 <td width="117"><div align="left">1ra equivalencia: </div></td>
                 <td width="99"><div align="left">Monto S/. :(<span class="style3">*</span>) </div></td>
                 <td width="73"><div align="left">
-                  <input type="text" name="txtMonto1" id="txtMonto1" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoUno()%>" 
+                  <input name="txtMonto1" type="text" class="text  ui-corner-all" id="txtMonto1" 
+                  style="width:60px" 
 				  onKeyPress="FiltroDecimal(this.value);" 
-                  style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoUno()%>" maxlength="7" />
                 </div></td>
                 <td width="81"><div align="left">Puntos:(<span class="style3">*</span>) </div></td>
                 <td width="67"><div align="left">
-                  <input type="text" name="txtPuntos1" id="txtPuntos1" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoUno()%>" 
+                  <input name="txtPuntos1" type="text" class="text  ui-corner-all" id="txtPuntos1" 
+				  style="width:60px" 
                   onKeyPress="Upper();SoloNumeros();" 
-				  style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoUno()%>" maxlength="5" />
                 </div></td>
               </tr>
               <tr>
                 <td align="left"><div align="left">2da equivalencia</div></td>
                 <td align="left" ><div align="left">Monto S/. </div></td>
                 <td><div align="left">
-                  <input type="text" name="txtMonto2" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoDos()%>" 
+                  <input name="txtMonto2" type="text" class="text  ui-corner-all" 
+                  id="txtMonto2" style="width:60px" 
 				  onKeyPress="FiltroDecimal(this.value);" 
-                  id="txtMonto2" style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoDos()%>" maxlength="7" />
                 </div></td>
                 <td><div align="left">Puntos:</div></td>
                 <td><div align="left">
-                  <input type="text" name="txtPuntos2" id="txtPuntos2" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoDos()%>" 
+                  <input name="txtPuntos2" type="text" class="text  ui-corner-all" id="txtPuntos2" 
+				  style="width:60px" 
                   onKeyPress="Upper();SoloNumeros();" 
-				  style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoDos()%>" maxlength="5" />
                 </div></td>
               </tr>
               <tr>
                 <td><div align="left">3ra equivalencia</div></td>
                 <td><div align="left">Monto S/. </div></td>
                 <td><div align="left">
-                  <input type="text" name="txtMonto3" id="txtMonto3" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoTres()%>" 
+                  <input name="txtMonto3" type="text" class="text  ui-corner-all" id="txtMonto3" 
+                  style="width:60px" 
 				  onKeyPress="FiltroDecimal(this.value);" 
-                  style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getMontoTres()%>" maxlength="7" />
                 </div></td>
                 <td><div align="left">Puntos:</div></td>
                 <td><div align="left">
-                  <input type="text" name="txtPuntos3" id="txtPuntos3" 
-                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoTres()%>" 
+                  <input name="txtPuntos3" type="text" class="text  ui-corner-all" id="txtPuntos3" 
+				  style="width:60px" 
                   onKeyPress="Upper();SoloNumeros();" 
-				  style="width:60px" class="text  ui-corner-all" />
+                  value = "<%=((BEquivalencia)producto.getListaPuntaje().getElemento(0)).getCantidadPuntoTres()%>" maxlength="5" />
                 </div></td>
               </tr>
             </table></td>
@@ -172,6 +172,76 @@ function cerrar(){
 }
 
 function agregarPuntaje(){
+	
+	if(Trim(frmMinimo.txtMonto1.value) == ""){
+		frmMinimo.txtMonto1.value="0.0";
+	}
+	if(Trim(frmMinimo.txtMonto2.value) == ""){
+		frmMinimo.txtMonto2.value="0.0";
+	}
+	if(Trim(frmMinimo.txtMonto3.value) == ""){
+		frmMinimo.txtMonto3.value="0.0";
+	}
+	if(Trim(frmMinimo.txtPuntos1.value) == ""){
+		frmMinimo.txtPuntos1.value="0";
+	}
+	if(Trim(frmMinimo.txtPuntos2.value) == ""){
+		frmMinimo.txtPuntos2.value="0";
+	}
+	if(Trim(frmMinimo.txtPuntos3.value) == ""){
+		frmMinimo.txtPuntos3.value="0";
+	}
+	
+	var monto1 = Trim(frmMinimo.txtMonto1.value);
+	var monto2 = Trim(frmMinimo.txtMonto2.value);
+	var monto3 = Trim(frmMinimo.txtMonto3.value);
+	
+	var puntaje1 = Trim(frmMinimo.txtPuntos1.value);
+	var puntaje2= Trim(frmMinimo.txtPuntos2.value);
+	var puntaje3= Trim(frmMinimo.txtPuntos3.value);
+	
+	if(monto1 == "" || isNaN(monto1) ){
+		alert("Debe ingresar la primera equivalencia.");
+		frmMinimo.txtMonto1.focus();
+		return;
+	}
+	if(puntaje1 == ""|| isNaN(puntaje1)|| parseInt(puntaje1)<=0){
+		alert("Debe ingresar la primera equivalencia.");
+		frmMinimo.txtPuntos1.focus();
+		return;
+	}
+	if( isNaN(monto2)  ){
+		alert("Debe ingresar un valor válido para equivalencia.");
+		frmMinimo.txtMonto2.focus();
+		return;
+	}
+	if( isNaN(puntaje2)){
+		alert("Debe ingresar la primera equivalencia.");
+		frmMinimo.txtPuntos2.focus();
+		return;
+	}
+	
+	if(parseInt(monto2) > 0 && parseInt(puntaje2) <=0 ){
+		alert("Si ingresa un monto en soles, debe ingresar una cantidad de puntos.");
+		frmMinimo.txtPuntos2.focus();
+		return;
+	}
+	if( isNaN(monto3)  ){
+		alert("Debe ingresar un valor válido para equivalencia.");
+		frmMinimo.txtMonto3.focus();
+		return;
+	}
+	if( isNaN(puntaje3)){
+		alert("Debe ingresar la primera equivalencia.");
+		frmMinimo.txtPuntos3.focus();
+		return;
+	}
+	
+	if(parseInt(monto3) > 0 && parseInt(puntaje3) <=0 ){
+		alert("Si ingresa un monto en soles, debe ingresar una cantidad de puntos.");
+		frmMinimo.txtPuntos3.focus();
+		return;
+	}	
 	frmMinimo.hddOperacion.value="almacenarEquivalencia";
 	frmMinimo.action="SEquivalencia";
 	frmMinimo.submit();

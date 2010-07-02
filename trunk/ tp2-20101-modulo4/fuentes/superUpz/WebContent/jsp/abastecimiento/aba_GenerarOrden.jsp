@@ -62,7 +62,7 @@ MM_reloadPage(true);
 <body>
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width: 100%" align="center">
-<form action="" method="get" name="frmListaProducto">
+<form action="" method="post" name="frmListaProducto">
 <table width="1010px" border="0">
 		<tr>
 			<td
