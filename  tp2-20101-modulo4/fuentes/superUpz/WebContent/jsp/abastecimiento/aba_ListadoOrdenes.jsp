@@ -122,7 +122,7 @@ function verOrden(){
 	}
 	
 	frmListaProducto.hddOperacion.value="mostrarOrdenActualizar";
-	frmListaProducto.action="SMantenimiento?hddOperacion=mostrarOrdenActualizar";
+	frmListaProducto.action="SAbastecimiento?hddOperacion=mostrarOrdenActualizar";
 	frmListaProducto.submit();
 }
 function validarOrdenSeleccionados(){
