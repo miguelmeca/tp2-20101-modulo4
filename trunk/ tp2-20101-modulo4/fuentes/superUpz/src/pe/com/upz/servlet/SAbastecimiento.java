@@ -49,6 +49,8 @@ public class SAbastecimiento extends HttpServlet {
 				ruta = mostrarOrden(request);
 			}else if(operacion.equals("almacenarOrden")){
 				ruta = almacenarOrden(request,usuario);
+			}else if(operacion.equals("actualizarStock")){
+				ruta = actualizarStock(request);
 			}
 
 			getServletConfig().getServletContext().getRequestDispatcher(ruta).forward(request, response);
@@ -305,6 +307,29 @@ public class SAbastecimiento extends HttpServlet {
 					+ Parametros.CLAVE + "; Mensaje:" + e);
 		}
 
+		return ruta;
+	}
+	/**
+	 * Muestra la pagina jsp con el listado de ordenes generadas
+	 * para la orden de pedido
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return
+	 */
+	private String actualizarStock(HttpServletRequest request){
+		
+		Lista listaOrdenes= new Lista();
+		String ruta="";
+		try {
+		CAbastecimiento cAbastecimiento = new CAbastecimiento();
+		listaOrdenes = cAbastecimiento.mostrarOrdenes();		
+		request.setAttribute("listaOrdenes", listaOrdenes);
+		ruta = "/jsp/abastecimiento/aba_ListadoOrdenes.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: SAbastecimiento; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
 		return ruta;
 	}
 }
