@@ -44,11 +44,19 @@ public interface IPedido {
 	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;
 	
 	/**
-	 * Obteiene detalle de una orden de pedido.
-	 * @param numPedido numer de la orden del pedido.
+	 * Obtiene detalle de una orden de pedido.
+	 * @param numPedido numero de la orden del pedido.
 	 * @return listado con el detalle de la orden.
-	 * @throws SQLException
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract Lista obtenerDetalleOrden(int numPedido)throws SQLException;
 
+	/**
+	 * Actualiza el estado de la orden.
+	 * @param conn objeto de conexion, tipo Connection.
+	 * @param numPedido numero de la orden del pedido. 
+	 * @param usuario usuario de la sesion, tipo BUsuario
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario)throws SQLException;
 }

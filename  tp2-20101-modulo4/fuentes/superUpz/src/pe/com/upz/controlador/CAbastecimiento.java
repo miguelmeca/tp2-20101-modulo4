@@ -170,5 +170,15 @@ public class CAbastecimiento {
 		
 		return daoPedido.obtenerDetalleOrden(numPedido);
 	}
-	
+	/**
+	 * Actualiza el estado de la orden.
+	 * @param conn objeto de conexion, tipo Connection.
+	 * @param numPedido numero de la orden del pedido. 
+	 * @param usuario usuario de la sesion, tipo BUsuario
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public void actualizarOrden(Connection conn,int numPedido, BUsuario usuario)throws SQLException{
+		IPedido daoPedido = new DPedido();
+		daoPedido.actualizarEstadoPedido(conn, numPedido, usuario);
+	}
 }
