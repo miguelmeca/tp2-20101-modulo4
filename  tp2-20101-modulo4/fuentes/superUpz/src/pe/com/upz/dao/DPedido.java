@@ -12,15 +12,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import pe.com.upz.bean.BPedido;
+import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.daoInterface.IPedido;
+import pe.com.upz.util.Lista;
+
 import java.sql.Connection;
 /**
  * Clase DAO de pedido.
  *
  */
 public class DPedido implements IPedido {
-
 
 	/* (non-Javadoc)
 	 * @see pe.com.upz.daoInterface.IPedido#almacenarOrden(java.sql.Connection)
@@ -86,4 +91,50 @@ public class DPedido implements IPedido {
 		return numeroOrden;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IPedido#obtenerListaOrdenes()
+	 */
+	@Override
+	public Lista obtenerListaOrdenes() throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		Lista lista = new Lista(); 
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT   PE.PEDIDO_ID                          AS ID   , \n");
+		sql.append("         TO_CHAR(PE.FECHA_PEDIDO,'DD/MM/YYYY') AS FECHA, \n");
+		sql.append("         COUNT(1)                              AS CANTIDAD \n");
+		sql.append("FROM     FIDELIZACION.PEDIDO PE, \n");
+		sql.append("         FIDELIZACION.DETALLE_PEDIDO DT \n");
+		sql.append("WHERE    PE.ESTADO    = 1 \n");
+		sql.append("AND      DT.ESTADO    = 1 \n");
+		sql.append("AND      PE.PEDIDO_ID = DT.PEDIDO_ID \n");
+		sql.append("GROUP BY PE.PEDIDO_ID, \n");
+		sql.append("         TO_CHAR(PE.FECHA_PEDIDO,'DD/MM/YYYY') \n");
+		sql.append("ORDER BY 1");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		//pstm.setInt(1, usuario.getCodigo());
+		
+		rs = pstm.executeQuery();
+		
+		BPedido pedido;
+		while(rs.next()){
+			pedido = new BPedido();
+			
+			pedido.setCodigo(rs.getInt("ID"));
+			pedido.setFechaPedido(rs.getString("FECHA"));
+			pedido.setCantidadProductos(rs.getInt("CANTIDAD"));
+			lista.setElemento(pedido);
+		}
+		
+		rs.close();
+		pstm.close();
+		conn.close();
+		
+		return lista;
+	}
+	
 }

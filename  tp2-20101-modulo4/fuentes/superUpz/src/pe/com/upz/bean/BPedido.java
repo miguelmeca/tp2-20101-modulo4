@@ -35,6 +35,11 @@ public class BPedido extends Bean {
 	private Lista listaDetalle;
 	
 	/**
+	 * cantidad de productos en la lista.
+	 */
+	private int cantidadProductos;
+	
+	/**
 	 * Retorna codigo del peddido.
 	 * @return codigo del peddido, tipo String.
 	 */
@@ -89,6 +94,20 @@ public class BPedido extends Bean {
 	 */
 	public void setListaDetalle(Lista listaDetalle) {
 		this.listaDetalle = listaDetalle;
+	}
+	/**
+	 * Retorna cantidad de productos de la orden, tipo int.
+	 * @return cantidad de productos de la orden, tipo int.
+	 */
+	public int getCantidadProductos() {
+		return cantidadProductos;
+	}
+	/**
+	 * Setea la cantidad de productos de la orden, tipo int.
+	 * @param cantidadProductos cantidad de productos de la orden, tipo int.
+	 */
+	public void setCantidadProductos(int cantidadProductos) {
+		this.cantidadProductos = cantidadProductos;
 	}
 	
 }

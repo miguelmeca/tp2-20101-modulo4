@@ -149,5 +149,14 @@ public class CAbastecimiento {
 
 	}
 
-	// public boolean validarusuario
+	/**
+	 * Obtiene el listado de ordenes generadas.
+	 * @return listado de ordenes, tipo Lista.
+	 * @throws SQLException
+	 */
+	public Lista mostrarOrdenes()throws SQLException {
+		IPedido daoPedido = new DPedido();
+		
+		return daoPedido.obtenerListaOrdenes();
+	}
 }
