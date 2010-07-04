@@ -159,4 +159,16 @@ public class CAbastecimiento {
 		
 		return daoPedido.obtenerListaOrdenes();
 	}
+	/**
+	 * Obtiene detalle de orden de pedido.
+	 * @param numPedido numero de pedido, tipo int.
+	 * @return listado del detalle, tipo Lista.
+	 * @throws SQLException
+	 */
+	public Lista obtenerDetalleOrden(int numPedido)throws SQLException {
+		IPedido daoPedido = new DPedido();
+		
+		return daoPedido.obtenerDetalleOrden(numPedido);
+	}
+	
 }

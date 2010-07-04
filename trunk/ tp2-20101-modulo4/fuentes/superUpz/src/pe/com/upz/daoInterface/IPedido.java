@@ -41,6 +41,14 @@ public interface IPedido {
 	 * @return numero de la orden almacenada, tipo int.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;;
+	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;
+	
+	/**
+	 * Obteiene detalle de una orden de pedido.
+	 * @param numPedido numer de la orden del pedido.
+	 * @return listado con el detalle de la orden.
+	 * @throws SQLException
+	 */
+	public abstract Lista obtenerDetalleOrden(int numPedido)throws SQLException;
 
 }

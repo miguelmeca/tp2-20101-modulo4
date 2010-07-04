@@ -51,6 +51,8 @@ public class SAbastecimiento extends HttpServlet {
 				ruta = almacenarOrden(request,usuario);
 			}else if(operacion.equals("actualizarStock")){
 				ruta = actualizarStock(request);
+			}else if(operacion.equals("mostrarOrdenActualizar")){
+				ruta = mostrarOrdenActualizar(request);
 			}
 
 			getServletConfig().getServletContext().getRequestDispatcher(ruta).forward(request, response);
@@ -324,6 +326,24 @@ public class SAbastecimiento extends HttpServlet {
 		listaOrdenes = cAbastecimiento.mostrarOrdenes();		
 		request.setAttribute("listaOrdenes", listaOrdenes);
 		ruta = "/jsp/abastecimiento/aba_ListadoOrdenes.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: SAbastecimiento; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	private String mostrarOrdenActualizar(HttpServletRequest request){
+		
+		Lista listaDetalle= new Lista();
+		String ruta="";
+		String codigo = request.getParameter("chkPedido");
+		try {
+		CAbastecimiento cAbastecimiento = new CAbastecimiento();
+		listaDetalle = cAbastecimiento.obtenerDetalleOrden(Integer.parseInt(codigo));		
+		request.setAttribute("listaDetalle", listaDetalle);
+		ruta = "/jsp/abastecimiento/aba_OrdenGenerada.jsp";
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: SAbastecimiento; " + "; Parametros="

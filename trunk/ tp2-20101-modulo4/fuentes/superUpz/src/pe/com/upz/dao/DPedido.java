@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import pe.com.upz.bean.BPedido;
+import pe.com.upz.bean.BPedidoDetalle;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
@@ -128,6 +129,60 @@ public class DPedido implements IPedido {
 			pedido.setFechaPedido(rs.getString("FECHA"));
 			pedido.setCantidadProductos(rs.getInt("CANTIDAD"));
 			lista.setElemento(pedido);
+		}
+		
+		rs.close();
+		pstm.close();
+		conn.close();
+		
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IPedido#obtenerDetalleOrden(int)
+	 */
+	@Override
+	public Lista obtenerDetalleOrden(int numPedido) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = ConnectDS.obtenerConeccion();
+		Lista lista = new Lista(); 
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT DP.PRODUCTO_ID AS IDPRODUCTO, \n");
+		sql.append("       PR.NOMBRE      AS NOMBRE    , \n");
+		sql.append("       TP.DESCRIPCION AS TIPO      , \n");
+		sql.append("       DP.CANTIDAD    AS CANTIDAD \n");
+		sql.append("FROM   FIDELIZACION.DETALLE_PEDIDO DP, \n");
+		sql.append("       FIDELIZACION.PRODUCTO PR      , \n");
+		sql.append("       FIDELIZACION.TIPO_PRODUCTO TP \n");
+		sql.append("WHERE  DP.PEDIDO_ID        = ? \n");
+		sql.append("AND    DP.ESTADO           = 1 \n");
+		sql.append("AND    PR.PRODUCTO_ID      = DP.PRODUCTO_ID \n");
+		sql.append("AND    PR.TIPO_PRODUCTO_ID = TP.TIPO_PRODUCTO_ID \n");
+		sql.append("ORDER BY 2");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, numPedido);
+		
+		rs = pstm.executeQuery();
+		
+		BPedidoDetalle detalle;
+		BProducto producto;
+		BTipoProducto tipo;
+		while(rs.next()){
+			detalle = new BPedidoDetalle();
+			producto = new BProducto();
+			tipo = new BTipoProducto();
+			
+			producto.setCodigo(rs.getInt("IDPRODUCTO"));
+			producto.setNombre(rs.getString("NOMBRE"));
+			tipo.setDescripcion(rs.getString("TIPO"));
+			detalle.setCantidad(rs.getInt("CANTIDAD"));
+			producto.setTipo(tipo);
+			detalle.setProducto(producto);
+			lista.setElemento(detalle);
 		}
 		
 		rs.close();
