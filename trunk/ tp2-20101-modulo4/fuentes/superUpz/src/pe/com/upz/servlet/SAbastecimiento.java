@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pe.com.upz.bean.BPedidoDetalle;
+import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.controlador.CAbastecimiento;
@@ -53,6 +55,8 @@ public class SAbastecimiento extends HttpServlet {
 				ruta = actualizarStock(request);
 			}else if(operacion.equals("mostrarOrdenActualizar")){
 				ruta = mostrarOrdenActualizar(request);
+			}else if(operacion.equals("almacenarOrdenActualizada")){
+				ruta = almacenarOrdenActualizada(request);
 			}
 
 			getServletConfig().getServletContext().getRequestDispatcher(ruta).forward(request, response);
@@ -344,6 +348,32 @@ public class SAbastecimiento extends HttpServlet {
 		listaDetalle = cAbastecimiento.obtenerDetalleOrden(Integer.parseInt(codigo));		
 		request.setAttribute("listaDetalle", listaDetalle);
 		ruta = "/jsp/abastecimiento/aba_OrdenGenerada.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: SAbastecimiento; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	private String almacenarOrdenActualizada(HttpServletRequest request){
+		String ruta="";
+		try {
+			int cantidad = Integer.parseInt(request.getParameter("hddCantidad"));
+			
+			Lista listaDetalle = new Lista();
+			BPedidoDetalle detalle;
+			BProducto producto;
+			for(int i =0;i< cantidad; i++){
+				detalle = new BPedidoDetalle();
+				producto = new BProducto();
+				
+				producto.setCodigo(Integer.parseInt(request.getParameter("hddCodProducto"+i)));
+				detalle.setProducto(producto);
+				detalle.setCantidad(Integer.parseInt(request.getParameter("txtCantidad"+producto.getCodigo())));
+				listaDetalle.setElemento(detalle);
+			}
+			
 		} catch (Exception e) {
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: SAbastecimiento; " + "; Parametros="

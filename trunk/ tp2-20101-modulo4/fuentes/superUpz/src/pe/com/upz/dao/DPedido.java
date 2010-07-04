@@ -191,5 +191,26 @@ public class DPedido implements IPedido {
 		
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IPedido#actualizarEstadoPedido(int)
+	 */
+	@Override
+	public void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE fidelizacion.pedido PE \n");
+		sql.append("SET    pe.estado               = 2      , \n");
+		sql.append("       pe.fecha_modificacion   = SYSDATE, \n");
+		sql.append("       pe.usuario_modificacion = ? \n");
+		sql.append("WHERE  pe.pedido_id            = ?");
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1,usuario.getLogin());
+		pstm.setInt(2,numPedido);
+		pstm.executeUpdate();
+		
+		pstm.close();
+	}
 	
 }
