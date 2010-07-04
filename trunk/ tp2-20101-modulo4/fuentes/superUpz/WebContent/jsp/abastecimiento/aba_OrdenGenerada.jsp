@@ -76,7 +76,7 @@ MM_reloadPage(true);
 					<div style="float: left" >FECHA DE GENERACI&Oacute;N:
 					<%=fecha%>
 					</div>
-					<div id="divTotal" style="float: right;" >TOTAL DE SELECCIONADOS: 0
+					<div id="divTotal" style="float: right;" >TOTAL DE PRODUCTOS: <%=listaDetalle.getTamanio()%>
 					</div>
 					</div>
 					</td>
@@ -88,9 +88,7 @@ MM_reloadPage(true);
 					<div align="left" style="position: relative; left: 5px; top: 0px;">
 					<table width="764" border="1">
 						<tr>
-							<td width="6%"
-								class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel</td>
-							<td width="10%"
+							<td width="16%"
 								class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 							<div align="center">Codigo</div>
 							</td>
@@ -119,9 +117,9 @@ MM_reloadPage(true);
 								BProducto producto = detalle.getProducto();
 						%>
 						<tr>
-							<td width="6%" class="ui-accordion-content"><input name="chkProducto" value ="<%=producto.getCodigo()%>" type="checkbox" value="0" onclick="javascript:validarNoMasDeXProductos(this,'<%=producto.getCodigo()%>')" /></td>
-							<td width="10%" class="ui-accordion-content">
+							<td width="16%" class="ui-accordion-content">
 							<div align="center" class="Estilo4"><%=producto.getCodigo()%></div>
+							<input name="hddCodProducto<%=i%>" type="hidden" value="<%=producto.getCodigo()%>" />
 							</td>
 							<td width="25%" class="ui-accordion-content">
 							<div align="center" class="Estilo4"><%=producto.getTipo().getDescripcion()%></div>
@@ -170,6 +168,7 @@ MM_reloadPage(true);
 		</tr>
 	</table>
 	<input type="hidden" name="hddOperacion" id="hddOperacion" value="mostrarOrden">
+	<input type="hidden" name="hddCantidad" id="hddCantidad" value="<%=listaDetalle.getTamanio()%>">
 	</form>
 	</div>
 </body>
@@ -181,26 +180,11 @@ function cerrar(){
 	frmListaProducto.submit();
 }
 function aceptar(){
-	if(!validarProductosSeleccionados()){
-		alert("Debe selecccionar productos para la orden de pedido.");
-		return;
-	}
-	frmListaProducto.target="_top";
-	frmListaProducto.hddOperacion.value="almacenarOrden";
-	frmListaProducto.action="SAbastecimiento?hddOperacion=almacenarOrden";
+	
+	frmListaProducto.hddOperacion.value="almacenarOrdenActualizada";
+	frmListaProducto.action="SAbastecimiento?hddOperacion=almacenarOrdenActualizada";
 	frmListaProducto.submit();
 }
-function validarNoMasDeXProductos(check, codigo){
-	if(contarSeleccionados()><%=Parametros.CANTIDAD_PRODUCTOS_X_ORDEN%>){
-		alert("Solo se permite un total de <%=Parametros.CANTIDAD_PRODUCTOS_X_ORDEN%>"+
-				" productos en una orden.");
-		check.checked = false;
-		contarSeleccionados();
-	}else{
-		habilitarCajaTexto(check, codigo);
-	}
-}
-
 function habilitarCajaTexto(check, codigo){
 
 	var cajaTexto = document.getElementById("txtCantidad"+codigo);
