@@ -1,8 +1,8 @@
 <%--
 *Resumen
-*Objeto                 : aba_GenerarOrden.jsp.
-* Descripcion           : pagina para registrar una orden depedido.
-* Fecha de Creacion     : 22/05/2010
+*Objeto                 : aba_OrdenGenerada.jsp.
+* Descripcion           : pagina para actualizar stock en la orden.
+* Fecha de Creacion     : 22/06/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
@@ -13,16 +13,12 @@
 
 <%
 	String ruta = request.getContextPath();
-	boolean mostrarValidacion = Boolean.parseBoolean(((String) request
-			.getAttribute("mostrarValidacion") == null) ? "true"
-			: (String) request.getAttribute("mostrarValidacion"));
-
 	String fecha = (String) request.getAttribute("fecha");
-	Lista listadoProducto = (Lista) request
-			.getAttribute("listadoProducto");
+	Lista listaDetalle = (Lista) request
+			.getAttribute("listaDetalle");
 
-	if (listadoProducto == null) {
-		listadoProducto = new Lista();
+	if (listaDetalle == null) {
+		listaDetalle = new Lista();
 	}
 %>
 <html >
@@ -118,8 +114,9 @@ MM_reloadPage(true);
 						style="border-width: 1; border-color: gray; width: 790px; height: 200px; overflow-y: scroll">
 					<table width="764" border="1">
 						<%
-							for (int i = 0; i < listadoProducto.getTamanio(); i++) {
-								BProducto producto = (BProducto) listadoProducto.getElemento(i);
+							for (int i = 0; i < listaDetalle.getTamanio(); i++) {
+								BPedidoDetalle detalle = (BPedidoDetalle) listaDetalle.getElemento(i);
+								BProducto producto = detalle.getProducto();
 						%>
 						<tr>
 							<td width="6%" class="ui-accordion-content"><input name="chkProducto" value ="<%=producto.getCodigo()%>" type="checkbox" value="0" onclick="javascript:validarNoMasDeXProductos(this,'<%=producto.getCodigo()%>')" /></td>
@@ -139,10 +136,7 @@ MM_reloadPage(true);
 							<div align="center"><input name="txtCantidad<%=producto.getCodigo()%>" type="text"
 								onKeyPress="Upper();SoloNumeros();" 
 								class="text  ui-corner-all" id="txtCantidad<%=producto.getCodigo()%>" style="width: 50px"
-								value="<%=producto.obtenerMaximoSolicitar()%>" size="5" maxlength="5" 
-								onkeyup="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
-								onblur="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
-								disabled />
+								value="<%=detalle.getCantidad()%>" size="5" maxlength="5"  />
 								<input name="hddCantidad<%=producto.getCodigo()%>" type="hidden"
 								id="hddCantidad<%=producto.getCodigo()%>" 
 								value="<%=producto.obtenerMaximoSolicitar()%>" /></div>
@@ -161,16 +155,12 @@ MM_reloadPage(true);
 
 				<tr>
 					<td class="ui-widget-header">
-					<div align="right"><input type="button" name="btnEliminar"
-						value="Ver Orden" style="width: 120px" class="ui-state-default" 
-						onclick="javascript:mostrarOrden()" />
-					<input type="button" name="btnAceptar" value="Aceptar"
+					  <div align="right">					  <input type="button" name="btnAceptar" value="Aceptar"
 						onclick="javascript:aceptar()" 
 						style="width: 120px" class="ui-state-default" /> <input
 						type="button" name="btnCancelar" value="Cancelar"
 						onclick="javascript:cerrar()" 
-						style="width: 120px" class="ui-state-default" /></div>
-					</td>
+						style="width: 120px" class="ui-state-default" /></div></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
