@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.util.Lista;
 /**
  * Clase Interface para DAO de pedido.
  *
@@ -25,12 +26,21 @@ public interface IPedido {
 	 */
 	public abstract int obtenerMaximoNumeroPedido(Connection conn) throws SQLException;;
 	
+
+	
+	/**
+	 * Obtiene listado de ordenes generadas.
+	 * @return Lista de ordenes generadas.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract Lista obtenerListaOrdenes () throws SQLException;
 	/**
 	 * Almacena la cebecera de la orden de pedido.
 	 * @param conn objeto de conexion, tipo Connection.
 	 * @param usuario usuario de la sesion, tipo BUsuario
 	 * @return numero de la orden almacenada, tipo int.
-	 * @throws SQLException SQLException captura excepciones tipo SQL.
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;;
+
 }
