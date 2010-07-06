@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DTipoProducto;
@@ -70,11 +71,16 @@ public class CMantenimiento {
 	 * @param producto producto a almacenar, tipo BProducto.
 	 * @param usuario usuario de la sesion, tipo BUsuario.
 	 * @param conn conexion a la BD, tipo Connection.
+	 * @param bSucursal sucursal de creacion, tipo BSucursal.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public int almacenarProducto(BProducto producto,BUsuario usuario, Connection conn)throws SQLException{
+	public int almacenarProducto(BProducto producto,BUsuario usuario, Connection conn, BSucursal bSucursal)throws SQLException{
+		int codigoGenerado;
 		IProducto dProducto = new DProducto();
-		return dProducto.alamacenarProducto(producto,usuario, conn);
+		codigoGenerado = dProducto.alamacenarProducto(producto,usuario, conn);
+		producto.setCodigo(codigoGenerado);
+		dProducto.crearProductoSucursal(producto, bSucursal, conn, usuario);
+		return codigoGenerado;
 	}
 	
 }

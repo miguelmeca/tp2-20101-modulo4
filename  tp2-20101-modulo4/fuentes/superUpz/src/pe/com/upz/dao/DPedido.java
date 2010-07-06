@@ -43,7 +43,7 @@ public class DPedido implements IPedido {
 		sql.append("              FECHA_PEDIDO    , \n");
 		sql.append("              USUARIO_CREACION, \n");
 		sql.append("              FECHA_CREACION  , \n");
-		sql.append("              tipo_mivimiento  , \n");
+		sql.append("              TIPO_MOVIMIENTO  , \n");
 		sql.append("              ESTADO \n");
 		sql.append("       ) \n");
 		sql.append("       VALUES \n");
@@ -110,6 +110,7 @@ public class DPedido implements IPedido {
 		sql.append("FROM     FIDELIZACION.PEDIDO PE, \n");
 		sql.append("         FIDELIZACION.DETALLE_PEDIDO DT \n");
 		sql.append("WHERE    PE.ESTADO    = 1 \n");
+		sql.append("AND      PE.TIPO_MOVIMIENTO    = 1 \n");
 		sql.append("AND      DT.ESTADO    = 1 \n");
 		sql.append("AND      PE.PEDIDO_ID = DT.PEDIDO_ID \n");
 		sql.append("GROUP BY PE.PEDIDO_ID, \n");
@@ -196,18 +197,19 @@ public class DPedido implements IPedido {
 	 * @see pe.com.upz.daoInterface.IPedido#actualizarEstadoPedido(int)
 	 */
 	@Override
-	public void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario) throws SQLException {
+	public void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario, int estado) throws SQLException {
 		// TODO Auto-generated method stub
 		PreparedStatement pstm;
 		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE fidelizacion.pedido PE \n");
-		sql.append("SET    pe.estado               = 2      , \n");
+		sql.append("SET    pe.estado               = ?     , \n");
 		sql.append("       pe.fecha_modificacion   = SYSDATE, \n");
 		sql.append("       pe.usuario_modificacion = ? \n");
 		sql.append("WHERE  pe.pedido_id            = ?");
 		pstm = conn.prepareStatement(sql.toString());
-		pstm.setString(1,usuario.getLogin());
-		pstm.setInt(2,numPedido);
+		pstm.setInt(1,estado);
+		pstm.setString(2,usuario.getLogin());
+		pstm.setInt(3,numPedido);
 		pstm.executeUpdate();
 		
 		pstm.close();

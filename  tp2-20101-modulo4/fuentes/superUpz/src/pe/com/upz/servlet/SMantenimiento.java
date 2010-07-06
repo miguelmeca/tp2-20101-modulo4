@@ -23,6 +23,7 @@ import org.apache.tomcat.util.http.fileupload.DiskFileUpload;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
@@ -53,6 +54,8 @@ public class SMantenimiento extends HttpServlet {
 			int codigoTipo=-1;
 			BUsuario usuario = ((BUsuario) request.getSession().getAttribute(
 			"usuarioSesion"));
+			BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+			"sucursalSesion"));
 			DiskFileUpload fu = new DiskFileUpload();
 			FileInputStream DocBin;
 			// maximo numero de bytes
@@ -70,7 +73,7 @@ public class SMantenimiento extends HttpServlet {
 				parametro = (DefaultFileItem) i.next();
 				if (parametro.getFieldName().equals("hddOperacion")) { 
 					if(parametro.getString().equals("almacenarProducto")){
-						ruta = almacenarNuevoProducto(usuario, request,codigo,nombre,descripcion,codigoTipo);
+						ruta = almacenarNuevoProducto(usuario, request,codigo,nombre,descripcion,codigoTipo, sucursal);
 					}
 				}else if(parametro.getFieldName().equals("txtNombre")){
 					nombre = (String)parametro.getString();
@@ -261,7 +264,7 @@ public class SMantenimiento extends HttpServlet {
 	 */
 	private String almacenarNuevoProducto(BUsuario usuario,
 			HttpServletRequest request,
-			String codigo,String nombre,String descripcion,int codigoTipo) {
+			String codigo,String nombre,String descripcion,int codigoTipo, BSucursal sucursal) {
 		String ruta = "";
 		Connection conn = null;
 		try {
@@ -285,8 +288,8 @@ public class SMantenimiento extends HttpServlet {
 			//producto.setRutaImagen(rutaImagen);
 
 			CMantenimiento cMantenimiento = new CMantenimiento();
-			codigo = new String(cMantenimiento.almacenarProducto(producto, usuario, conn)+"");
-
+			codigo = new String(cMantenimiento.almacenarProducto(producto, usuario, conn,sucursal)+"");
+			
 			ConnectDS.aceptarTrasaccion(conn);
 
 			request.setAttribute("mensajeMantenimiento", "nuevoOK");

@@ -56,7 +56,8 @@ public interface IPedido {
 	 * @param conn objeto de conexion, tipo Connection.
 	 * @param numPedido numero de la orden del pedido. 
 	 * @param usuario usuario de la sesion, tipo BUsuario
+	 * @param estado estado del pedido, tipo int
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario)throws SQLException;
+	public abstract void actualizarEstadoPedido(Connection conn,int numPedido, BUsuario usuario, int estado)throws SQLException;
 }

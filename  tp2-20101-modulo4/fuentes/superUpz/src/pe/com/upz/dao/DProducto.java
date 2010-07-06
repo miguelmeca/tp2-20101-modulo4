@@ -323,5 +323,43 @@ public class DProducto implements IProducto{
 	
 		pstm.close();
 	}
-
+	public void crearProductoSucursal(BProducto bProducto,
+			BSucursal bSucursal, Connection conn, BUsuario usuario) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("INSERT \n");
+		sql.append("INTO   fidelizacion.producto_sucursal \n");
+		sql.append("       ( \n");
+		sql.append("              sucursal_id         , \n");
+		sql.append("              producto_id         , \n");
+		sql.append("              stock               , \n");
+		sql.append("              usuario_modificacion, \n");
+		sql.append("              fecha_creacion      , \n");
+		sql.append("              fecha_modificacion  , \n");
+		sql.append("              estado              , \n");
+		sql.append("              usuario_creacion \n");
+		sql.append("       ) \n");
+		sql.append("       VALUES \n");
+		sql.append("       ( \n");
+		sql.append("              ?      , \n");
+		sql.append("              ?      , \n");
+		sql.append("              0      , \n");
+		sql.append("              NULL   , \n");
+		sql.append("              SYSDATE, \n");
+		sql.append("              NULL   , \n");
+		sql.append("              1      , \n");
+		sql.append("              ? \n");
+		sql.append("       )");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1,bSucursal.getCodigo());
+		pstm.setInt(2,bProducto.getCodigo());
+		pstm.setInt(3,usuario.getCodigo());
+		
+		pstm.executeUpdate();
+	
+		pstm.close();
+	}
 }

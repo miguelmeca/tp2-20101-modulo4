@@ -15,13 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 import pe.com.upz.bean.BPedido;
 import pe.com.upz.bean.BPedidoDetalle;
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.dao.DPedido;
 import pe.com.upz.dao.DPedidoDetalle;
+import pe.com.upz.dao.DProducto;
 import pe.com.upz.daoInterface.IDetallePedido;
 import pe.com.upz.daoInterface.IPedido;
+import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
 
@@ -177,8 +180,50 @@ public class CAbastecimiento {
 	 * @param usuario usuario de la sesion, tipo BUsuario
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public void actualizarOrden(Connection conn,int numPedido, BUsuario usuario)throws SQLException{
+	public void actualizarOrden(Connection conn,int numPedido, BUsuario usuario, int estado)throws SQLException{
 		IPedido daoPedido = new DPedido();
-		daoPedido.actualizarEstadoPedido(conn, numPedido, usuario);
+		daoPedido.actualizarEstadoPedido(conn, numPedido, usuario,estado);
+	}
+	/**
+	 * Almacena la orden actualizada.
+	 * 
+	 * @param usuario
+	 *            usuario de la sesion, tipo BUsuario.
+	 * @param pedido
+	 *            nuevo pedido generado, tipo
+	 *            BPedido.
+	 * @param conn
+	 *            conexion a la base de datos, tipo Connection.
+	 * @return codigoGenerado godigo de la orden generada, tipo String.
+	 * @param numPedidoInicio
+	 *            numero del pedido de inicio, tipo
+	 *            int.
+	 * @throws SQLException
+	 *             captura excepciones tipo SQL.
+	 */
+	public String alamcenarOrdenActualizada(BUsuario usuario,
+			BPedido pedido, Connection conn,int  tipoMov, int numPedidoInicio, BSucursal bSucursal) throws SQLException {
+		String codigoGenerado = "";
+		
+		BProducto bProducto = new BProducto();
+		IPedido pedidoDao = new DPedido();
+		IDetallePedido detalleDao = new DPedidoDetalle();
+		IProducto daoProducto = new DProducto();
+		//inactiva el pedido existente
+		pedidoDao.actualizarEstadoPedido(conn, numPedidoInicio, usuario, 0);
+		// almacena cabecera nuevo pedido
+		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,tipoMov));
+		for (int i = 0; i < pedido.getListaDetalle().getTamanio(); i++) {
+			// alamcena detalle nuevo pedido
+			detalleDao.almacenarDetalle(conn, pedido.getCodigo(),
+					(BPedidoDetalle) pedido.getListaDetalle().getElemento(i),
+					usuario);
+			//actualiza stock productos del pedido
+			bProducto = ((BPedidoDetalle) pedido.getListaDetalle().getElemento(i)).getProducto();
+			daoProducto.actualizarStockProductoSucursal(bProducto, bSucursal, ((BPedidoDetalle) pedido.getListaDetalle().getElemento(i)).getCantidad()*-1, conn, usuario);
+		}
+		
+		codigoGenerado = pedido.getCodigo() + "";
+		return codigoGenerado;
 	}
 }
