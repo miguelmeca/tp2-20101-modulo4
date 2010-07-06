@@ -9,6 +9,7 @@
 <%@page import="pe.com.upz.bean.BPedido"%>
 <%
 String ruta = request.getContextPath(); 
+String mensaje = (String)request.getAttribute("mensaje");
 Lista listaOrdenes = (Lista)request.getAttribute("listaOrdenes");
 if(listaOrdenes ==null){
 	listaOrdenes = new Lista();
@@ -54,7 +55,7 @@ body {
             <td width="12%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Num</td>
             <td width="28%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Orden</div></td>
             <td width="49%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Fecha de Generaci&oacute;n </div></td>
-            <td width="11%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel</td>
+            <td width="11%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel<input name="chkPedido" type="radio" disabled="true" value="-1" /></td>
             </tr>
  			<%for(int i=0;i<listaOrdenes.getTamanio();i++){%>
  			<%	BPedido pedido = (BPedido) listaOrdenes.getElemento(i); %> 
@@ -75,7 +76,6 @@ body {
       
       <tr>
         <td class="ui-widget-header"><div align="right">
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
           <input type="button" name="btnAceptar" value="Aceptar" 
 		  onclick="javascript:verOrden()" 
 		  style="width:120px" class="ui-state-default"  />          
@@ -102,9 +102,9 @@ function cerrar(){
 }
 
 function mostrarMensaje(){
-	var resultado = "<%=""%>";
-	if(resultado == "nuevoOK"){
-		alert("Se agregó un nuevo producto.");
+	var resultado = "<%=mensaje%>";
+	if(resultado == "OK"){
+		alert("Se actualizó el stock de los productos de la orden.");
 	}else if (resultado== "actualizadoOK"){
 		alert("Se actualizó el producto.");
 	}
