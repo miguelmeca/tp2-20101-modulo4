@@ -88,4 +88,15 @@ public interface IProducto {
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract void actualizarStockProductoSucursal(BProducto bProducto, BSucursal bSucursal, int cantidad,Connection conn, BUsuario usuario)throws SQLException;
+	
+	/**
+	 * ingresa el producto en el local.
+	 * @param bProducto producto a buscar, tipo BProducto.
+	 * @param bSucursal sucursal a buscar, tipo BSucursal.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public void crearProductoSucursal(BProducto bProducto,
+			BSucursal bSucursal, Connection conn, BUsuario usuario) throws SQLException;
 }

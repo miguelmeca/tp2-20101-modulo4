@@ -16,14 +16,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pe.com.upz.bean.BPedido;
 import pe.com.upz.bean.BPedidoDetalle;
 import pe.com.upz.bean.BProducto;
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.controlador.CAbastecimiento;
 import pe.com.upz.controlador.CMantenimiento;
 import pe.com.upz.controlador.CSeguridad;
 import pe.com.upz.dao.DUsuario;
+import pe.com.upz.daoInterface.IPedido;
 import pe.com.upz.daoInterface.IUsuario;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
@@ -43,6 +46,8 @@ public class SAbastecimiento extends HttpServlet {
 			String operacion = (String) request.getParameter("hddOperacion");
 			String ruta = "";
 			BUsuario usuario = ((BUsuario)request.getSession().getAttribute("usuarioSesion"));
+			BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+			"sucursalSesion"));
 			if (operacion.equals("ingresoOrden")) {
 				ruta = mostrarIngresoOrden(request, false);
 			}else if(operacion.equals("validarPermiso")){
@@ -56,7 +61,7 @@ public class SAbastecimiento extends HttpServlet {
 			}else if(operacion.equals("mostrarOrdenActualizar")){
 				ruta = mostrarOrdenActualizar(request);
 			}else if(operacion.equals("almacenarOrdenActualizada")){
-				ruta = almacenarOrdenActualizada(request);
+				ruta = almacenarOrdenActualizada(request, usuario, sucursal );
 			}
 
 			getServletConfig().getServletContext().getRequestDispatcher(ruta).forward(request, response);
@@ -346,6 +351,7 @@ public class SAbastecimiento extends HttpServlet {
 		try {
 		CAbastecimiento cAbastecimiento = new CAbastecimiento();
 		listaDetalle = cAbastecimiento.obtenerDetalleOrden(Integer.parseInt(codigo));		
+		request.setAttribute("pedidoNumero", codigo+"");
 		request.setAttribute("listaDetalle", listaDetalle);
 		ruta = "/jsp/abastecimiento/aba_OrdenGenerada.jsp";
 		} catch (Exception e) {
@@ -356,12 +362,16 @@ public class SAbastecimiento extends HttpServlet {
 		}
 		return ruta;
 	}
-	private String almacenarOrdenActualizada(HttpServletRequest request){
+	private String almacenarOrdenActualizada(HttpServletRequest request, BUsuario usuario, BSucursal bSucursal){
 		String ruta="";
-		try {
+		Connection conn =null;
+		try{
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
 			int cantidad = Integer.parseInt(request.getParameter("hddCantidad"));
-			
+			int numPedidoOrigen = Integer.parseInt(request.getParameter("hddNumOrigen"));
 			Lista listaDetalle = new Lista();
+			BPedido pedido = new BPedido();
 			BPedidoDetalle detalle;
 			BProducto producto;
 			for(int i =0;i< cantidad; i++){
@@ -373,12 +383,23 @@ public class SAbastecimiento extends HttpServlet {
 				detalle.setCantidad(Integer.parseInt(request.getParameter("txtCantidad"+producto.getCodigo())));
 				listaDetalle.setElemento(detalle);
 			}
+			pedido.setListaDetalle(listaDetalle);
+			
+			CAbastecimiento cAbastecimiento = new CAbastecimiento();
+			cAbastecimiento.alamcenarOrdenActualizada(usuario, pedido, conn, 2, numPedidoOrigen,bSucursal);
+			
+			ConnectDS.aceptarTrasaccion(conn);
+			request.setAttribute("mensaje", "OK");
+			ruta = actualizarStock(request);
 			
 		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: SAbastecimiento; " + "; Parametros="
 					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
 					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
 		}
 		return ruta;
 	}
