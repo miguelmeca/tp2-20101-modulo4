@@ -14,6 +14,7 @@
 <%
 	String ruta = request.getContextPath();
 	String fecha = (String) request.getAttribute("fecha");
+	String pedidoNumero = (String) request.getAttribute("pedidoNumero");
 	Lista listaDetalle = (Lista) request
 			.getAttribute("listaDetalle");
 
@@ -73,9 +74,7 @@ MM_reloadPage(true);
 				<tr class="ui-widget">
 					<td align="center">
 					<div class="ui-state-default" style="width:780px;padding-right: 10px;padding-left: 10px">
-					<div style="float: left" >FECHA DE GENERACI&Oacute;N:
-					<%=fecha%>
-					</div>
+					
 					<div id="divTotal" style="float: right;" >TOTAL DE PRODUCTOS: <%=listaDetalle.getTamanio()%>
 					</div>
 					</div>
@@ -169,6 +168,7 @@ MM_reloadPage(true);
 	</table>
 	<input type="hidden" name="hddOperacion" id="hddOperacion" value="mostrarOrden">
 	<input type="hidden" name="hddCantidad" id="hddCantidad" value="<%=listaDetalle.getTamanio()%>">
+	<input type="hidden" name="hddNumOrigen" id="hddNumOrigen" value="<%=pedidoNumero%>">
 	</form>
 	</div>
 </body>
