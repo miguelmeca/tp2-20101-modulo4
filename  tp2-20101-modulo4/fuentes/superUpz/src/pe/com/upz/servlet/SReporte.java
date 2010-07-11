@@ -39,9 +39,19 @@ public class SReporte extends HttpServlet {
 			short indicador = -1;
 			if (operacion.equals("reproteClientes")) {
 				ruta = mostrarReporteClientes(request);
+			}else if (operacion.equals("reporteProductos")) {
+				ruta = mostrarReporteProductos(request);
 			}else if(operacion.equals("mostrarReporteCliente")){
 				indicador =0;
 				workBook = generarReporteClientes(request,usuario); 
+				response.setHeader("Content-Disposition", 
+                		"attachment;filename=REPORTE_CLIENTES.xls;");
+				response.setContentType("application/vnd.ms-excel");
+				workBook.write(response.getOutputStream());
+				response.getOutputStream().close();
+			}else if(operacion.equals("mostrarReporteReposicion")){
+				indicador =0;
+				workBook = generarReporteProductos(request,usuario); 
 				response.setHeader("Content-Disposition", 
                 		"attachment;filename=REPORTE_CLIENTES.xls;");
 				response.setContentType("application/vnd.ms-excel");
@@ -72,6 +82,16 @@ public class SReporte extends HttpServlet {
 		return ruta;
 	}
 
+	/**
+	 * Procesa el reporte de clientea ganados/perdidos en un mes determinado
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return archivo xls del reporte, tipo HSSFWorkbook.
+	 */
+	private String mostrarReporteProductos(HttpServletRequest request){
+		String ruta = "/jsp/reporte/rep_ReposicionCanje.jsp";
+		return ruta;
+	}
+	
 	private HSSFWorkbook generarReporteClientes(
 			HttpServletRequest request,
 			BUsuario usuario) {
@@ -91,6 +111,31 @@ public class SReporte extends HttpServlet {
 					.generarReporteExpAdministrativo(usuario,
 							rutaExcelPlantilla, rutaInicial,
 							numeroMes);
+		} catch (Exception e) {
+			archivoXls = null;
+		}
+		return archivoXls;
+	}
+	private HSSFWorkbook generarReporteProductos(
+			HttpServletRequest request,
+			BUsuario usuario) {
+
+		String rutaInicial = getServletContext().getRealPath("/");
+		String rutaExcelPlantilla = "/recursos/plantillas/";
+		int numeroAnio = Integer.parseInt(request.getParameter("selAnio"));
+		int numeroMes = Integer.parseInt(request.getParameter("selMes"));
+		
+
+		HSSFWorkbook archivoXls = new HSSFWorkbook();
+		//NReporte negocioReportes = new NReporte();
+		
+		CReporte negocioReportes = new CReporte();
+		
+		try {
+			archivoXls = negocioReportes
+					.generarReporteProductos(usuario,
+							rutaExcelPlantilla, rutaInicial,
+							numeroMes,numeroAnio);
 		} catch (Exception e) {
 			archivoXls = null;
 		}

@@ -97,6 +97,22 @@ public interface IProducto {
 	 * @param usuario usuario de la sesion, tipo BUsuario.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public void crearProductoSucursal(BProducto bProducto,
+	public abstract void crearProductoSucursal(BProducto bProducto,
 			BSucursal bSucursal, Connection conn, BUsuario usuario) throws SQLException;
+	
+	/**
+	 * Retorna lista sucursal-producto.
+	 * @return liosta con sucursal-producto, tipo Lista.
+	 * @throws SQLException
+	 */
+	public abstract Lista obtenerSucursalProductoStock() throws SQLException;
+	
+	/**
+	 * Obtiene el consumo promedio de producto
+	 * @param codSucursal codigo de sucursal, tipo int.
+	 * @param codProducto codigo de producto, tipo int.
+	 * @return
+	 * @throws SQLException
+	 */
+	public abstract int obtenerSucursalProductoPromedio(int codSucursal, int codProducto, int anio, int mes) throws SQLException;
 }
