@@ -5,12 +5,13 @@
 * Fecha de Creacion     : 05/05/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
-
+<%@page import="pe.com.upz.comun.ConnectDS"%>
 <% 
 String mensaje = request.getParameter("mensaje");
 
 mensaje = (mensaje==null?"":mensaje);
 String ruta = request.getContextPath(); 
+int anioActual = Integer.parseInt(ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_ANIO));
 %>
 
 
@@ -38,7 +39,12 @@ String ruta = request.getContextPath();
 		<td align="center">
 		<table border="0">
 			<tr>
-				<td colspan="2" align="left">&nbsp;</td>
+				<td align="left">A&ntilde;o</td>
+			    <td align="left"><select name="selAnio" id="selAnio">
+                  <%for(int i=0;i<3;i++){ %>
+                  <option value="<%=(anioActual-i)+"" %>"><%=(anioActual-i)+"" %></option>
+                  <%} %>
+                </select></td>
 			</tr>
 			<tr>
 				<td width="49%" align="left">Mes:</td>
@@ -67,7 +73,7 @@ String ruta = request.getContextPath();
 </table>
 
 <input type="hidden" name="hddOperacion" id="hddOperacion"
-	value="mostrarReporteCliente">
+	value="mostrarReporteReposicion">
 </form>
 </div>
 </body>
