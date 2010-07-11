@@ -362,4 +362,102 @@ public class DProducto implements IProducto{
 	
 		pstm.close();
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.upz.daoInterface.IProducto#obtenerSucursalProductoStock()
+	 */
+	public Lista obtenerSucursalProductoStock() throws SQLException {
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		Lista lista = new Lista();
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT   SU.DESCRIPCION AS SUCURSAL   , \n");
+		sql.append("         SU.SUCURSAL_ID AS SUCURSALID, \n");
+		sql.append("         PR.PRODUCTO_ID AS CODPRODUCTO, \n");
+		sql.append("         tp.descripcion AS DESTIPO       , \n");
+		sql.append("         PR.NOMBRE      AS PRODUCTO   , \n");
+		sql.append("         PS.STOCK       AS STOCK \n");
+		sql.append("FROM     FIDELIZACION.PRODUCTO_SUCURSAL PS, \n");
+		sql.append("         FIDELIZACION.SUCURSAL SU         , \n");
+		sql.append("         FIDELIZACION.PRODUCTO PR         , \n");
+		sql.append("         FIDELIZACION.Tipo_Producto tp \n");
+		sql.append("WHERE    PS.SUCURSAL_ID      = SU.SUCURSAL_ID \n");
+		sql.append("AND      PS.PRODUCTO_ID      = PR.PRODUCTO_ID \n");
+		sql.append("and   PR.estado = 1 \n");
+		sql.append("and   su.estado = 1 \n");
+		sql.append("AND      pr.tipo_producto_id = tp.tipo_producto_id \n");
+		sql.append("ORDER BY su.sucursal_id, \n");
+		sql.append("         tp.descripcion, \n");
+		sql.append("         pr.nombre");
+
+		pstm = conn.prepareStatement(sql.toString());
+		
+		rs = pstm.executeQuery();
+		
+		BProductoSucursal productoSucursal = new BProductoSucursal();
+		BProducto producto;
+		BSucursal sucursal;
+		BTipoProducto tipo;
+		while(rs.next()){
+			productoSucursal = new BProductoSucursal();
+			producto = new BProducto();
+			sucursal = new BSucursal();
+			sucursal.setCodigo(rs.getInt("SUCURSALID"));
+			sucursal.setDescripcion(rs.getString("SUCURSAL"));
+			producto.setCodigo(rs.getInt("CODPRODUCTO"));
+			producto.setNombre(rs.getString("PRODUCTO"));
+			tipo = new BTipoProducto();
+			tipo.setDescripcion(rs.getString("DESTIPO"));
+			producto.setTipo(tipo);
+			productoSucursal.setProducto(producto);
+			productoSucursal.setSucursal(sucursal);
+			productoSucursal.setStock(rs.getInt("STOCK"));
+			
+			lista.setElemento(productoSucursal);
+			
+		}
+		rs.close();
+		pstm.close();
+		ConnectDS.cerrarConexion(conn);
+		return lista;
+	}
+	
+	public int obtenerSucursalProductoPromedio(int codSucursal, int codProducto, int anio, int mes) throws SQLException {
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT AVG(dp.cantidad) AS PROMEDIO\n");
+		sql.append("FROM   FIDELIZACION.Pedido PE, \n");
+		sql.append("       FIDELIZACION.Detalle_Pedido dp \n");
+		sql.append("WHERE  dp.producto_id                  = ? \n");
+		sql.append("AND    pe.sucursal_id                  = ? \n");
+		sql.append("AND    TO_CHAR(pe.fecha_pedido,'YYYY') = ? \n");
+		sql.append("AND    TO_CHAR(pe.fecha_pedido,'MM')   = ? \n");
+		sql.append("AND    pe.pedido_id                    = dp.pedido_id \n");
+		sql.append("AND    pe.estado                       = 1 \n");
+		sql.append("AND    pe.tipo_movimiento              = 3");
+		no estoy guardando la sucursal cuando se hace un canje
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1,codProducto);
+		pstm.setInt(2,codSucursal);
+		pstm.setString(3,anio+"");
+		if((mes+1)<10){
+			pstm.setString(4,"0"+(mes+1));
+		}else{
+			pstm.setString(4,""+(mes+1));
+		}
+		
+		rs = pstm.executeQuery();
+		
+		int promedio=0;
+		if(rs.next()){
+			promedio = rs.getInt("PROMEDIO");			
+		}
+		rs.close();
+		pstm.close();
+		ConnectDS.cerrarConexion(conn);
+		return promedio;
+	}
 }

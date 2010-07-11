@@ -21,9 +21,12 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
+import pe.com.upz.dao.BProductoSucursal;
 import pe.com.upz.dao.DCuenta;
+import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DSucursal;
 import pe.com.upz.daoInterface.ICuenta;
+import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.daoInterface.ISucursal;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
@@ -122,6 +125,97 @@ public class CReporte {
 								"-", estilo);
 					}
 				}
+			}
+			// fin de reporte
+			xls.finReporte(libro, hoja, "fin del reporte", 6);
+			fisExcel.close();
+			return libro;
+		} catch (IOException e) {
+			e.printStackTrace();
+			libro = null;
+			return libro;
+		} catch (Exception e) {
+			e.printStackTrace();
+			libro = null;
+			return libro;
+		}
+	}
+
+	/**
+	 * @param usuario usuario de la sesion, tipo BUsuario
+	 * @param rutaExcelPlantilla ruta de la plantilla, tipo String.
+	 * @param rutaInicial ruta incial, tipo String.
+	 * @param numeroMes mes,tipo int.
+	 * @param numeroAnio anio, tipo int.
+	 * @return libro archvio en XLS, tipo HSSFWorkbook.
+	 */
+	public HSSFWorkbook generarReporteProductos(BUsuario usuario,
+			String rutaExcelPlantilla, String rutaInicial,
+			int numeroMes, int numeroAnio) {
+		HSSFWorkbook libro = null;
+		try {
+			FileInputStream fisExcel = new FileInputStream(rutaInicial
+					+ rutaExcelPlantilla + "plantillaReporteProductoMe.xls");
+			POIFSFileSystem fsExcel = new POIFSFileSystem(fisExcel);
+
+			ReporteConstrucctor xls = new ReporteConstrucctor();
+
+			HSSFRow fila = null;
+			HSSFCell celda = null;
+
+
+			libro = new HSSFWorkbook(fsExcel);
+			HSSFSheet hoja = libro.getSheet("REPORTE_REPO");
+			// cabecera de reporte
+			xls.cabeceraReporte(hoja, Parametros.ENTERPRISE_NOMBRE, "",
+					Parametros.S_APP_NOMBRE, ConnectDS.obtenerFecha(),
+					ConnectDS.obtenerFechaFormato(ConnectDS.FORMATO_HHMI),
+					usuario.getLogin(), "finReporte");
+
+			// estilo
+			HSSFFont fuente = xls.getFuente(libro, (short) 9, "Verdana", false);
+			HSSFCellStyle estilo = xls.getBordeCerrado(libro);
+			HSSFCellStyle estCentro = libro.createCellStyle();
+			estCentro.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			estilo.setFont(fuente);
+
+			fila = hoja.createRow(5);
+			xls.setCelda(libro, hoja, fila, celda, (short) 0,
+					"generado para el mes de " + Parametros.NOMBRE_MES[numeroMes]+" de "+numeroAnio, estCentro);
+			
+			IProducto dProducto = new DProducto();
+			BProductoSucursal  bSucursalP;
+			Lista listaProducto = dProducto.obtenerSucursalProductoStock();
+			String nombreSucursal = "";
+			
+			for (int i = 0; i < listaProducto.getTamanio(); i++) {
+				bSucursalP = (BProductoSucursal)listaProducto.getElemento(i);
+				fila = hoja.createRow((int) i + 8);
+				// correlativo
+				xls.setCelda(libro, hoja, fila, celda, (short) 0, String
+						.valueOf(i + 1), estilo);
+				if(!nombreSucursal.equals(bSucursalP.getSucursal().getDescripcion())){
+				xls.setCelda(libro, hoja, fila, celda, (short) 1, bSucursalP.getSucursal().getDescripcion(),
+						estilo);
+				nombreSucursal=bSucursalP.getSucursal().getDescripcion();
+				}else{
+					xls.setCelda(libro, hoja, fila, celda, (short) 1, "",
+							estilo);
+				}
+				xls.setCelda(libro, hoja, fila, celda, (short) 2, "Canje",
+						estilo);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 3, bSucursalP.getProducto().getCodigo()+"",
+						estCentro);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 4, bSucursalP.getProducto().getTipo().getDescripcion(),
+						estilo);	
+				xls.setCelda(libro, hoja, fila, celda, (short) 5, bSucursalP.getProducto().getNombre(),
+						estilo);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 6, ""+dProducto.obtenerSucursalProductoPromedio(bSucursalP.getSucursal().getCodigo(), bSucursalP.getProducto().getCodigo(),numeroAnio, numeroMes),
+						estCentro);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 7, bSucursalP.getStock()+"",
+						estCentro);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 8, bSucursalP.getStock()+"SI",
+						estCentro);				
 			}
 			// fin de reporte
 			xls.finReporte(libro, hoja, "fin del reporte", 6);
