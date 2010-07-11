@@ -71,7 +71,7 @@ public class CCanje {
 		IDetallePedido detalleDao = new DPedidoDetalle();
 
 		// almacena cabecera
-		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,3));
+		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,sucursal,3));
 		// alamcena detalle
 		for (int i = 0; i < pedido.getListaDetalle().getTamanio(); i++) {
 			detalleDao.almacenarDetalle(conn, pedido.getCodigo(),

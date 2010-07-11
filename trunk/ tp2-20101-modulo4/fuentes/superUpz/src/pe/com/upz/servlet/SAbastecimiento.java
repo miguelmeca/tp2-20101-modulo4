@@ -55,7 +55,7 @@ public class SAbastecimiento extends HttpServlet {
 			}else if(operacion.equals("mostrarOrden")){
 				ruta = mostrarOrden(request);
 			}else if(operacion.equals("almacenarOrden")){
-				ruta = almacenarOrden(request,usuario);
+				ruta = almacenarOrden(request,usuario,sucursal);
 			}else if(operacion.equals("actualizarStock")){
 				ruta = actualizarStock(request);
 			}else if(operacion.equals("mostrarOrdenActualizar")){
@@ -82,7 +82,7 @@ public class SAbastecimiento extends HttpServlet {
 	 * @param usuario usuario de la sesion, tipo BUsuario
 	 * @return
 	 */
-	private String almacenarOrden(HttpServletRequest request, BUsuario usuario){
+	private String almacenarOrden(HttpServletRequest request, BUsuario usuario,BSucursal sucursal){
 		String ruta = "";
 		Connection conn =null;
 		try{
@@ -127,7 +127,7 @@ public class SAbastecimiento extends HttpServlet {
 			}*/
 			String[] codigo = request.getParameterValues("chkProducto");
 			CAbastecimiento cAbastecimiento = new CAbastecimiento();
-			String codigoGenerado = cAbastecimiento.alamcenarOrden(request, usuario, codigo, conn,1);
+			String codigoGenerado = cAbastecimiento.alamcenarOrden(request, usuario, codigo, conn,sucursal,1);
 			conn.commit();
 			
 			request.setAttribute("mensajeSistema", "Se ha generado la orden número "+codigoGenerado);

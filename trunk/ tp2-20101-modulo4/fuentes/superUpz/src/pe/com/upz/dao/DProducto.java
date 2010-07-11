@@ -438,7 +438,7 @@ public class DProducto implements IProducto{
 		sql.append("AND    pe.pedido_id                    = dp.pedido_id \n");
 		sql.append("AND    pe.estado                       = 1 \n");
 		sql.append("AND    pe.tipo_movimiento              = 3");
-		no estoy guardando la sucursal cuando se hace un canje
+		
 		pstm = conn.prepareStatement(sql.toString());
 		pstm.setInt(1,codProducto);
 		pstm.setInt(2,codSucursal);

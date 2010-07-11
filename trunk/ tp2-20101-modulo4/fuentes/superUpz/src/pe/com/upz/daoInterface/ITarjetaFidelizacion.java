@@ -42,5 +42,12 @@ public interface ITarjetaFidelizacion {
 	 */
 	public abstract boolean buscarClienteFidelizado(BCliente cliente)throws SQLException;
 
-
+	/**
+	 * Elimina las tarjetas de una cuenta
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void eliminarTarjetasCuenta(Connection conn, int codCuenta, BUsuario usuario)throws SQLException;
 }

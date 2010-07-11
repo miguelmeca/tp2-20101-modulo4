@@ -97,5 +97,21 @@ public interface ICuenta {
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int obtenerCantidadCuentasBajaMes(BSucursal sucursal,int mes)throws SQLException;
-
+	
+	/**
+	 * Elimina la cuenta
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal a buscar, tipo BSucursal.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void eliminarCuenta(Connection conn, int codCuenta, BUsuario usuario,BSucursal sucursal)throws SQLException;
+	
+	/**
+	 * Obtiene listado de clientes adicionales de una cuenta.
+	 * @param codigoCuenta codigo de la cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract Lista obtenerListadoCuentaAdicional(int codigoCuenta) throws SQLException;
 }

@@ -95,4 +95,38 @@ public class CMantenimientoCliente {
 		
 		return codigoCuenta;
 	}
+	//gonza
+	/**
+	 * Elimina los datos asociados a la cuenta.
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param  sucursal sucrusal de eliminacion, tipo BSucursal.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public void eliminarCuentaCliente(Connection conn, int codCuenta, BUsuario usuario, BSucursal sucursal)throws SQLException{
+		ICuenta daoCuenta = new DCuenta();
+		ITarjetaFidelizacion daoTarjeta = new DTarjetaFidelizacion();
+		// elimina las tarjetas
+		daoTarjeta.eliminarTarjetasCuenta(conn, codCuenta, usuario);
+		//elimina las cuentas
+		daoCuenta.eliminarCuenta(conn, codCuenta, usuario,sucursal);
+	}
+	
+	/**
+	 * Obtiene listado de clientes adicionales de una cuenta.
+	 * @param codigoCuenta codigo de la cuenta, tipo int.
+	 * @return lsiatdo de clientes adicionales, tipo Lista.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public Lista obtenerListaClientesAdicionales(int codigoCuenta)throws SQLException{
+		Lista listadoCliente=null;
+		ICuenta daoCliente = new DCuenta();
+		
+		listadoCliente = daoCliente.obtenerListadoCuentaAdicional(codigoCuenta);
+		
+		return listadoCliente;
+	}
+	
+	//gonza
 }
