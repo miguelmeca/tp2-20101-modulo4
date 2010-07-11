@@ -80,7 +80,7 @@ public class CAbastecimiento {
 	 *             captura excepciones tipo SQL.
 	 */
 	public String alamcenarOrden(HttpServletRequest request, BUsuario usuario,
-			String[] codigo, Connection conn,int  tipoMov) throws SQLException {
+			String[] codigo, Connection conn,BSucursal sucursal,int  tipoMov) throws SQLException {
 		String codigoGenerado = "";
 		Lista listaDetalle = new Lista();
 		BProducto producto;
@@ -111,7 +111,7 @@ public class CAbastecimiento {
 		IDetallePedido detalleDao = new DPedidoDetalle();
 
 		// almacena cabecera
-		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,tipoMov));
+		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,sucursal,tipoMov));
 		// alamcena detalle
 		for (int i = 0; i < pedido.getListaDetalle().getTamanio(); i++) {
 			detalleDao.almacenarDetalle(conn, pedido.getCodigo(),
@@ -212,7 +212,7 @@ public class CAbastecimiento {
 		//inactiva el pedido existente
 		pedidoDao.actualizarEstadoPedido(conn, numPedidoInicio, usuario, 0);
 		// almacena cabecera nuevo pedido
-		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,tipoMov));
+		pedido.setCodigo(pedidoDao.almacenarOrden(conn, usuario,bSucursal,tipoMov));
 		for (int i = 0; i < pedido.getListaDetalle().getTamanio(); i++) {
 			// alamcena detalle nuevo pedido
 			detalleDao.almacenarDetalle(conn, pedido.getCodigo(),

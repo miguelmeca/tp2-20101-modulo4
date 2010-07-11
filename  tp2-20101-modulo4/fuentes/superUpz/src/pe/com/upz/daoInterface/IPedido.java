@@ -10,6 +10,7 @@ package pe.com.upz.daoInterface;
 import java.sql.SQLException;
 import java.sql.Connection;
 
+import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 /**
@@ -41,7 +42,7 @@ public interface IPedido {
 	 * @return numero de la orden almacenada, tipo int.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public abstract int almacenarOrden(Connection conn,BUsuario usuario, int tipoMov) throws SQLException;
+	public abstract int almacenarOrden(Connection conn,BUsuario usuario,BSucursal sucursal, int tipoMov) throws SQLException;
 	
 	/**
 	 * Obtiene detalle de una orden de pedido.

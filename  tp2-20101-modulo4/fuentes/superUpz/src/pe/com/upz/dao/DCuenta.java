@@ -292,4 +292,88 @@ public class DCuenta implements ICuenta {
 		conn.close();
 		return cantidad;
 	}
+	
+	public void eliminarCuenta(Connection conn, int codCuenta, BUsuario usuario,BSucursal sucursal)throws SQLException{
+		PreparedStatement pstm;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE cuenta \n");
+		sql.append("SET    fecha_modificacion   = SYSDATE, \n");
+		sql.append("       estado               = 0      , \n");
+		sql.append("       sucursal_baja = ?      , \n");
+		sql.append("       usuario_modificacion = ? \n");
+		sql.append("WHERE  cuenta_id            = ?");
+
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, sucursal.getCodigo());
+		pstm.setString(2, usuario.getLogin());
+		pstm.setInt(3, codCuenta);
+		
+		pstm.executeUpdate();
+	}
+	public Lista obtenerListadoCuentaAdicional(int codigoCuenta) throws SQLException {
+		Connection conn = ConnectDS.obtenerConeccion();
+		BCuenta cuenta;
+		Lista lista = new Lista();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT CU.CUENTA_ID        AS CUENTA_ID, \n");
+		sql.append("       CU.PUNTOS_ACUMULADOS AS PUNTOS_ACUMULADOS, \n");
+		sql.append("       CU.PUNTOS_VENCIDOS  AS PUNTOS_VENCIDOS, \n");
+		sql.append("       CU.PUNTOS_CANJEADOS AS UNTOS_CANJEADOS, \n");
+		sql.append("       CU.ESTADO           AS ESTADO, \n");
+		sql.append("       CL.NOMBRE           AS NOMBRE, \n");
+		sql.append("       CL.APELLIDO_PATERNO AS APELLIDO_PATERNO, \n");
+		sql.append("       CL.APELLIDO_MATERNO AS APELLIDO_MATERNO, \n");
+		sql.append("       CL.NUMERO_DOCUMENTO AS NUMERO_DOCUMENTO, \n");
+		sql.append("       TA.TIPO_CLIENTE AS TIPO_CLIENTE, \n");
+		sql.append("       TA.NUMERO AS NUM_TARJETA\n");
+		sql.append("FROM   FIDELIZACION.CUENTA CU              , \n");
+		sql.append("       FIDELIZACION.TARJETA_FIDELIZACION TA, \n");
+		sql.append("       FIDELIZACION.CLIENTE CL \n");
+		sql.append("WHERE  TA.CUENTA_ID    = CU.CUENTA_ID \n");
+		sql.append("AND    TA.CLIENTE_ID   = CL.CLIENTE_ID \n");
+		sql.append("AND    CU.ESTADO       = 1 \n");
+		sql.append("AND    TA.TIPO_CLIENTE    = 2 \n");
+		sql.append("AND    TA.ESTADO       = 1 \n");
+		sql.append("AND    CU.CUENTA_ID = ? \n");
+		sql.append("ORDER BY cl.APELLIDO_PATERNO, cl.APELLIDO_MATERNO, cl.NOMBRE");
+		System.out.println(sql.toString());
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, codigoCuenta);
+		rs = pstm.executeQuery();
+
+		BCliente cliente;
+		BTarjetaFidelizacion tarjeta;
+		Lista listaTarjeta;
+		while (rs.next()) {
+			cuenta = new BCuenta();
+			cuenta.setCodigo(rs.getInt("CUENTA_ID"));
+			cuenta.setPuntosAcumulados(rs.getInt("PUNTOS_ACUMULADOS"));
+			cuenta.setPuntosCanjeados(rs.getInt("UNTOS_CANJEADOS"));
+			cuenta.setPuntosVencidos(rs.getInt("PUNTOS_VENCIDOS"));
+			cuenta.setEstado(rs.getInt("ESTADO"));
+			cliente = new BCliente();
+			cliente.setNumeroDocumento(rs.getString("NUMERO_DOCUMENTO"));
+			cliente.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+			cliente.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+			cliente.setNombre(rs.getString("NOMBRE"));
+			tarjeta = new BTarjetaFidelizacion();
+			tarjeta.setNumero(rs.getString("NUM_TARJETA"));
+			tarjeta.setTipoCliente(rs.getInt("TIPO_CLIENTE"));
+			tarjeta.setCliente(cliente);
+			listaTarjeta = new Lista();
+			listaTarjeta.setElemento(tarjeta);
+			cuenta.setTarjeta(listaTarjeta);
+			lista.setElemento(cuenta);
+		}
+
+		rs.close();
+		pstm.close();
+		conn.close();
+
+		return lista;
+	}
 }

@@ -71,6 +71,13 @@ public class SMantenimientoCliente extends HttpServlet {
 			}else if (operacion.equals("buscarCuenta")) {
 				ruta = iniciarListadoCuenta(request);
 			}
+			//gonza
+			else if(operacion.equals("ingresoModificarCuenta")) {
+				ruta = iniciarModificarCuenta(request);
+			}else if(operacion.equals("eliminarCuenta")) {
+				ruta = eliminarCuenta(request,usuario,sucursal);
+			}
+			//gonza
 			if (indicador == -1) {
 				getServletConfig().getServletContext().getRequestDispatcher(
 						ruta).forward(request, response);
@@ -378,7 +385,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			daoCliente.almacenarCuenta(conn, cuenta, usuario,sucursal);
 
 			ConnectDS.aceptarTrasaccion(conn);
-			
+			request.setAttribute("mensajeMantenimiento", "Se ha creado la cuenta.");
 			ruta = iniciarListadoCuenta(request);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
@@ -393,4 +400,69 @@ public class SMantenimientoCliente extends HttpServlet {
 		
 		return ruta;
 	}
+	//gonza
+	/**
+	 * Muestra la pantalla de modificar cuenta.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String iniciarModificarCuenta(HttpServletRequest request){
+		String ruta = "";
+		try {
+			String codigoCuenta=request.getParameter("hddCodigoSeleccionado");
+			String numTarjeta=request.getParameter("hddTarjeta"+codigoCuenta);
+			String nombreCliente=request.getParameter("hddApellidoPaterno"+codigoCuenta)+" ";
+			nombreCliente=nombreCliente+request.getParameter("hddApellidoMaterno"+codigoCuenta)+", ";
+			nombreCliente=nombreCliente+request.getParameter("hddNombre"+codigoCuenta);
+			Lista listadoCuenta;
+			CMantenimientoCliente cMantenimientoCliente = new CMantenimientoCliente();
+			listadoCuenta = cMantenimientoCliente.obtenerListaClientesAdicionales(Integer.parseInt(codigoCuenta));
+			
+			request.setAttribute("listadoCuenta", listadoCuenta);
+			request.setAttribute("codigoCuenta", codigoCuenta);
+			request.setAttribute("numTarjeta", numTarjeta);
+			request.setAttribute("nombreCliente", nombreCliente);
+			ruta = "/jsp/maestroCliente/mae_ModificarCuenta.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	/**
+	 * Elimina cuenta.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tio BSucursal.
+	 * @return
+	 */
+	private String eliminarCuenta(HttpServletRequest request,BUsuario usuario, BSucursal sucursal){
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			String codigoCuenta=request.getParameter("hddCodigoSeleccionado");
+						
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
+			daoCliente.eliminarCuentaCliente(conn,Integer.parseInt(codigoCuenta),usuario,sucursal);
+			ConnectDS.aceptarTrasaccion(conn);
+			
+			request.setAttribute("mensajeMantenimiento", "Se ha dado de baja a la cuenta.");
+			ruta = iniciarListadoCuenta(request);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
+		return ruta;
+	}
+	//gonza
 }

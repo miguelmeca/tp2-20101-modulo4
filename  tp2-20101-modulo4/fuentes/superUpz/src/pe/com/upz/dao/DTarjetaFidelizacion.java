@@ -122,4 +122,20 @@ public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 		
 		return encontrado;
 	}
+	public void eliminarTarjetasCuenta(Connection conn, int codCuenta, BUsuario usuario)throws SQLException{
+		PreparedStatement pstm;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE tarjeta_fidelizacion \n");
+		sql.append("SET    usuario_modificacion = ?      , \n");
+		sql.append("       fecha_modificacion   = SYSDATE, \n");
+		sql.append("       estado               = 1 \n");
+		sql.append("WHERE  cuenta_id            = ?");
+
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1, usuario.getLogin());
+		pstm.setInt(2, codCuenta);
+		
+		pstm.executeUpdate();
+	}
 }

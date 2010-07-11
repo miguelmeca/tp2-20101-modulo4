@@ -187,7 +187,7 @@ public class CReporte {
 			BProductoSucursal  bSucursalP;
 			Lista listaProducto = dProducto.obtenerSucursalProductoStock();
 			String nombreSucursal = "";
-			
+			int cantidad=0;
 			for (int i = 0; i < listaProducto.getTamanio(); i++) {
 				bSucursalP = (BProductoSucursal)listaProducto.getElemento(i);
 				fila = hoja.createRow((int) i + 8);
@@ -202,20 +202,23 @@ public class CReporte {
 					xls.setCelda(libro, hoja, fila, celda, (short) 1, "",
 							estilo);
 				}
+				
+				cantidad = dProducto.obtenerSucursalProductoPromedio(bSucursalP.getSucursal().getCodigo(), bSucursalP.getProducto().getCodigo(),numeroAnio, numeroMes);
+				
 				xls.setCelda(libro, hoja, fila, celda, (short) 2, "Canje",
 						estilo);				
 				xls.setCelda(libro, hoja, fila, celda, (short) 3, bSucursalP.getProducto().getCodigo()+"",
-						estCentro);				
+						estilo);				
 				xls.setCelda(libro, hoja, fila, celda, (short) 4, bSucursalP.getProducto().getTipo().getDescripcion(),
 						estilo);	
 				xls.setCelda(libro, hoja, fila, celda, (short) 5, bSucursalP.getProducto().getNombre(),
 						estilo);				
-				xls.setCelda(libro, hoja, fila, celda, (short) 6, ""+dProducto.obtenerSucursalProductoPromedio(bSucursalP.getSucursal().getCodigo(), bSucursalP.getProducto().getCodigo(),numeroAnio, numeroMes),
-						estCentro);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 6, ""+cantidad,
+						estilo);				
 				xls.setCelda(libro, hoja, fila, celda, (short) 7, bSucursalP.getStock()+"",
-						estCentro);				
-				xls.setCelda(libro, hoja, fila, celda, (short) 8, bSucursalP.getStock()+"SI",
-						estCentro);				
+						estilo);				
+				xls.setCelda(libro, hoja, fila, celda, (short) 8, ((cantidad>=bSucursalP.getStock())?"SI":"NO"),
+						estilo);				
 			}
 			// fin de reporte
 			xls.finReporte(libro, hoja, "fin del reporte", 6);
