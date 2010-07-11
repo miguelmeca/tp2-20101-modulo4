@@ -1,14 +1,32 @@
 <%--
 *Resumen
-*Objeto                 : mae_MantenerCuenta.jsp.
+*Objeto                 : mae_ModificarCuenta.jsp.
 * Descripcion           : pagina para el mantenimiento de cuenta.
-* Fecha de Creacion     : 10/06/2010
+* Fecha de Creacion     : 10/07/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
-<html>
+<%@page import="pe.com.upz.util.Lista"%>
+<%@page import="pe.com.upz.bean.BCuenta"%>
+<%@page import="pe.com.upz.bean.BCliente"%>
 <%
 String ruta = request.getContextPath(); 
+
+Lista listadoCuenta = (Lista)request.getAttribute("listadoCuenta");
+String codCuenta = (String)request.getAttribute("codigoCuenta");
+String nombreCliente = (String)request.getAttribute("nombreCliente");
+String numTarjeta = (String)request.getAttribute("numTarjeta");
+int codigoCuenta =0;
+if(listadoCuenta ==null){
+	listadoCuenta = new Lista();
+}
+if(nombreCliente ==null){
+	nombreCliente = "";
+}
+if(codCuenta !=null){
+	codigoCuenta = Integer.parseInt(codCuenta);
+}
 %>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Canjear Puntos</title>
@@ -41,7 +59,7 @@ body {
       <tr>
         <td height="171" valign="top" class="ui-tabs-nav">
 		<center>
-			<table width="70%" border="1">
+			<table width="85%" border="1">
           <tr>
             <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Datos de la cuenta </td>
             </tr>
@@ -53,20 +71,20 @@ body {
             </td>
             </tr>
 		  <tr >
-            <td align="left" style="height: 21px; width: 175px;" > Cliente: (*) </td>
+            <td align="left" style="height: 21px; width: 175px;" > Cliente:</td>
             <td align="left" style="width: 420px; height: 21px;" >
 			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true"  /> 
-			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />                  
-              <input type="button" name="btnBuscarCliente" value="Buscar" 
-			  onclick="javascript:mostrarClientes()" 
-			  style="width:70px" class="ui-state-default"  /></td></tr>
+			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:350px" value="<%=nombreCliente%>" readonly="true"  />                  
+              </td>
+		  </tr>
 		  <tr >
             <td align="left" style="height: 26px; width: 175px;" >&nbsp; </td>
 			<td align="left" style="height: 26px; width: 420px;" >&nbsp;                </td>
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
-			<td align="left" style="height: 31px; width: 420px;" ><input name="txtNumeroTarjeta" type="text" class="text  ui-corner-all" id="txtNumeroTarjeta" style="width:150px" readonly="true" />&nbsp;&nbsp;
+			<td align="left" style="height: 31px; width: 420px;" ><input name="txtNumeroTarjeta" type="text" class="text  ui-corner-all" id="txtNumeroTarjeta" style="width:250px" value="<%=numTarjeta%>" readonly="true" />
+			&nbsp;&nbsp;
 			<input type="button" name="btnAsignar" id="btnAsignar" 
 			onclick="javascript:agregarTarjeta()" 
 			value="Asignar" style="width:120px" class="ui-state-default btnAsignar" /></td>
@@ -76,9 +94,48 @@ body {
             <td colspan="2" align="left" >&nbsp;</td>
             </tr>
           <tr >
+            <td colspan="2" align="left" >
+			</td>
+          </tr>
+          <tr >
             <td colspan="2" align="left" ><span class="style3">(*) Campos obligatórios.&nbsp;</span></td>
             </tr>
-        </table>			</td>
+        </table>			
+		
+		</td>
+		</tr>
+		<tr><td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">
+		<table width="877" border="1">
+          <tr>
+            <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Num</td>
+            <td width="21%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">N&uacute;mero</div></td>
+            <td width="25%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Paterno</div></td>
+            <td width="22%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Materno </div></td>
+            <td width="24%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Nombres</div></td>
+            <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel</td>
+			</tr>
+ 			<%for(int i=0;i<listadoCuenta.getTamanio();i++){%>
+ 			<%	BCuenta cuenta = (BCuenta) listadoCuenta.getElemento(i); %> 
+ 			<%	BCliente miCliente = cuenta.obtenerClientePrincipal(); %> 
+			<%	String numeroTarjeta = cuenta.obtenerTarjetaPrincipal(); %> 
+          <tr >
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div>
+			<input type="hidden" name="hddApellidoPaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
+			</td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div>
+			<input type="hidden" name="hddApellidoMaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoMaterno()%>" />
+			</td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div>
+			<input type="hidden" name="hddNombre<%=cuenta.getCodigo()%>" value="<%=miCliente.getNombre()%>" />
+			</td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" 
+			onclick="javascript:seleccionar('<%=cuenta.getCodigo()%>')"  /></td>
+            </tr>   
+            <%} %>
+        </table>     
+		</td>
             </tr>
         </table>        
 		</center>   </td>

@@ -75,7 +75,7 @@ body {
 </style>
 </head>
 
-<body onload="javascript:mostrarMensaje();ocultarPaneles();">
+<body onload="javascript:ocultarPaneles();mostrarMensaje();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%" align="center">
 
@@ -172,7 +172,9 @@ body {
 			<%	String numeroTarjeta = cuenta.obtenerTarjetaPrincipal(); %> 
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div>
+			<input type="hidden" name="hddTarjeta<%=cuenta.getCodigo()%>" value="<%=numeroTarjeta%>" />
+			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div>
 			<input type="hidden" name="hddApellidoPaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
 			</td>
@@ -196,8 +198,12 @@ body {
           <input type="button" name="btnNuevo" value="Nuevo" style="width:120px" 
           onclick="javascript:agregarNuevo()" 
           class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
+          <input type="button" name="btnEditar" 
+		  onclick="javascript:modificar()"
+		  value="Editar" style="width:120px" class="ui-state-default"  />		  
+          <input type="button" name="btnEliminar" 
+		  onclick="javascript:eliminar()"
+		  value="Eliminar" style="width:120px" class="ui-state-default"  />
           <%}else{ %>
 		  <input type="button" name="btnAceptar" value="Aceptar" 
 		  onclick="javascript:aceptarSeleccionPadre()" style="width:120px" class="ui-state-default"  />          
@@ -220,6 +226,29 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function eliminar(){
+var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	if(!confirm("¿Desea dar de baja la cuenta seleccionada?")){
+		return;
+	}
+	frmListaClientes.hddOperacion.value="eliminarCuenta";
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
+function modificar(){
+var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	frmListaClientes.hddOperacion.value="ingresoModificarCuenta";
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
 function cerrar(){
 	<% if (mostrarMantenimineto){ %>
 	frmListaClientes.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
@@ -279,10 +308,8 @@ function agregarNuevo(){
 }
 function mostrarMensaje(){
 	var resultado = "<%=mensajeMantenimiento%>";
-	if(resultado == "nuevoOK"){
-		alert("Se agregó un nuevo Cliente.");
-	}else if (resultado== "actualizadoOK"){
-		alert("Se actualizó el Cliente.");
+	if(resultado != ""){
+		alert(resultado);
 	}
 }
 function ocultarPaneles(){
