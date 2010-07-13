@@ -1,6 +1,6 @@
 <%--
 *Resumen
-*Objeto                 : mae_ModificarCuenta.jsp.
+*Objeto                 : mae_MantenerCuentaAdicional.jsp.
 * Descripcion           : pagina para el mantenimiento de cuenta.
 * Fecha de Creacion     : 10/07/2010
 * Autor                 : Gonzalo Azabache Carrillo
@@ -11,7 +11,8 @@
 <%
 String ruta = request.getContextPath(); 
 
-Lista listadoCuenta = (Lista)request.getAttribute("listadoCuenta");
+//Lista listadoCuenta = (Lista)request.getAttribute("listadoCuenta");
+Lista listadoCuenta = (Lista)request.getSession().getAttribute("listadoCuenta");
 String codCuenta = (String)request.getAttribute("codigoCuenta");
 String nombreCliente = (String)request.getAttribute("nombreCliente");
 String numTarjeta = (String)request.getAttribute("numTarjeta");
@@ -98,7 +99,16 @@ body {
 			</td>
           </tr>
           <tr >
-            <td colspan="2" align="left" ><span class="style3">(*) Campos obligatórios.&nbsp;</span></td>
+            <td colspan="2" align="left" ><span class="style3">(*) Campos obligat&oacute;rios.&nbsp;</span></td>
+          </tr>
+          <tr >
+            <td colspan="2" align="left" ><input type="button" name="btnAgregarAdicional" id="btnAgregarAdicional" 
+			onclick="javascript:agregarAdicional()" 
+			value="Nuevo Adicional" style="width:150px" class="ui-state-default" />
+			<input type="button" name="btnEliminarAdicional" id="btnEliminarAdicional" 
+			onclick="javascript:agregarTarjeta()" 
+			value="Eliminar Adicional" style="width:150px" class="ui-state-default" />
+			</td>
             </tr>
         </table>			
 		
@@ -164,7 +174,13 @@ body {
 </body>
 <script language="JavaScript">
 function cerrar(){
+	frmCanje.target="_top";
 	frmCanje.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmCanje.submit();
+}
+function agregarAdicional(){
+	frmCanje.hddOperacion.value="agregarAdicional";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=agregarAdicional";
 	frmCanje.submit();
 }
 function guardar(){
