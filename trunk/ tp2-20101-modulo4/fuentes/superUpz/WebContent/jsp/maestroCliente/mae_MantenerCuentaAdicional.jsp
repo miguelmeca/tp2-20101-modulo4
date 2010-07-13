@@ -33,7 +33,7 @@ body {
 <form name="frmCanje" id="frmCanje" method="get" action="">
 <table width="1010px" border="0" >
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Mantenimiento de Cuenta </td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Mantenimiento de Cuenta Adicional </td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
@@ -43,7 +43,7 @@ body {
 		<center>
 			<table width="70%" border="1">
           <tr>
-            <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Datos de la cuenta </td>
+            <td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center">Datos de la cuenta Adicional </td>
             </tr>
           <tr >
             <td align="center" style="width: 702px" >
@@ -112,9 +112,9 @@ function cerrar(){
 }
 function guardar(){
 	frmCanje.target="_top";
-	frmCanje.hddOperacion.value="almacenarCuenta";
+	frmCanje.hddOperacion.value="almacenarUnAdicional";
 	frmCanje.hddMantenimiento.value="-1";
-	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarCuenta";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarUnAdicional";
 	frmCanje.submit();
 }
 function agregarTarjeta(){
