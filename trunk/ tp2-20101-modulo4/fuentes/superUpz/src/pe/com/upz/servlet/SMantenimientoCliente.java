@@ -76,6 +76,10 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = iniciarModificarCuenta(request);
 			}else if(operacion.equals("eliminarCuenta")) {
 				ruta = eliminarCuenta(request,usuario,sucursal);
+			}else if(operacion.equals("agregarAdicional")){
+				ruta = agregarAdicional(request);
+			}else if(operacion.equals("almacenarUnAdicional")){
+				ruta = anadirUnAdicional(request);
 			}
 			//gonza
 			if (indicador == -1) {
@@ -418,7 +422,9 @@ public class SMantenimientoCliente extends HttpServlet {
 			CMantenimientoCliente cMantenimientoCliente = new CMantenimientoCliente();
 			listadoCuenta = cMantenimientoCliente.obtenerListaClientesAdicionales(Integer.parseInt(codigoCuenta));
 			
-			request.setAttribute("listadoCuenta", listadoCuenta);
+			//request.setAttribute("listadoCuenta", listadoCuenta);
+			request.getSession().setAttribute("listadoCuenta", listadoCuenta);
+			
 			request.setAttribute("codigoCuenta", codigoCuenta);
 			request.setAttribute("numTarjeta", numTarjeta);
 			request.setAttribute("nombreCliente", nombreCliente);
@@ -461,6 +467,73 @@ public class SMantenimientoCliente extends HttpServlet {
 					+ "; Mensaje:" + e);
 		}finally{
 			ConnectDS.cerrarConexion(conn);
+		}
+		return ruta;
+	}
+	
+	/**
+	 * Muetra la pagina de agregar adicional.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String agregarAdicional(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			
+			ruta = "/jsp/maestroCliente/mae_MantenerCuentaAdicional.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	
+	/**
+	 * Agrega un adicional.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String anadirUnAdicional(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			
+			BCuenta cuenta;
+			BTarjetaFidelizacion tarjetaFidel;
+			BCliente cliente;
+			Lista listaTarjeta;
+			int codigoCliente;
+			String numeroTarjeta;
+
+			codigoCliente = Integer.parseInt(request.getParameter("hddCodigoCliente"));
+			numeroTarjeta = request.getParameter("txtNumeroTarjeta");
+			cliente = new BCliente();
+			cliente.setCodigo(codigoCliente);
+			tarjetaFidel = new BTarjetaFidelizacion();
+			listaTarjeta = new Lista();
+	
+			tarjetaFidel.setCliente(cliente);
+			tarjetaFidel.setTipoCliente(1);
+			tarjetaFidel.setNumero(numeroTarjeta);
+			listaTarjeta.setElemento(tarjetaFidel);
+
+			cuenta = new BCuenta();
+			cuenta.setTarjeta(listaTarjeta);
+			
+			
+
+			//ruta = iniciarListadoCuenta(request);
+			
+			
+			ruta = "/jsp/maestroCliente/mae_MantenerCuentaAdicional.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
 		}
 		return ruta;
 	}
