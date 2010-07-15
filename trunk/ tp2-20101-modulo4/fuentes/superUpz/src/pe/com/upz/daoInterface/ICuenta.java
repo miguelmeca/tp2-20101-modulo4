@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BCuenta;
 import pe.com.upz.bean.BSucursal;
+import pe.com.upz.bean.BTarjetaFidelizacion;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.util.Lista;
 
@@ -114,4 +115,18 @@ public interface ICuenta {
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract Lista obtenerListadoCuentaAdicional(int codigoCuenta) throws SQLException;
+	
+	/**
+	 * Almacena cuenta nueva.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @param cuenta cuenta a almacenar, tipo BCuenta.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tipo BSucursal.
+	 * @return codigo de cuenta, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void modificarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException;
+
+	public abstract void actualizarTarjetaClienteTitular(Connection conn, BTarjetaFidelizacion tarjeta,
+			BUsuario usuario, BSucursal sucursal, int codCuenta)throws SQLException;
 }

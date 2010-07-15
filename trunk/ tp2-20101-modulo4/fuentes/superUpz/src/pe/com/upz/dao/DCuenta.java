@@ -364,10 +364,10 @@ public class DCuenta implements ICuenta {
 			tarjeta.setNumero(rs.getString("NUM_TARJETA"));
 			tarjeta.setTipoCliente(rs.getInt("TIPO_CLIENTE"));
 			tarjeta.setCliente(cliente);
-			listaTarjeta = new Lista();
-			listaTarjeta.setElemento(tarjeta);
-			cuenta.setTarjeta(listaTarjeta);
-			lista.setElemento(cuenta);
+			//listaTarjeta = new Lista();
+			//listaTarjeta.setElemento(tarjeta);
+			//cuenta.setTarjeta(listaTarjeta);
+			lista.setElemento(tarjeta);
 		}
 
 		rs.close();
@@ -376,4 +376,32 @@ public class DCuenta implements ICuenta {
 
 		return lista;
 	}
+	public void modificarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException{
+		
+	}
+
+	@Override
+	public void actualizarTarjetaClienteTitular(Connection conn, BTarjetaFidelizacion tarjeta,
+			BUsuario usuario, BSucursal sucursal, int codCuenta)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE TARJETA_FIDELIZACION \n");
+		sql.append("SET    NUMERO               = ?, \n");
+		sql.append("       USUARIO_MODIFICACION = ?, \n");
+		sql.append("       FECHA_MODIFICACION   = SYSDATE \n");
+		sql.append("WHERE  CUENTA_ID            = ? \n");
+		sql.append("AND    CLIENTE_ID           = ?");
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1, tarjeta.getNumero());
+		pstm.setString(2, usuario.getLogin());
+		pstm.setInt(3, codCuenta);
+		pstm.setInt(4, tarjeta.getCliente().getCodigo());
+		
+		pstm.executeUpdate();
+
+	}
+
 }
