@@ -1,8 +1,8 @@
 <%--
 *Resumen
-*Objeto                 : mae_MantenerCuentaAdicional.jsp.
+*Objeto                 : mae_ModificarCuenta.jsp.
 * Descripcion           : pagina para el mantenimiento de cuenta.
-* Fecha de Creacion     : 10/07/2010
+* Fecha de Creacion     : 10/06/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
@@ -27,7 +27,8 @@ if(codCuenta !=null){
 	codigoCuenta = Integer.parseInt(codCuenta);
 }
 %>
-<html>
+
+<%@page import="pe.com.upz.bean.BTarjetaFidelizacion"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Canjear Puntos</title>
@@ -74,7 +75,7 @@ body {
 		  <tr >
             <td align="left" style="height: 21px; width: 175px;" > Cliente:</td>
             <td align="left" style="width: 420px; height: 21px;" >
-			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true"  /> 
+			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codCuenta%>" /> 
 			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:350px" value="<%=nombreCliente%>" readonly="true"  />                  
               </td>
 		  </tr>
@@ -125,23 +126,23 @@ body {
             <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Sel</td>
 			</tr>
  			<%for(int i=0;i<listadoCuenta.getTamanio();i++){%>
- 			<%	BCuenta cuenta = (BCuenta) listadoCuenta.getElemento(i); %> 
- 			<%	BCliente miCliente = cuenta.obtenerClientePrincipal(); %> 
-			<%	String numeroTarjeta = cuenta.obtenerTarjetaPrincipal(); %> 
+ 			<%	BTarjetaFidelizacion tarjeta = (BTarjetaFidelizacion) listadoCuenta.getElemento(i); %> 
+ 			<%	BCliente miCliente = tarjeta.getCliente(); %> 
+			<%	String numeroTarjeta = tarjeta.getNumero(); %> 
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div>
-			<input type="hidden" name="hddApellidoPaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
+			<input type="hidden" name="hddApellidoPaterno<%=miCliente.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
 			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoMaterno()%></div>
-			<input type="hidden" name="hddApellidoMaterno<%=cuenta.getCodigo()%>" value="<%=miCliente.getApellidoMaterno()%>" />
+			<input type="hidden" name="hddApellidoMaterno<%=miCliente.getCodigo()%>" value="<%=miCliente.getApellidoMaterno()%>" />
 			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div>
-			<input type="hidden" name="hddNombre<%=cuenta.getCodigo()%>" value="<%=miCliente.getNombre()%>" />
+			<input type="hidden" name="hddNombre<%=miCliente.getCodigo()%>" value="<%=miCliente.getNombre()%>" />
 			</td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" 
-			onclick="javascript:seleccionar('<%=cuenta.getCodigo()%>')"  /></td>
+            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=miCliente.getCodigo()%>" 
+			onclick="javascript:seleccionar('<%=miCliente.getCodigo()%>')"  /></td>
             </tr>   
             <%} %>
         </table>     
@@ -185,7 +186,7 @@ function agregarAdicional(){
 }
 function guardar(){
 	frmCanje.target="_top";
-	frmCanje.hddOperacion.value="almacenarCuenta";
+	frmCanje.hddOperacion.value="almacenarCuentaModificada";
 	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarCuenta";
 	frmCanje.submit();
 }

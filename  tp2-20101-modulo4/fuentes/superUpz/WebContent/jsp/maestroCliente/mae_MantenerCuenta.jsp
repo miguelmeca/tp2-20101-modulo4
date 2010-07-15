@@ -62,7 +62,11 @@ body {
 			  style="width:70px" class="ui-state-default"  /></td></tr>
 		  <tr >
             <td align="left" style="height: 26px; width: 175px;" >&nbsp; </td>
-			<td align="left" style="height: 26px; width: 420px;" >&nbsp;                </td>
+			<td align="left" style="height: 26px; width: 420px;" >
+				<input name="hddClienteNombre" type="hidden" id="hddClienteNombre"    /> 
+				<input name="hddClientePaterno" type="hidden" id="hddClientePaterno"   /> 
+				<input name="hddClienteMaterno" type="hidden" id="hddClienteMaterno"   /> 
+			</td>
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
@@ -113,6 +117,16 @@ function cerrar(){
 function guardar(){
 	frmCanje.target="_top";
 	frmCanje.hddOperacion.value="almacenarCuenta";
+	var codigoCuenta = frmCanje.hddCodigoCliente.value;
+	var numTarjeta = frmCanje.txtNumeroTarjeta.value;
+	if(codigoCuenta==""){
+		alert("Debe seleccionar un cliente");
+		return;
+	}
+	if(numTarjeta==""){
+		alert("Debe ingresar una tarjeta");
+		return;
+	}
 	frmCanje.hddMantenimiento.value="-1";
 	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarCuenta";
 	frmCanje.submit();

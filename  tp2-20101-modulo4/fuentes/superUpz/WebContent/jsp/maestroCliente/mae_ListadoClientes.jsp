@@ -257,6 +257,9 @@ function aceptarSeleccionPadre(){
 	//var codigoCliente = document.getElementById("hddCodigoCliente"+codigo);
 	vm.document.getElementById("hddCodigoCliente").value =  codigo;
 	vm.document.getElementById("txtCliente").value =  nombre;
+	vm.document.getElementById("hddClienteNombre").value =  document.getElementById("hddNombre"+codigo).value;
+	vm.document.getElementById("hddClientePaterno").value =  document.getElementById("hddApellidoPaterno"+codigo).value;
+	vm.document.getElementById("hddClienteMaterno").value =  document.getElementById("hddApellidoMaterno"+codigo).value;
 	cerrar();
 	
 }
