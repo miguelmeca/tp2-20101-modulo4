@@ -1,13 +1,16 @@
 <%--
 *Resumen
-*Objeto                 : mae_MantenerCuenta.jsp.
+*Objeto                 : mae_MantenerCuentaAdicional.jsp.
 * Descripcion           : pagina para el mantenimiento de cuenta.
-* Fecha de Creacion     : 10/06/2010
+* Fecha de Creacion     : 10/07/2010
 * Autor                 : Gonzalo Azabache Carrillo
 --%>
 <html>
 <%
 String ruta = request.getContextPath(); 
+String numTarjeta= request.getParameter("txtNumeroTarjeta");
+String nombreCliente= request.getParameter("txtCliente");
+String codigoCliente = request.getParameter("hddCodigoCliente");
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -62,7 +65,11 @@ body {
 			  style="width:70px" class="ui-state-default"  /></td></tr>
 		  <tr >
             <td align="left" style="height: 26px; width: 175px;" >&nbsp; </td>
-			<td align="left" style="height: 26px; width: 420px;" >&nbsp;                </td>
+			<td align="left" style="height: 26px; width: 420px;" >
+				<input name="hddClienteNombre" type="hidden" id="hddClienteNombre"    /> 
+				<input name="hddClientePaterno" type="hidden" id="hddClientePaterno"   /> 
+				<input name="hddClienteMaterno" type="hidden" id="hddClienteMaterno"   /> 
+			</td>
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
@@ -101,6 +108,9 @@ body {
   </tr>
 </table>
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
+<input type="text" name="hddCodigoCli" id="hddCodigoCli" value="<%=codigoCliente%>" />
+<input type="text" name="hddNombreCliente" id="hddNombreCliente" value="<%=nombreCliente%>" />
+<input type="text" name="hddNumeroTarjeta" id="hddNumeroTarjeta" value="<%=numTarjeta%>" />
 <input type="hidden" name="hddMantenimiento" id="hddMantenimiento" value="0" />
 </form>
 </div>
@@ -113,6 +123,16 @@ function cerrar(){
 function guardar(){
 	frmCanje.target="_top";
 	frmCanje.hddOperacion.value="almacenarUnAdicional";
+	var codigoCuenta = frmCanje.hddCodigoCliente.value;
+	var numTarjeta = frmCanje.txtNumeroTarjeta.value;
+	if(codigoCuenta==""){
+		alert("Debe seleccionar un cliente");
+		return;
+	}
+	if(numTarjeta==""){
+		alert("Debe ingresar una tarjeta");
+		return;
+	}
 	frmCanje.hddMantenimiento.value="-1";
 	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=almacenarUnAdicional";
 	frmCanje.submit();
