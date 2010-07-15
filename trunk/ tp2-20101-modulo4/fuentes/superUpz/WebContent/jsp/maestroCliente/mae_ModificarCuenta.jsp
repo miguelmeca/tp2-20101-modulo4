@@ -13,6 +13,7 @@ String ruta = request.getContextPath();
 
 //Lista listadoCuenta = (Lista)request.getAttribute("listadoCuenta");
 Lista listadoCuenta = (Lista)request.getSession().getAttribute("listadoCuenta");
+String codClientePrincipal = (String)request.getAttribute("codigoCliente");
 String codCuenta = (String)request.getAttribute("codigoCuenta");
 String nombreCliente = (String)request.getAttribute("nombreCliente");
 String numTarjeta = (String)request.getAttribute("numTarjeta");
@@ -75,7 +76,8 @@ body {
 		  <tr >
             <td align="left" style="height: 21px; width: 175px;" > Cliente:</td>
             <td align="left" style="width: 420px; height: 21px;" >
-			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codCuenta%>" /> 
+			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codClientePrincipal%>" /> 
+			<input name="hddCodigoCuenta" type="text" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codCuenta%>" /> 
 			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:350px" value="<%=nombreCliente%>" readonly="true"  />                  
               </td>
 		  </tr>

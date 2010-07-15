@@ -183,6 +183,7 @@ body {
 			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getNombre()%> </div>
 			<input type="hidden" name="hddNombre<%=cuenta.getCodigo()%>" value="<%=miCliente.getNombre()%>" />
+			<input type="hidden" name="hddCodigoCliente<%=cuenta.getCodigo()%>" value="<%=miCliente.getCodigo()%>" />
 			</td>
             <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=cuenta.getCodigo()%>" 
 			onclick="javascript:seleccionar('<%=cuenta.getCodigo()%>')"  /></td>
