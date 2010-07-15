@@ -76,8 +76,8 @@ body {
 		  <tr >
             <td align="left" style="height: 21px; width: 175px;" > Cliente:</td>
             <td align="left" style="width: 420px; height: 21px;" >
-			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codClientePrincipal%>" /> 
-			<input name="hddCodigoCuenta" type="text" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true" value="<%=codCuenta%>" /> 
+			<input name="hddCodigoCliente" type="hidden" id="hddCodigoCliente" style="width:150px" value="<%=codClientePrincipal%>" /> 
+			<input name="hddCodigoCuenta" type="hidden" id="hddCodigoCliente" style="width:150px" value="<%=codCuenta%>" /> 
 			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:350px" value="<%=nombreCliente%>" readonly="true"  />                  
               </td>
 		  </tr>
@@ -108,9 +108,10 @@ body {
             <td colspan="2" align="left" ><input type="button" name="btnAgregarAdicional" id="btnAgregarAdicional" 
 			onclick="javascript:agregarAdicional()" 
 			value="Nuevo Adicional" style="width:150px" class="ui-state-default" />
-			<input type="button" name="btnEliminarAdicional" id="btnEliminarAdicional" 
-			onclick="javascript:agregarTarjeta()" 
-			value="Eliminar Adicional" style="width:150px" class="ui-state-default" />
+			<input type="button" name="btnModificarAdicional" id="btnModificarAdicional" 
+			onclick="javascript:agregarTarjetaAdicional()" 
+			value="Editar Adicional" style="width:150px" class="ui-state-default" />
+			<input name="hddCodCliAdicionalSel" type="hidden" id="hddCodCliAdicionalSel" value="" />
 			</td>
             </tr>
         </table>			
@@ -133,7 +134,9 @@ body {
 			<%	String numeroTarjeta = tarjeta.getNumero(); %> 
           <tr >
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=(i+1)%></div></td>
-            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div></td>
+            <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=numeroTarjeta%></div>
+			<input type="hidden" name="hddTarjetaAdicional<%=miCliente.getCodigo()%>" value="<%=numeroTarjeta%>" />
+			</td>
             <td class="ui-accordion-content"><div align="center" class="Estilo4"><%=miCliente.getApellidoPaterno()%> </div>
 			<input type="hidden" name="hddApellidoPaterno<%=miCliente.getCodigo()%>" value="<%=miCliente.getApellidoPaterno()%>" />
 			</td>
@@ -176,12 +179,22 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function agregarTarjetaAdicional(){
+	frmCanje.target="_top";
+	frmCanje.hddOperacion.value="modificarAdicional";
+	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=agregarAdicional";
+	frmCanje.submit();
+}
+function seleccionar(codigo){
+	frmCanje.hddCodCliAdicionalSel.value=codigo;
+}
 function cerrar(){
 	frmCanje.target="_top";
 	frmCanje.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
 	frmCanje.submit();
 }
 function agregarAdicional(){
+	frmCanje.target="_top";
 	frmCanje.hddOperacion.value="agregarAdicional";
 	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=agregarAdicional";
 	frmCanje.submit();
