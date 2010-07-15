@@ -170,6 +170,7 @@ body {
 </body>
 <script language="JavaScript">
 function cerrar(){
+	frmCanje.target="_top";
 	frmCanje.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
 	frmCanje.submit();
 }
