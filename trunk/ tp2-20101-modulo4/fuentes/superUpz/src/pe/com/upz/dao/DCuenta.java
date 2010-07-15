@@ -326,6 +326,7 @@ public class DCuenta implements ICuenta {
 		sql.append("       CU.PUNTOS_VENCIDOS  AS PUNTOS_VENCIDOS, \n");
 		sql.append("       CU.PUNTOS_CANJEADOS AS UNTOS_CANJEADOS, \n");
 		sql.append("       CU.ESTADO           AS ESTADO, \n");
+		sql.append("       CL.CLIENTE_ID           AS CLIENTE_ID, \n");
 		sql.append("       CL.NOMBRE           AS NOMBRE, \n");
 		sql.append("       CL.APELLIDO_PATERNO AS APELLIDO_PATERNO, \n");
 		sql.append("       CL.APELLIDO_MATERNO AS APELLIDO_MATERNO, \n");
@@ -358,6 +359,7 @@ public class DCuenta implements ICuenta {
 			cuenta.setPuntosVencidos(rs.getInt("PUNTOS_VENCIDOS"));
 			cuenta.setEstado(rs.getInt("ESTADO"));
 			cliente = new BCliente();
+			cliente.setCodigo(rs.getInt("CLIENTE_ID"));
 			cliente.setNumeroDocumento(rs.getString("NUMERO_DOCUMENTO"));
 			cliente.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
 			cliente.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));

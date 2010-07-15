@@ -141,9 +141,16 @@ public class CMantenimientoCliente {
 		//actualiza la tarjeta del cliente titular
 		daoCliente.actualizarTarjetaClienteTitular(conn, (BTarjetaFidelizacion)cuenta.getTarjeta().getElemento(0), usuario, sucursal, cuenta.getCodigo());
 		BTarjetaFidelizacion tarjeta;
+		//primero debo eliminarlos
+		
 		for(int i=0; i< listaAdicionales.getTamanio();i++){
 			tarjeta = (BTarjetaFidelizacion)listaAdicionales.getElemento(i);
-			tarjetaFidel.almacenarTarjeta(conn, tarjeta, usuario, sucursal, cuenta.getCodigo());
+			if(tarjetaFidel.buscarClienteFidelizado(tarjeta.getCliente(),cuenta)){
+				daoCliente.actualizarTarjetaClienteTitular(conn, tarjeta, usuario, sucursal, cuenta.getCodigo());
+			}else{
+				tarjetaFidel.almacenarTarjeta(conn, tarjeta, usuario, sucursal, cuenta.getCodigo());				
+			}
+			
 
 		}
 		return cuenta.getCodigo();

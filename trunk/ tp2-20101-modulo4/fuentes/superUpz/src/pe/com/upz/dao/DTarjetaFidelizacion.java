@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BCliente;
+import pe.com.upz.bean.BCuenta;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTarjetaFidelizacion;
 import pe.com.upz.bean.BUsuario;
@@ -137,5 +138,34 @@ public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 		pstm.setInt(2, codCuenta);
 		
 		pstm.executeUpdate();
+	}
+	public boolean buscarClienteFidelizado(BCliente cliente, BCuenta cuenta)throws SQLException {
+		// TODO Auto-generated method stub
+		boolean encontrado=false; 
+		Connection conn = ConnectDS.obtenerConeccion();
+		
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT z.cuenta_id \n");
+		sql.append("FROM   fidelizacion.tarjeta_fidelizacion z \n");
+		sql.append("WHERE  z.cliente_id   = ? \n");
+		sql.append("AND    z.cuenta_id = ?");
+		sql.append("AND    z.estado       = 1 \n");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, cliente.getCodigo());
+		pstm.setInt(2, cuenta.getCodigo());
+
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			encontrado=true;
+		}
+		rs.close();
+		pstm.close();
+		conn.close();
+		
+		return encontrado;
 	}
 }
