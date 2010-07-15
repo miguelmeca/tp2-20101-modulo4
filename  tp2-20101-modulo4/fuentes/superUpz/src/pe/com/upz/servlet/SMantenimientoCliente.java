@@ -105,13 +105,17 @@ public class SMantenimientoCliente extends HttpServlet {
 	 * @return ruta de la pagina a mostrar, tipo String.
 	 */
 	private String iniciarListadoCuenta(HttpServletRequest request) {
+		return iniciarListadoCuenta(request,false);
+	}
+	
+	private String iniciarListadoCuenta(HttpServletRequest request,boolean verMantenimiento) {
 		String ruta = "";
 		try {
 			String valorAux = "";
 			String valorAux2 = "";
 			String pagina = request.getParameter("hddPagina");
 			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
-			if (mostrarMantenimiento == null) {
+			if (verMantenimiento || mostrarMantenimiento == null) {
 				mostrarMantenimiento = "1";
 			}
 			
@@ -417,6 +421,7 @@ public class SMantenimientoCliente extends HttpServlet {
 		try {
 			String codigoCuenta=request.getParameter("hddCodigoSeleccionado");
 			String numTarjeta=request.getParameter("hddTarjeta"+codigoCuenta);
+			String codigoCliente=request.getParameter("hddCodigoCliente"+codigoCuenta);
 			String nombreCliente=request.getParameter("hddApellidoPaterno"+codigoCuenta)+" ";
 			nombreCliente=nombreCliente+request.getParameter("hddApellidoMaterno"+codigoCuenta)+", ";
 			nombreCliente=nombreCliente+request.getParameter("hddNombre"+codigoCuenta);
@@ -427,6 +432,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			//request.setAttribute("listadoCuenta", listadoCuenta);
 			request.getSession().setAttribute("listadoCuenta", listadoCuenta);
 			
+			request.setAttribute("codigoCliente", codigoCliente);
 			request.setAttribute("codigoCuenta", codigoCuenta);
 			request.setAttribute("numTarjeta", numTarjeta);
 			request.setAttribute("nombreCliente", nombreCliente);
@@ -574,9 +580,11 @@ public class SMantenimientoCliente extends HttpServlet {
 			Lista listaTarjeta;
 			int codigoCliente;
 			String numeroTarjeta;
+			String codigoCuenta;
 
 			codigoCliente = Integer.parseInt(request.getParameter("hddCodigoCliente"));
 			numeroTarjeta = request.getParameter("txtNumeroTarjeta");
+			codigoCuenta = request.getParameter("hddCodigoCuenta");
 			cliente = new BCliente();
 			cliente.setCodigo(codigoCliente);
 			tarjetaFidel = new BTarjetaFidelizacion();
@@ -588,6 +596,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			listaTarjeta.setElemento(tarjetaFidel);
 
 			cuenta = new BCuenta();
+			cuenta.setCodigo(Integer.parseInt(codigoCuenta));
 			cuenta.setTarjeta(listaTarjeta);
 			
 			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
@@ -595,8 +604,9 @@ public class SMantenimientoCliente extends HttpServlet {
 			daoCliente.almacenarCambiosCuenta(conn, cuenta, usuario, listadoCuenta, sucursal);
 
 			ConnectDS.aceptarTrasaccion(conn);
+			
 			request.setAttribute("mensajeMantenimiento", "Se ha Modificado la cuenta.");
-			ruta = iniciarListadoCuenta(request);
+			ruta = iniciarListadoCuenta(request,true);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE

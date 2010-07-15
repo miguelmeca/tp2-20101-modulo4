@@ -138,18 +138,15 @@ public class CMantenimientoCliente {
 	public int almacenarCambiosCuenta(Connection conn, BCuenta cuenta, BUsuario usuario, Lista listaAdicionales, BSucursal sucursal)throws SQLException{
 		ICuenta daoCliente = new DCuenta();
 		ITarjetaFidelizacion tarjetaFidel = new DTarjetaFidelizacion();
-		int codigoCuenta = daoCliente.almacenarCuenta(conn, cuenta, usuario,sucursal);
 		//actualiza la tarjeta del cliente titular
 		daoCliente.actualizarTarjetaClienteTitular(conn, (BTarjetaFidelizacion)cuenta.getTarjeta().getElemento(0), usuario, sucursal, cuenta.getCodigo());
 		BTarjetaFidelizacion tarjeta;
 		for(int i=0; i< listaAdicionales.getTamanio();i++){
 			tarjeta = (BTarjetaFidelizacion)listaAdicionales.getElemento(i);
-			tarjetaFidel.almacenarTarjeta(conn, tarjeta, usuario, sucursal, codigoCuenta);
+			tarjetaFidel.almacenarTarjeta(conn, tarjeta, usuario, sucursal, cuenta.getCodigo());
 
 		}
-		
-		
-		return codigoCuenta;
+		return cuenta.getCodigo();
 	}
 	//gonza
 }
