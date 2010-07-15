@@ -80,6 +80,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = agregarAdicional(request);
 			}else if(operacion.equals("almacenarUnAdicional")){
 				ruta = anadirUnAdicional(request);
+			}else if(operacion.equals("almacenarCuentaModificada")){
+				ruta = almacenarCambios(request,usuario,sucursal);
 			}
 			//gonza
 			if (indicador == -1) {
@@ -479,6 +481,14 @@ public class SMantenimientoCliente extends HttpServlet {
 	private String agregarAdicional(HttpServletRequest request) {
 		String ruta = "";
 		try {
+			//obtiene los datos del principal
+			String numTarjeta= request.getParameter("txtNumeroTarjeta");
+			String nombreCliente= request.getParameter("txtCliente");
+			String codigoCliente = request.getParameter("hddCodigoCliente");
+			
+			request.setAttribute("numTarjeta", numTarjeta);
+			request.setAttribute("nombreCliente", nombreCliente);
+			request.setAttribute("codigoCliente", codigoCliente);
 			
 			ruta = "/jsp/maestroCliente/mae_MantenerCuentaAdicional.jsp";
 		} catch (Exception e) {
@@ -499,7 +509,65 @@ public class SMantenimientoCliente extends HttpServlet {
 	private String anadirUnAdicional(HttpServletRequest request) {
 		String ruta = "";
 		try {
+			Lista listadoCuenta = (Lista)request.getSession().getAttribute("listadoCuenta");
+			BCuenta cuenta;
+			BTarjetaFidelizacion tarjetaFidel;
+			BCliente cliente;
+			Lista listaTarjeta;
+			int codigoCliente;
+			String numeroTarjeta;
+			//datos del titular
+			String numTarjetaTitular= request.getParameter("hddNumeroTarjeta");
+			String nombreClienteTitular= request.getParameter("hddNombreCliente");
+			String codigoClienteTitular = request.getParameter("hddCodigoCli");
+			//datos del adicional
+			String nombreAdicional = request.getParameter("hddClienteNombre");
+			String paternoAdicional = request.getParameter("hddClientePaterno");
+			String maternoAdicional = request.getParameter("hddClienteMaterno");
+			codigoCliente = Integer.parseInt(request.getParameter("hddCodigoCliente"));
+			numeroTarjeta = request.getParameter("txtNumeroTarjeta");
+			cliente = new BCliente();
+			cliente.setCodigo(codigoCliente);
+			cliente.setNombre(nombreAdicional);
+			cliente.setApellidoPaterno(paternoAdicional);
+			cliente.setApellidoMaterno(maternoAdicional);
+			tarjetaFidel = new BTarjetaFidelizacion();
+			listaTarjeta = new Lista();
+	
+			tarjetaFidel.setCliente(cliente);
+			tarjetaFidel.setTipoCliente(2);
+			tarjetaFidel.setNumero(numeroTarjeta);
+			listadoCuenta.setElemento(tarjetaFidel);
+
+			request.getSession().setAttribute("listadoCuenta", listadoCuenta);
 			
+			request.setAttribute("numTarjeta", numTarjetaTitular);
+			request.setAttribute("nombreCliente", nombreClienteTitular);
+			request.setAttribute("codigoCuenta", codigoClienteTitular);
+						
+			ruta = "/jsp/maestroCliente/mae_ModificarCuenta.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	/**
+	 * Almacena cambios de cuenta.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return ruta de pagina a mostrar, tipo String.
+	 */
+	private String almacenarCambios(HttpServletRequest request,BUsuario usuario,BSucursal sucursal){
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
+			Lista listadoCuenta = (Lista)request.getSession().getAttribute("listadoCuenta");
 			BCuenta cuenta;
 			BTarjetaFidelizacion tarjetaFidel;
 			BCliente cliente;
@@ -522,19 +590,24 @@ public class SMantenimientoCliente extends HttpServlet {
 			cuenta = new BCuenta();
 			cuenta.setTarjeta(listaTarjeta);
 			
-			
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
 
-			//ruta = iniciarListadoCuenta(request);
-			
-			
-			ruta = "/jsp/maestroCliente/mae_MantenerCuentaAdicional.jsp";
+			daoCliente.almacenarCambiosCuenta(conn, cuenta, usuario, listadoCuenta, sucursal);
+
+			ConnectDS.aceptarTrasaccion(conn);
+			request.setAttribute("mensajeMantenimiento", "Se ha Modificado la cuenta.");
+			ruta = iniciarListadoCuenta(request);
 		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
 					+ "; Clase: " + this.getClass().getName() + ";"
 					+ "; Parametros=" + Parametros.URL + ":"
 					+ Parametros.USUARIO + ":" + Parametros.CLAVE
 					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
 		}
+		
 		return ruta;
 	}
 	//gonza
