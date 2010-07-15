@@ -12,6 +12,11 @@ String numTarjeta= request.getParameter("txtNumeroTarjeta");
 String nombreCliente= request.getParameter("txtCliente");
 String codigoCliente = request.getParameter("hddCodigoCliente");
 String cuentaCodigo = request.getParameter("hddCodigoCuenta");
+String codigoClienteAdicional = request.getParameter("hddCodCliAdicionalSel");
+String nombreClienteAdicional = request.getParameter("hddNombre"+codigoClienteAdicional);
+String paternoClienteAdicional = request.getParameter("hddApellidoPaterno"+codigoClienteAdicional);
+String maternoClienteAdicional = request.getParameter("hddApellidoMaterno"+codigoClienteAdicional);
+String tarjetaClienteAdicional = request.getParameter("hddTarjetaAdicional"+codigoClienteAdicional);
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -59,22 +64,21 @@ body {
 		  <tr >
             <td align="left" style="height: 21px; width: 175px;" > Cliente: (*) </td>
             <td align="left" style="width: 420px; height: 21px;" >
-			<input name="hddCodigoCliente" type="hidden" class="text  ui-corner-all" id="hddCodigoCliente" style="width:150px" readonly="true"  /> 
-			<input name="txtCliente" type="text" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />                  
-              <input type="button" name="btnBuscarCliente" value="Buscar" 
-			  onclick="javascript:mostrarClientes()" 
-			  style="width:70px" class="ui-state-default"  /></td></tr>
+			<input name="hddCodigoCliente" type="hidden" id="hddCodigoCliente" value="<%=codigoClienteAdicional%>" /> 
+			<input name="txtCliente" type="text" value="<%=nombreClienteAdicional%>" class="text  ui-corner-all" id="txtCliente" style="width:250px" readonly="true"  />                  
+              </td>
+		  </tr>
 		  <tr >
             <td align="left" style="height: 26px; width: 175px;" >&nbsp; </td>
 			<td align="left" style="height: 26px; width: 420px;" >
-				<input name="hddClienteNombre" type="hidden" id="hddClienteNombre"    /> 
-				<input name="hddClientePaterno" type="hidden" id="hddClientePaterno"   /> 
-				<input name="hddClienteMaterno" type="hidden" id="hddClienteMaterno"   /> 
+				<input name="hddClienteNombre" type="hidden" id="hddClienteNombre" value="<%=nombreClienteAdicional%>"   /> 
+				<input name="hddClientePaterno" type="hidden" id="hddClientePaterno"  value="<%=paternoClienteAdicional%>"  /> 
+				<input name="hddClienteMaterno" type="hidden" id="hddClienteMaterno" value="<%=maternoClienteAdicional%>"   /> 
 			</td>
 		  </tr>
           <tr >
             <td align="left" style="height: 31px; width: 175px;" >Asignar tarjeta  (*)  </td>
-			<td align="left" style="height: 31px; width: 420px;" ><input name="txtNumeroTarjeta" type="text" class="text  ui-corner-all" id="txtNumeroTarjeta" style="width:150px" readonly="true" />&nbsp;&nbsp;
+			<td align="left" style="height: 31px; width: 420px;" ><input name="txtNumeroTarjeta" type="text" value ="<%=tarjetaClienteAdicional%>" class="text  ui-corner-all" id="txtNumeroTarjeta" style="width:150px" readonly="true" />&nbsp;&nbsp;
 			<input type="button" name="btnAsignar" id="btnAsignar" 
 			onclick="javascript:agregarTarjeta()" 
 			value="Asignar" style="width:120px" class="ui-state-default btnAsignar" /></td>
@@ -124,7 +128,7 @@ function cerrar(){
 }
 function guardar(){
 	frmCanje.target="_top";
-	frmCanje.hddOperacion.value="almacenarUnAdicional";
+	frmCanje.hddOperacion.value="modificarUnAdicional";
 	var codigoCuenta = frmCanje.hddCodigoCliente.value;
 	var numTarjeta = frmCanje.txtNumeroTarjeta.value;
 	if(codigoCuenta==""){
