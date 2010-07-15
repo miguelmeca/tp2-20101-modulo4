@@ -50,4 +50,6 @@ public interface ITarjetaFidelizacion {
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract void eliminarTarjetasCuenta(Connection conn, int codCuenta, BUsuario usuario)throws SQLException;
+	
+	public boolean buscarClienteFidelizado(BCliente cliente, BCuenta cuenta)throws SQLException;
 }

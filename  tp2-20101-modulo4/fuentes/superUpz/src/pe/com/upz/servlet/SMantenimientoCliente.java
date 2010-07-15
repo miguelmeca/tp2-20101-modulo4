@@ -78,8 +78,12 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = eliminarCuenta(request,usuario,sucursal);
 			}else if(operacion.equals("agregarAdicional")){
 				ruta = agregarAdicional(request);
+			}else if(operacion.equals("modificarAdicional")){
+				ruta = modificarAdicional(request);
 			}else if(operacion.equals("almacenarUnAdicional")){
 				ruta = anadirUnAdicional(request);
+			}else if(operacion.equals("modificarUnAdicional")){
+				ruta = modificarUnAdicional(request);
 			}else if(operacion.equals("almacenarCuentaModificada")){
 				ruta = almacenarCambios(request,usuario,sucursal);
 			}
@@ -507,6 +511,34 @@ public class SMantenimientoCliente extends HttpServlet {
 		return ruta;
 	}
 	
+	
+	/**
+	 * Muetra la pagina de modificar adicional.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String modificarAdicional(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			//obtiene los datos del principal
+			String numTarjeta= request.getParameter("txtNumeroTarjeta");
+			String nombreCliente= request.getParameter("txtCliente");
+			String codigoCliente = request.getParameter("hddCodigoCliente");
+			
+			request.setAttribute("numTarjeta", numTarjeta);
+			request.setAttribute("nombreCliente", nombreCliente);
+			request.setAttribute("codigoCliente", codigoCliente);
+			
+			ruta = "/jsp/maestroCliente/mae_ModificarCuentaAdicional.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}	
 	/**
 	 * Agrega un adicional.
 	 * @param request objeto de solicitud http, tipo HttpServletRequest.
@@ -526,6 +558,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			String numTarjetaTitular= request.getParameter("hddNumeroTarjeta");
 			String nombreClienteTitular= request.getParameter("hddNombreCliente");
 			String codigoClienteTitular = request.getParameter("hddCodigoCli");
+			String codigoCuenta = request.getParameter("hddCodigoCuenta");
 			//datos del adicional
 			String nombreAdicional = request.getParameter("hddClienteNombre");
 			String paternoAdicional = request.getParameter("hddClientePaterno");
@@ -549,7 +582,8 @@ public class SMantenimientoCliente extends HttpServlet {
 			
 			request.setAttribute("numTarjeta", numTarjetaTitular);
 			request.setAttribute("nombreCliente", nombreClienteTitular);
-			request.setAttribute("codigoCuenta", codigoClienteTitular);
+			request.setAttribute("codigoCuenta", codigoCuenta);
+			request.setAttribute("codigoCliente", codigoClienteTitular);
 						
 			ruta = "/jsp/maestroCliente/mae_ModificarCuenta.jsp";
 		} catch (Exception e) {
@@ -561,6 +595,58 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 		return ruta;
 	}
+	
+	/**
+	 * Almacena cambios de cuenta adicional.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return ruta de pagina a mostrar, tipo String.
+	 */
+	private String modificarUnAdicional(HttpServletRequest request) {
+			String ruta = "";
+			try {
+				Lista listadoCuenta = (Lista)request.getSession().getAttribute("listadoCuenta");
+				BTarjetaFidelizacion tarjetaFidel;
+				BCliente cliente;
+				int codigoCliente;
+				String numeroTarjeta;
+				//datos del titular
+				String numTarjetaTitular= request.getParameter("hddNumeroTarjeta");
+				String nombreClienteTitular= request.getParameter("hddNombreCliente");
+				String codigoClienteTitular = request.getParameter("hddCodigoCli");
+				String codigoCuenta = request.getParameter("hddCodigoCuenta");
+				//datos del adicional
+				/*String nombreAdicional = request.getParameter("hddClienteNombre");
+				String paternoAdicional = request.getParameter("hddClientePaterno");
+				String maternoAdicional = request.getParameter("hddClienteMaterno");*/
+				codigoCliente = Integer.parseInt(request.getParameter("hddCodigoCliente"));
+				numeroTarjeta = request.getParameter("txtNumeroTarjeta");
+				
+				for(int i=0; i<listadoCuenta.getTamanio();i++){
+					tarjetaFidel = (BTarjetaFidelizacion)listadoCuenta.getElemento(i);
+					
+					if(tarjetaFidel.getCliente().getCodigo() == codigoCliente){
+						((BTarjetaFidelizacion)listadoCuenta.getElemento(i)).setNumero(numeroTarjeta);
+					}
+				}
+
+				request.getSession().setAttribute("listadoCuenta", listadoCuenta);
+				
+				request.setAttribute("numTarjeta", numTarjetaTitular);
+				request.setAttribute("nombreCliente", nombreClienteTitular);
+				request.setAttribute("codigoCuenta", codigoCuenta);
+				request.setAttribute("codigoCliente", codigoClienteTitular);
+							
+				ruta = "/jsp/maestroCliente/mae_ModificarCuenta.jsp";
+			} catch (Exception e) {
+				System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+						+ "; Clase: " + this.getClass().getName() + ";"
+						+ "; Parametros=" + Parametros.URL + ":"
+						+ Parametros.USUARIO + ":" + Parametros.CLAVE
+						+ "; Mensaje:" + e);
+			}
+			return ruta;
+		}
 	/**
 	 * Almacena cambios de cuenta.
 	 * @param request objeto de solicitud http, tipo HttpServletRequest.
