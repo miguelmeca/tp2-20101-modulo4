@@ -1,3 +1,7 @@
+function validarEmail(valor) {
+	return true;
+}
+
 function IsNumeric(ch){
 	return  (ch>="0" && ch<="9") == true;
 }
