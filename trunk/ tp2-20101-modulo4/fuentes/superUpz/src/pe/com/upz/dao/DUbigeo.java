@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUbigeo;
@@ -99,7 +100,7 @@ public class DUbigeo implements IUbigeo{
 		}
 		rs = pstm.executeQuery();
 		
-		BTipoProducto tipo;
+		
 		while(rs.next()){
 			ubigeo = new BUbigeo();
 			ubigeo.setCodigo(rs.getInt("CODIGO"));
@@ -124,5 +125,40 @@ public class DUbigeo implements IUbigeo{
 		return ((BUbigeo)obtenerListadoUbigeo(departamento, provincia,
 				distrito).getElemento(0)).getCodigo();
 	}
+	public BUbigeo obtenerUbigeo(int codigo)throws SQLException {
 
+		Connection conn = ConnectDS.obtenerConeccion();
+		BUbigeo ubigeo=null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select u.departamento AS DEP, " +
+				"u.provincia AS PROV, " +
+				"u.distrito AS DIST, " +
+				"u.nombre AS NOMBRE, " +
+				"u.ubigeo_id AS CODIGO " +
+				"from fidelizacion.ubigeo u " +
+				"where u.ubigeo_id = ? " +
+				"AND u.estado=1 ");
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, codigo);
+		
+		rs = pstm.executeQuery();
+
+		while(rs.next()){
+			ubigeo = new BUbigeo();
+			ubigeo.setCodigo(rs.getInt("CODIGO"));
+			ubigeo.setNombre(rs.getString("NOMBRE"));
+			ubigeo.setDepartamento(rs.getString("DEP"));
+			ubigeo.setProvincia(rs.getString("PROV"));
+			ubigeo.setDistrito(rs.getString("DIST"));
+		}
+
+		rs.close();
+		pstm.close();
+		conn.close();
+
+		return ubigeo;
+	}
 }

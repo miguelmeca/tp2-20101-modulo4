@@ -72,7 +72,12 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = iniciarListadoCuenta(request);
 			}
 			//gonza
-			else if(operacion.equals("ingresoModificarCuenta")) {
+			
+			else if (operacion.equals("almacenarClienteModificado")) {
+				ruta = almacenarClienteModificado(usuario, request);
+			}else if (operacion.equals("iniciarModificarCliente")) {
+				ruta = iniciarModificarCliente(request);
+			}else if(operacion.equals("ingresoModificarCuenta")) {
 				ruta = iniciarModificarCuenta(request);
 			}else if(operacion.equals("eliminarCuenta")) {
 				ruta = eliminarCuenta(request,usuario,sucursal);
@@ -86,6 +91,8 @@ public class SMantenimientoCliente extends HttpServlet {
 				ruta = modificarUnAdicional(request);
 			}else if(operacion.equals("almacenarCuentaModificada")){
 				ruta = almacenarCambios(request,usuario,sucursal);
+			}else if(operacion.equals("eliminarCliente")) {
+				ruta = eliminarCliente(request,usuario,sucursal);
 			}
 			//gonza
 			if (indicador == -1) {
@@ -163,13 +170,19 @@ public class SMantenimientoCliente extends HttpServlet {
 		return ruta;
 	}
 	
+	private String iniciarListadoClientes(HttpServletRequest request) {
+		return iniciarListadoClientes(request,false);
+	}
+	
 	/**
 	 * Inicia el listado de clientes.
 	 * @param request
 	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @param verMantenimiento
+	 *           indica si es mantnimiento.
 	 * @return ruta de la pagina a mostrar, tipo String.
 	 */
-	private String iniciarListadoClientes(HttpServletRequest request) {
+	private String iniciarListadoClientes(HttpServletRequest request,boolean verMantenimiento) {
 		String ruta = "";
 		try {
 			String valorAux = "";
@@ -177,7 +190,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			String valorAux3 = "";
 			String pagina = request.getParameter("hddPagina");
 			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
-			if (mostrarMantenimiento == null) {
+			if (verMantenimiento || mostrarMantenimiento == null) {
 				mostrarMantenimiento = "1";
 			}
 			if (pagina == null || pagina.equals("")) {
@@ -291,7 +304,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			cliente.setNumeroDocumento(numDocumento);
 			cliente.setNombre(nombre);
 			cliente.setApellidoPaterno(paterno);
-			cliente.setApellidoPaterno(materno);
+			cliente.setApellidoMaterno(materno);
 			cliente.setCorreo(correo);
 			cliente.setDireccion(direccion);
 			cliente.setTelefono(telefono1);
@@ -308,7 +321,7 @@ public class SMantenimientoCliente extends HttpServlet {
 
 			ConnectDS.aceptarTrasaccion(conn);
 
-			ruta = "/jsp/maestroCliente/mae_MantenerCliente.jsp";
+			ruta = iniciarListadoClientes(request, true);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
@@ -482,7 +495,38 @@ public class SMantenimientoCliente extends HttpServlet {
 		}
 		return ruta;
 	}
-	
+	/**
+	 * Elimina cliente.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tio BSucursal.
+	 * @return
+	 */
+	private String eliminarCliente(HttpServletRequest request,BUsuario usuario, BSucursal sucursal){
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			String codigoCuenta=request.getParameter("hddCodigoSeleccionado");
+						
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
+			daoCliente.eliminarCliente(conn,Integer.parseInt(codigoCuenta),usuario,sucursal);
+			ConnectDS.aceptarTrasaccion(conn);
+			
+			request.setAttribute("mensajeMantenimiento", "Se ha dado de baja al cliente.");
+			ruta = iniciarListadoCuenta(request);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
+		return ruta;
+	}
 	/**
 	 * Muetra la pagina de agregar adicional.
 	 * @param request objeto de solicitud http, tipo HttpServletRequest.
@@ -704,6 +748,118 @@ public class SMantenimientoCliente extends HttpServlet {
 			ConnectDS.cerrarConexion(conn);
 		}
 		
+		return ruta;
+	}
+
+	/**
+	 * Muetra la pagina de cambiar cliente.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String iniciarModificarCliente(HttpServletRequest request) {
+		String ruta = "";
+		try {
+			int codigo = Integer.parseInt(request.getParameter("hddCodigoSeleccionado"));
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
+			
+			Lista listaDepartamento,listaProvincia,listaDistrito;
+
+			IUbigeo dUbigeo = new DUbigeo();
+			BCliente cliente = daoCliente.obtenerCliente(codigo);
+			BUbigeo ubigeo = daoCliente.obtenerUbigeoDeCliente(cliente);
+			
+			listaDepartamento = dUbigeo.obtenerDepartamentos();
+			listaProvincia = dUbigeo.obtenerProvinciasDeDepartamento(ubigeo.getDepartamento());
+			listaDistrito = dUbigeo.obtenerDistritosDeprovincia(ubigeo.getDepartamento(), ubigeo.getProvincia());
+			
+			request.setAttribute("cliente", cliente);
+			request.setAttribute("ubigeo", ubigeo);
+			request.setAttribute("listaDepartamento", listaDepartamento);
+			request.setAttribute("listaProvincia", listaProvincia);
+			request.setAttribute("listaDistrito", listaDistrito);
+			
+			ruta = "/jsp/maestroCliente/mae_ModificarCliente.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+	/**
+	 * Almacena cliente modificado.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String almacenarClienteModificado(BUsuario usuario, HttpServletRequest request) {
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			conn.setAutoCommit(false);
+			BCliente cliente;
+			String codigo;
+			String nombre;
+			String paterno;
+			String materno;
+			String direccion;
+			String numDocumento;
+			String correo;
+			String telefono1;
+			String telefono2;
+			String departamento;
+			String provincia;
+			String distrito;
+			
+			codigo = request.getParameter("hddCodigo");
+			nombre = request.getParameter("txtNombre");
+			paterno = request.getParameter("txtApellidoPaterno");
+			materno = request.getParameter("txtApellidoMaterno");
+			direccion = request.getParameter("txtDireccion");
+			numDocumento = request.getParameter("txtNumeroDocumento");
+			correo = request.getParameter("txtEMail");
+			telefono1 = request.getParameter("txtTelefono");
+			telefono2 = request.getParameter("txtCelular");
+			departamento = request.getParameter("selDepartamento");
+			provincia = request.getParameter("selProvincia");
+			distrito = request.getParameter("selDistrito");
+
+			cliente = new BCliente();
+			cliente.setCodigo(Integer.parseInt(codigo));
+			cliente.setNumeroDocumento(numDocumento);
+			cliente.setNombre(nombre);
+			cliente.setApellidoPaterno(paterno);
+			cliente.setApellidoMaterno(materno);
+			cliente.setCorreo(correo);
+			cliente.setDireccion(direccion);
+			cliente.setTelefono(telefono1);
+			cliente.setTelefonoDos(telefono2);
+			BUbigeo ubigeo = new BUbigeo();
+			IUbigeo daoUbigeo = new DUbigeo();
+			ubigeo.setCodigo(daoUbigeo.obtenerCodigoUbigeo(departamento,
+					provincia, distrito));
+			cliente.setUbigeo(ubigeo);
+
+			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
+
+			daoCliente.almacenarClienteModificado(conn, cliente, usuario);
+
+			ConnectDS.aceptarTrasaccion(conn);
+
+			ruta = iniciarListadoClientes(request,true);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
 		return ruta;
 	}
 	//gonza

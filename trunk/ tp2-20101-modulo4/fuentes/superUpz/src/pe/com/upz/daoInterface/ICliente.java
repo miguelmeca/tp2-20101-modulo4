@@ -57,6 +57,9 @@ public interface ICliente {
 	 */
 	public abstract int obtenerMaximoNumeroCliente(Connection conn)throws SQLException;
 
+	public abstract String buscarDniRepetido(String numDocumento, int codigoCliente)throws SQLException;
 
-
+	public abstract BCliente obtenerCliente(int codigo)throws SQLException;
+	public abstract void almacenarClienteModificado(Connection conn, BCliente cliente,
+			BUsuario usuario) throws SQLException;
 }

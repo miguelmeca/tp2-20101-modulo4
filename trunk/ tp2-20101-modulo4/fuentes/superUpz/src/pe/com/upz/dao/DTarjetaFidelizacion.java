@@ -168,4 +168,28 @@ public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 		
 		return encontrado;
 	}
+	public String buscarTarjetaRepetido(String numTarjeta)throws SQLException{
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String nombreCliente = "";
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT tf.numero AS numero \n");
+		sql.append("FROM   fidelizacion.tarjeta_fidelizacion tf \n");
+		sql.append("WHERE  tf.numero =? \n");
+		sql.append("AND    tf.estado = 1");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1, numTarjeta);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			nombreCliente = (rs.getString("numero"));
+
+		}
+		rs.close();
+		pstm.close();
+
+		return nombreCliente;
+	}
 }
