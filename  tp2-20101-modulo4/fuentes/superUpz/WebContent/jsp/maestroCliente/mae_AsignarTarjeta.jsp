@@ -67,7 +67,9 @@ body {
             </tr>
 		  <tr >
             <td width="49%" align="left" > N&uacute;mero de Tarjeta: (*) </td>
-            <td width="51%" align="left" ><input type="text" name="txtNumeroTarjeta" id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" /></td>
+            <td width="51%" align="left" ><input type="text" name="txtNumeroTarjeta" 
+            onKeyPress="Upper();SoloNumeros();" 
+            id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" /></td>
           </tr>
           <tr >
             <td align="left" >&nbsp;</td>

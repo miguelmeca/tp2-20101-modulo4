@@ -208,8 +208,14 @@ body {
           <input type="button" name="btnNuevo" value="Nuevo" style="width:120px" 
           onclick="javascript:agregarNuevo()" 
           class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEditar" value="Editar" 
+		  onclick="javascript:modificar()" 
+		  style="width:120px" class="ui-state-default"  />
+		  <%--
+		  <input type="button" name="btnEliminar" 
+		  onclick="javascript:eliminar()" 
+		  value="Eliminar" style="width:120px" class="ui-state-default"  />
+		  --%>
           <%}else{ %>
 		  <input type="button" name="btnAceptar" 
 		  onclick="javascript:aceptarSeleccionPadre()" 
@@ -233,6 +239,29 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function eliminar(){
+var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	if(!confirm("¿Desea dar de baja la cuenta seleccionada?")){
+		return;
+	}
+	frmListaClientes.hddOperacion.value="eliminarCuenta";
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
+function modificar(){
+var codigo = frmListaClientes.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente.");
+		return;
+	}
+	frmListaClientes.hddOperacion.value="iniciarModificarCliente";
+	frmListaClientes.action="SMantenimientoCliente";
+	frmListaClientes.submit();
+}
 function cerrar(){
 	<% if (mostrarMantenimineto){ %>
 	frmListaClientes.action="<%=ruta%>/jsp/comun/cuerpo.jsp";

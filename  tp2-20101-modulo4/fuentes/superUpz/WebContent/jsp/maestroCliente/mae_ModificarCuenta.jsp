@@ -180,6 +180,12 @@ body {
 </body>
 <script language="JavaScript">
 function agregarTarjetaAdicional(){
+	var codigo = frmCanje.hddCodCliAdicionalSel.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un cliente Adicional.");
+		return;
+	}
+	
 	frmCanje.target="_top";
 	frmCanje.hddOperacion.value="modificarAdicional";
 	frmCanje.action="<%=ruta%>/SMantenimientoCliente?hddOperacion=agregarAdicional";

@@ -7,12 +7,19 @@
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BUbigeo"%>
+<%@page import="pe.com.upz.bean.BCliente"%>
 <%
 String ruta = request.getContextPath(); 
+
+BCliente cliente = (BCliente)request.getAttribute("cliente");
+BUbigeo ubigeoCliente = (BUbigeo)request.getAttribute("ubigeo");
 Lista listaDepartamento = (Lista)request.getAttribute("listaDepartamento");
+Lista listaProvincia = (Lista)request.getAttribute("listaProvincia");
+Lista listaDistrito= (Lista)request.getAttribute("listaDistrito");
 if(listaDepartamento ==null){
 	listaDepartamento = new Lista();
 }
+
 %>
 <html>
 <head>
@@ -81,6 +88,7 @@ body {
 								<td width="150">
 								<div align="left"><input name="txtNumeroDocumento"
 									type="text" class="text  ui-corner-all" id="txtNumero22"
+									value="<%=cliente.getNumeroDocumento() %>" 
 									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="10" /></div>
 								</td>
@@ -99,6 +107,7 @@ body {
 								<td>
 								<div align="left"><input name="txtApellidoPaterno"
 									type="text" class="text  ui-corner-all" id="txtApellidoPaterno"
+									value="<%=cliente.getApellidoPaterno() %>" 
 									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									style="width: 150px" maxlength="100" /></div>
 								</td>
@@ -109,6 +118,7 @@ body {
 								<td>
 								<div align="left"><input name="txtApellidoMaterno"
 									type="text" class="text  ui-corner-all" id="txtApellidoMaterno"
+									value="<%=cliente.getApellidoMaterno() %>" 
 									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									style="width: 150px" maxlength="100" /></div>
 								</td>
@@ -120,6 +130,7 @@ body {
 								<td>
 								<div align="left"><input name="txtNombre" type="text"
 									class="text  ui-corner-all" id="txtNombre" style="width: 150px"
+									value="<%=cliente.getNombre() %>" 
 									onKeyPress="Upper();permitirLetrasEspeciales();"  
 									maxlength="100" /></div>
 								</td>
@@ -129,10 +140,11 @@ body {
 								</td>
 								<td>
 								<div align="left"><select id="selDepartamento" name="selDepartamento" onChange="buscaProvincia()" >
-									<option selected="selected" value='-1'>--Seleccionar--</option>
+									<option value='-1'>--Seleccionar--</option>
 									<%for(int i=0;i< listaDepartamento.getTamanio();i++){ %>
 										<%BUbigeo ubigeo = (BUbigeo)listaDepartamento.getElemento(i); %>
-										<option value='<%=ubigeo.getDepartamento()%>'><%=ubigeo.getNombre()%></option>
+										<%System.out.println(ubigeo.getDepartamento()+"-"+ubigeoCliente.getDepartamento()); %>
+										<option value='<%=ubigeo.getDepartamento()%>' <%=ubigeo.getDepartamento().equals(ubigeoCliente.getDepartamento())?"SELECTED":""%> ><%=ubigeo.getNombre()%></option>
 									<%} %>
 								</select></div>
 								</td>
@@ -142,6 +154,7 @@ body {
 								<div align="left">e-mail:</div>
 								</td>
 								<td><input type="text" name="txtEMail" id="txtEMail"
+									value="<%=cliente.getCorreo()==null?"":cliente.getCorreo() %>" 
 									onKeyPress="Upper();"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
@@ -150,7 +163,11 @@ body {
 								</td>
 								<td>
 								<div align="left"><select id="selProvincia" onChange="buscarDistrito()" name="selProvincia" >
-									<option selected="selected"></option>
+									<option value='-1'>--Seleccionar--</option>
+									<%for(int i=0;i< listaProvincia.getTamanio();i++){ %>
+										<%BUbigeo ubigeo = (BUbigeo)listaProvincia.getElemento(i); %>
+										<option value='<%=ubigeo.getProvincia()%>' <%=ubigeo.getProvincia().equals(ubigeoCliente.getProvincia())?"SELECTED":""%> ><%=ubigeo.getNombre()%></option>
+									<%} %>
 								</select></div>
 								</td>
 							</tr>
@@ -160,6 +177,7 @@ body {
 								</td>
 								<td><input name="txtTelefono" type="text"
 									class="text  ui-corner-all" id="txtTelefono"
+									value="<%=cliente.getTelefono()==null?"":cliente.getTelefono() %>" 
 									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="20" /></td>
 								<td>&nbsp;</td>
@@ -168,7 +186,11 @@ body {
 								</td>
 								<td>
 								<div align="left"><select id="selDistrito" name="selDistrito" >
-									<option selected="selected"></option>
+									<option value='-1'>--Seleccionar--</option>
+									<%for(int i=0;i< listaDistrito.getTamanio();i++){ %>
+										<%BUbigeo ubigeo = (BUbigeo)listaDistrito.getElemento(i); %>
+										<option value='<%=ubigeo.getDistrito()%>' <%=ubigeo.getDistrito().equals(ubigeoCliente.getDistrito())?"SELECTED":""%> ><%=ubigeo.getNombre()%></option>
+									<%} %>
 								</select></div>
 								</td>
 							</tr>
@@ -179,6 +201,7 @@ body {
 								<td>
 								<div align="left"><input name="txtCelular" type="text"
 									class="text  ui-corner-all" id="txtCelular"
+									value="<%=cliente.getTelefonoDos()==null?"":cliente.getTelefonoDos() %>" 
 									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="20" /></div>
 								</td>
@@ -189,6 +212,7 @@ body {
 								<td>
 								<div align="left"><input name="txtDireccion" type="text"
 									class="text  ui-corner-all" id="txtDireccion"
+									value="<%=cliente.getDireccion()==null?"":cliente.getDireccion() %>" 
 									onKeyPress="Upper();permitirLetraNumeroEspeciales();"  
 									style="width: 150px" maxlength="200" /></div>
 								</td>
@@ -213,7 +237,8 @@ body {
 				<div align="right"><input type="button" name="btnAceptar"
 					value="Aceptar" onClick="guardar()" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
-					name="btnCancelar" value="Cancelar" style="width: 120px"
+					name="btnCancelar" value="Cancelar" style="width: 120px" 
+					onClick="cerrar()" 
 					class="ui-state-default btnCancelar" /></div>
 				</td>
 			</tr>
@@ -224,7 +249,8 @@ body {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="hddOperacion" id="hddOperacion" value="almacenarCliente" />
+<input type="hidden" name="hddOperacion" id="hddOperacion" value="almacenarClienteModificado" />
+<input type="hidden" name="hddCodigo" id="hddCodigo" value="<%=cliente.getCodigo()%>" />
 </form>
 </div>
 </body>
@@ -276,11 +302,13 @@ function guardar(){
 			frmNuevoCliente.txtDireccion.focus();
 			return;
 	}
+
 	if(email != "" && validarEmail(email)){
 		alert("Debe ingresar un correo válido.");
 		frmNuevoCliente.txtEMail.focus();
 		return;
 	}
+	
 	frmNuevoCliente.action="SMantenimientoCliente";
 	frmNuevoCliente.submit();
 }
@@ -338,6 +366,10 @@ function buscarDistrito(){
         ret = ret.substr(3);
         llenarComboListaCodTexto(ret,";","|",frmNuevoCliente.selDistrito);
     }
+}
+function cerrar(){
+	frmNuevoCliente.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmNuevoCliente.submit();
 }
 </script>
 </html>
