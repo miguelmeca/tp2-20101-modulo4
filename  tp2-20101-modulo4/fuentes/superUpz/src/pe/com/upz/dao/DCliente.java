@@ -98,6 +98,62 @@ public class DCliente implements ICliente {
 		return lista;
 	}
 
+	
+	public BCliente obtenerCliente(int codigo)throws SQLException {
+
+		Connection conn = ConnectDS.obtenerConeccion();
+		BCliente cliente=null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT CLIENTE_ID      , \n");
+		sql.append("       NOMBRE          , \n");
+		sql.append("       APELLIDO_PATERNO, \n");
+		sql.append("       APELLIDO_MATERNO, \n");
+		sql.append("       NUMERO_DOCUMENTO, \n");
+		sql.append("       TELEFONO        , \n");
+		sql.append("       TELEFONO_DOS    , \n");
+		sql.append("       UBIGEO_ID       , \n");
+		sql.append("       TIPO_CLIENTE_ID , \n");
+		sql.append("       ESTADO, \n");
+		sql.append("       correo, \n");
+		sql.append("       direccion \n");
+		sql.append("FROM   FIDELIZACION.CLIENTE \n");
+		sql.append("WHERE  CLIENTE_ID  = ? \n");
+		sql.append("AND    ESTADO    = 1 \n");
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, codigo);
+		
+		rs = pstm.executeQuery();
+
+		BUbigeo ubigeo;
+		if(rs.next()) {
+			cliente = new BCliente();
+
+			cliente.setCodigo(rs.getInt("CLIENTE_ID"));
+			cliente.setNombre(rs.getString("NOMBRE"));
+			cliente.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+			cliente.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+			cliente.setNumeroDocumento(rs.getString("NUMERO_DOCUMENTO"));
+			cliente.setTelefono(rs.getString("TELEFONO"));
+			cliente.setTelefonoDos(rs.getString("TELEFONO_DOS"));
+			ubigeo = new BUbigeo();
+			ubigeo.setCodigo(rs.getInt("UBIGEO_ID"));
+			cliente.setUbigeo(ubigeo);
+			cliente.setTipoCliente(rs.getInt("UBIGEO_ID"));
+			cliente.setEstado(rs.getInt("ESTADO"));
+			cliente.setDireccion(rs.getString("direccion"));
+			cliente.setCorreo(rs.getString("correo"));
+		}
+
+		rs.close();
+		pstm.close();
+		conn.close();
+
+		return cliente;
+	}
+	
 	@Override
 	public int almacenarCliente(Connection conn, BCliente cliente,
 			BUsuario usuario) throws SQLException {
@@ -121,7 +177,7 @@ public class DCliente implements ICliente {
 		pstm.setInt(1, codigo);
 		pstm.setString(2, cliente.getNombre());
 		pstm.setString(3, cliente.getApellidoPaterno());
-		pstm.setString(4, cliente.getApellidoPaterno());
+		pstm.setString(4, cliente.getApellidoMaterno());
 		pstm.setString(5, cliente.getNumeroDocumento());
 		pstm.setString(6, cliente.getTelefono());
 		pstm.setString(7, cliente.getTelefonoDos());
@@ -156,5 +212,74 @@ public class DCliente implements ICliente {
 		pstm.close();
 
 		return codigoCliente;
+	}
+	public String buscarDniRepetido(String numDocumento, int codigoCliente)throws SQLException{
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String nombreCliente = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT cl.apellido_paterno \n");
+		sql.append("              ||' ' \n");
+		sql.append("              || cl.apellido_materno \n");
+		sql.append("              ||', ' \n");
+		sql.append("              || cl.nombre AS nombre \n");
+		sql.append("FROM   fidelizacion.cliente cl \n");
+		sql.append("WHERE  cl.numero_documento = ? \n");
+		sql.append("AND    cl.estado           = 1 \n");
+		sql.append("AND    cl.cliente_id       =?");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1, numDocumento);
+		pstm.setInt(2, codigoCliente);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			nombreCliente = (rs.getString("nombre"));
+
+		}
+		rs.close();
+		pstm.close();
+
+		return nombreCliente;
+	}
+	public void almacenarClienteModificado(Connection conn, BCliente cliente,
+			BUsuario usuario) throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+		int codigo = obtenerMaximoNumeroCliente(conn) + 1;
+
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("update " +
+				"cliente    set nombre = ?,        " +
+				"apellido_paterno = ?,        " +
+				"apellido_materno = ?,        " +
+				"numero_documento = ?,        " +
+				"telefono = ?,        " +
+				"telefono_dos = ?,        " +
+				"ubigeo_id = ?,        " +
+				"usuario_modificacion = ?,        " +
+				"fecha_modificacion = SYSDATE,        " +
+				"direccion = ?,        " +
+				"correo = ?  " +
+				"where cliente_id = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1, cliente.getNombre());
+		pstm.setString(2, cliente.getApellidoPaterno());
+		pstm.setString(3, cliente.getApellidoMaterno());
+		pstm.setString(4, cliente.getNumeroDocumento());
+		pstm.setString(5, cliente.getTelefono());
+		pstm.setString(6, cliente.getTelefonoDos());
+		pstm.setInt(7, cliente.getUbigeo().getCodigo());
+		pstm.setString(8, usuario.getLogin());
+		pstm.setString(9, cliente.getDireccion());
+		pstm.setString(10, cliente.getCorreo());
+		pstm.setInt(11, cliente.getCodigo());
+		pstm.executeUpdate();
+
+		pstm.close();
+		
 	}
 }

@@ -14,13 +14,17 @@ import pe.com.upz.bean.BEquivalencia;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUbigeo;
+import pe.com.upz.dao.DCliente;
 import pe.com.upz.dao.DCuenta;
 import pe.com.upz.dao.DEquivalencia;
 import pe.com.upz.dao.DProducto;
+import pe.com.upz.dao.DTarjetaFidelizacion;
 import pe.com.upz.dao.DUbigeo;
+import pe.com.upz.daoInterface.ICliente;
 import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.IEquivalencia;
 import pe.com.upz.daoInterface.IProducto;
+import pe.com.upz.daoInterface.ITarjetaFidelizacion;
 import pe.com.upz.daoInterface.IUbigeo;
 
 /**
@@ -261,5 +265,52 @@ public class ServicioUtilitario extends ServiceSession {
 		}
 		return sRuta;
 	}
+	public String requestObtenerDniRepetido(HttpServletRequest request,
+			HttpServletResponse response) {
+		String nombreCliente = "0";
+		try {
+			String dni = (String) request
+					.getParameter("txtNumeroDocumento");
+			String codigoCliente= (String) request
+			.getParameter("hddCodigoCliente");
+						
+			ICliente daoCliente = new DCliente();
+			
+			nombreCliente = daoCliente.buscarDniRepetido(dni,(codigoCliente==null?-1:Integer.parseInt(codigoCliente)));
+			
+			if (nombreCliente == null) {
+				nombreCliente = "_NoExiste";
+			}
 
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: ServicioUtilitario; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return nombreCliente;
+	}
+	public String requestObtenerTarjetaRepetido(HttpServletRequest request,
+			HttpServletResponse response) {
+		String numeroTarjeta = null;
+		try {
+			String numTarjeta = (String) request
+					.getParameter("txtNumeroTarjeta");
+									
+			ITarjetaFidelizacion daoCliente = new DTarjetaFidelizacion();
+			
+			numeroTarjeta = daoCliente.buscarTarjetaRepetido(numTarjeta);
+			
+			if (numeroTarjeta == null) {
+				numeroTarjeta = "_NoExiste";
+			}
+
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: ServicioUtilitario; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return numeroTarjeta;
+	}
 }

@@ -61,4 +61,6 @@ public interface IUbigeo {
 	 * @throws SQLException captura las excepciones del sistema.
 	 */
 	public abstract int obtenerCodigoUbigeo(String departamento,String provincia, String distrito)throws SQLException;
+
+	public abstract BUbigeo obtenerUbigeo(int codigo)throws SQLException;
 }

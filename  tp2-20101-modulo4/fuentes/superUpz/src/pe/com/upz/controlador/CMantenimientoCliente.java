@@ -14,15 +14,18 @@ import pe.com.upz.bean.BCliente;
 import pe.com.upz.bean.BCuenta;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTarjetaFidelizacion;
+import pe.com.upz.bean.BUbigeo;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.dao.DCliente;
 import pe.com.upz.dao.DCuenta;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DTarjetaFidelizacion;
+import pe.com.upz.dao.DUbigeo;
 import pe.com.upz.daoInterface.ICliente;
 import pe.com.upz.daoInterface.ICuenta;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.daoInterface.ITarjetaFidelizacion;
+import pe.com.upz.daoInterface.IUbigeo;
 import pe.com.upz.util.Lista;
 
 /**
@@ -97,6 +100,22 @@ public class CMantenimientoCliente {
 	}
 	//gonza
 	/**
+	 * Elimina los datos de cliente.
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param  sucursal sucrusal de eliminacion, tipo BSucursal.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public void eliminarCliente(Connection conn, int codCuenta, BUsuario usuario, BSucursal sucursal)throws SQLException{
+		ICuenta daoCuenta = new DCuenta();
+		ITarjetaFidelizacion daoTarjeta = new DTarjetaFidelizacion();
+		// elimina las tarjetas
+		daoTarjeta.eliminarTarjetasCuenta(conn, codCuenta, usuario);
+		//elimina las cuentas
+		daoCuenta.eliminarCuenta(conn, codCuenta, usuario,sucursal);
+	}
+	/**
 	 * Elimina los datos asociados a la cuenta.
 	 * @param conn connexion a BD, tipo Connection.
 	 * @param codCuenta codigo de la cuenta, tipo int.
@@ -154,6 +173,28 @@ public class CMantenimientoCliente {
 
 		}
 		return cuenta.getCodigo();
+	}
+	public BCliente obtenerCliente(int codigo)throws SQLException{
+		ICliente daoCliente = new DCliente();
+		return daoCliente.obtenerCliente(codigo);
+	}
+	public BUbigeo obtenerUbigeoDeCliente(BCliente cliente)throws SQLException{
+		IUbigeo daoUbigeo = new DUbigeo();
+		return daoUbigeo.obtenerUbigeo(cliente.getUbigeo().getCodigo());
+	}
+	/**
+	 * Almacena un cliente modificado.
+	 * @param conn conexion a la base de datos, tipo Connection.
+	 * @param cliente cliente a almacenar, tipo BCliente.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return codigo de cliente almacenado, tipo int.
+	 * @throws SQLException
+	 */
+	public void almacenarClienteModificado(Connection conn, BCliente cliente,BUsuario usuario)throws SQLException{
+		ICliente daoCliente = new DCliente();
+
+		daoCliente.almacenarClienteModificado(conn, cliente, usuario);
+		
 	}
 	//gonza
 }
