@@ -82,7 +82,7 @@ body {
 </style>
 </head>
 
-<body onload="javascript:mostrarMensaje();ocultarPaneles();">
+<body onload="javascript:ocultarPaneles();mostrarMensaje();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 
 <div class="demos-nav" style="width:100%" align = "center">
@@ -210,8 +210,12 @@ body {
           	style="width:120px" 
           	onclick="javascript:agregarNuevo()" 
           	class="ui-state-default btnNuevo"  />
-		  <input type="button" name="btnEditar" value="Editar" style="width:120px" class="ui-state-default"  />
-		  <input type="button" name="btnEliminar" value="Eliminar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEditar" 
+		  onclick="javascript:modificar()"
+		  value="Editar" style="width:120px" class="ui-state-default"  />
+		  <input type="button" name="btnEliminar" 
+		  onclick="javascript:eliminar()" 
+		  value="Eliminar" style="width:120px" class="ui-state-default"  />
           <%}else { %>
 		  <input type="button" name="btnAceptar" 
 		  onclick="javascript:aceptarSeleccionPadre()" 
@@ -236,6 +240,29 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function eliminar(){
+var codigo = frmListaProducto.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un producto.");
+		return;
+	}
+	if(!confirm("¿Desea eliminar el producto?")){
+		return;
+	}
+	frmListaProducto.hddOperacion.value="eliminarProducto";
+	frmListaProducto.action="SMantenimiento";
+	frmListaProducto.submit();
+}
+function modificar(){
+var codigo = frmListaProducto.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		alert("Debe seleccionar un Producto.");
+		return;
+	}
+	frmListaProducto.hddOperacion.value="inicioActualizaProducto";
+	frmListaProducto.action="SMantenimiento";
+	frmListaProducto.submit();
+}
 function seleccionar(codigo){
 	frmListaProducto.hddCodigoSeleccionado.value=codigo;
 }
@@ -266,10 +293,8 @@ function cerrar(){
 
 function mostrarMensaje(){
 	var resultado = "<%=mensajeMantenimiento%>";
-	if(resultado == "nuevoOK"){
-		alert("Se agregó un nuevo producto.");
-	}else if (resultado== "actualizadoOK"){
-		alert("Se actualizó el producto.");
+	if(resultado != ""){
+		alert(resultado);
 	}
 }
 
