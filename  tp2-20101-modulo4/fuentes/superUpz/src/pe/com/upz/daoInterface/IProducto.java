@@ -8,6 +8,7 @@
 package pe.com.upz.daoInterface;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BProducto;
@@ -111,8 +112,43 @@ public interface IProducto {
 	 * Obtiene el consumo promedio de producto
 	 * @param codSucursal codigo de sucursal, tipo int.
 	 * @param codProducto codigo de producto, tipo int.
-	 * @return
-	 * @throws SQLException
+	 * @return promedio
+	 * @throws SQLException captura excepciones tipo SQL.
 	 */
 	public abstract int obtenerSucursalProductoPromedio(int codSucursal, int codProducto, int anio, int mes) throws SQLException;
+	
+	/**
+	 * Elimina logicamente un producto en la BD.
+	 * @param codigo codigo del producto, tipo int.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @return codigo generado, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void eliminarProducto(int codigo, BUsuario usuario, Connection conn)throws SQLException;
+	
+	/**
+	 * Elimina logicamente un producto-sucursal en la BD.
+	 * @param codigo codigo del producto, tipo int.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @return codigo generado, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	
+	public abstract void eliminarProductoSucursal(int codigo, BUsuario usuario, Connection conn)throws SQLException;
+
+	/**
+	 * Obtiene un producto por codigo.
+	 * @param codigo codigo del producto, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract BProducto obtenerProductos(int codigo) throws SQLException;
+	
+	/**
+	 * Almacena cambios de un producto.
+	 * @param producto producto a actualizar, tipo BProducto.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */	
+	public abstract void guardarCambiosProducto(BProducto producto, BUsuario usuario, Connection conn)throws SQLException;
 }

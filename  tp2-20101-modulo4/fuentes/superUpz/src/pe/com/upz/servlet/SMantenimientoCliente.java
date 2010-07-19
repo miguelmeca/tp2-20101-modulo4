@@ -118,7 +118,13 @@ public class SMantenimientoCliente extends HttpServlet {
 	private String iniciarListadoCuenta(HttpServletRequest request) {
 		return iniciarListadoCuenta(request,false);
 	}
-	
+	/**
+	 * Inicia el listado de cuentas.
+	 * @param request
+	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @param verMantenimiento indica si se muestra como mantenimiento,  tipo boolean.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */	
 	private String iniciarListadoCuenta(HttpServletRequest request,boolean verMantenimiento) {
 		String ruta = "";
 		try {

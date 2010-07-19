@@ -28,6 +28,7 @@ import pe.com.upz.bean.BTipoProducto;
 import pe.com.upz.bean.BUsuario;
 import pe.com.upz.comun.ConnectDS;
 import pe.com.upz.controlador.CMantenimiento;
+import pe.com.upz.controlador.CMantenimientoCliente;
 import pe.com.upz.util.Lista;
 import pe.com.upz.util.Parametros;
 
@@ -116,12 +117,20 @@ public class SMantenimiento extends HttpServlet {
 			String ruta = "";
 			BUsuario usuario = ((BUsuario) request.getSession().getAttribute(
 					"usuarioSesion"));
+			BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+			"sucursalSesion"));
 			if (operacion.equals("ingresoMantenerProductos")) {
 				ruta = mostrarListadoProductos(request);
 			} else if (operacion.equals("ingresoNuevoProducto")) {
 				ruta = inicioNuevoActualizaProducto(request);
 			}  else if (operacion.equals("buscarProducto")) {
 				ruta = mostrarListadoProductos(request);
+			}else if (operacion.equals("eliminarProducto")) {
+				ruta = eliminarProducto(request, usuario, sucursal);
+			}else if (operacion.equals("inicioActualizaProducto")) {
+				ruta = inicioActualizaProducto(request);
+			}else if (operacion.equals("actualizarProducto")) {
+				ruta = almacenarCambiosProducto(request, usuario);
 			}
 			getServletConfig().getServletContext().getRequestDispatcher(ruta)
 					.forward(request, response);
@@ -141,15 +150,16 @@ public class SMantenimiento extends HttpServlet {
 	 * 
 	 * @param request
 	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @param verMantenimiento indica si se muestra como mantenimiento,  tipo boolean.
 	 * @return ruta de la pagina a mostrar, tipo String.
 	 */
-	private String mostrarListadoProductos(HttpServletRequest request) {
+	private String mostrarListadoProductos(HttpServletRequest request,boolean verMantenimiento) {
 		String ruta = "";
 		try {
 			String valorAuxiliar="";
 			String pagina = request.getParameter("hddPagina");
 			String mostrarMantenimiento = request.getParameter("hddMantenimiento");
-			if (mostrarMantenimiento == null) {
+			if (verMantenimiento || mostrarMantenimiento == null) {
 				mostrarMantenimiento = "1";
 			}
 			if (pagina == null || pagina.equals("")) {
@@ -292,7 +302,7 @@ public class SMantenimiento extends HttpServlet {
 			
 			ConnectDS.aceptarTrasaccion(conn);
 
-			request.setAttribute("mensajeMantenimiento", "nuevoOK");
+			request.setAttribute("mensajeMantenimiento", "Se ha registrado el nuevo producto.");
 
 			ruta = mostrarListadoProductos(request);
 
@@ -308,4 +318,129 @@ public class SMantenimiento extends HttpServlet {
 		}
 		return ruta;
 	}
+	//gonza
+	/**
+	 * Muestra la pantalla de listado de productos.
+	 * 
+	 * @param request
+	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String mostrarListadoProductos(HttpServletRequest request) {
+		return mostrarListadoProductos(request,false);
+	}
+	/**
+	 * Elimina producto.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal de la sesion, tipo BSucursal.
+	 * @return
+	 */
+	private String eliminarProducto(HttpServletRequest request,BUsuario usuario, BSucursal sucursal){
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+			int codigoProducto=Integer.parseInt(request.getParameter("hddCodigoSeleccionado"));
+						
+			CMantenimiento cMantenimiento = new CMantenimiento();
+			cMantenimiento.eliminarProducto(codigoProducto, usuario, conn, sucursal);
+			ConnectDS.aceptarTrasaccion(conn);
+			
+			request.setAttribute("mensajeMantenimiento", "Se ha dado de baja al producto.");
+			ruta = mostrarListadoProductos(request,true);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
+		return ruta;
+	}
+	/**
+	 * Muestra la pantalla de modificar producto.
+	 * 
+	 * @param request
+	 *            objeto de solicitud http, tipo HttpServletRequest.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+	private String inicioActualizaProducto(HttpServletRequest request) {
+		String ruta = "";
+		try {
+
+			Lista listadoTipoProducto = null;
+			CMantenimiento cMantenimiento = new CMantenimiento();
+
+			int codigo = Integer.parseInt(((String) request
+					.getParameter("hddCodigoSeleccionado") == null ? "-1"
+					: (String) request.getParameter("hddCodigoSeleccionado")));
+			
+			//String rutaImagen = (String) request.getParameter("hddRutaImagen"
+			//		+ codigo);
+
+			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
+
+			BProducto producto = cMantenimiento.obtenerProductos(codigo);
+			
+
+			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
+
+			request.setAttribute("producto", producto);
+
+			ruta = "/jsp/maestroProductos/mae_ModificarProducto.jsp";
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}
+		return ruta;
+	}
+
+	/**
+	 * Almacena cambios producto producto.
+	 * @param request objeto de solicitud http, tipo HttpServletRequest.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @return ruta de la pagina a mostrar, tipo String.
+	 */
+		private String almacenarCambiosProducto(HttpServletRequest request,BUsuario usuario){
+		String ruta = "";
+		Connection conn = null;
+		try {
+			conn = ConnectDS.obtenerConeccion();
+					
+			BProducto producto = new BProducto();
+			BTipoProducto tipo = new BTipoProducto();
+			
+			producto.setCodigo(Integer.parseInt(request.getParameter("hddCodigo")));
+			producto.setNombre(request.getParameter("txtNombre"));
+			producto.setDescripcion(request.getParameter("txtDescripcion"));
+			tipo.setCodigo(Integer.parseInt(request.getParameter("selTipo")));
+			producto.setTipo(tipo);
+		
+		
+			CMantenimiento cMantenimiento = new CMantenimiento();
+			cMantenimiento.guardarCambiosProducto(producto, usuario, conn);
+			ConnectDS.aceptarTrasaccion(conn);
+			
+			request.setAttribute("mensajeMantenimiento", "Se ha modificado al producto.");
+			ruta = mostrarListadoProductos(request,true);
+		} catch (Exception e) {
+			ConnectDS.deshacerTrasaccion(conn);
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: " + this.getClass().getName() + ";"
+					+ "; Parametros=" + Parametros.URL + ":"
+					+ Parametros.USUARIO + ":" + Parametros.CLAVE
+					+ "; Mensaje:" + e);
+		}finally{
+			ConnectDS.cerrarConexion(conn);
+		}
+		return ruta;
+	}
+	//gonza
 }
