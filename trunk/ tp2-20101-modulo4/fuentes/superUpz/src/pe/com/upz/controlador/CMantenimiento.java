@@ -82,5 +82,41 @@ public class CMantenimiento {
 		dProducto.crearProductoSucursal(producto, bSucursal, conn, usuario);
 		return codigoGenerado;
 	}
-	
+	//gonza
+	/**
+	 * Elimina logicamente el producto.
+	 * @param producto producto, tipo BProducto.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @param bSucursal sucursal de eliminacion, tipo BSucursal.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public void eliminarProducto(int producto,BUsuario usuario, Connection conn, BSucursal bSucursal)throws SQLException{
+		
+		IProducto dProducto = new DProducto();
+		dProducto.eliminarProducto(producto,usuario, conn);
+		dProducto.eliminarProductoSucursal(producto,usuario, conn);
+		
+	}	
+	/**
+	 * Obtiene un producto por codigo.
+	 * @param codigo codigo del producto, tipo int.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public BProducto obtenerProductos(int codigo) throws SQLException{
+		IProducto dProducto = new DProducto();
+		return dProducto.obtenerProductos(codigo);
+	}
+	/**
+	 * Almacena cambios de un producto.
+	 * @param producto producto a actualizar, tipo BProducto.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param conn conexion a la BD, tipo Connection.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */	
+	public void guardarCambiosProducto(BProducto producto, BUsuario usuario, Connection conn)throws SQLException{
+		IProducto dProducto = new DProducto();
+		dProducto.guardarCambiosProducto(producto, usuario, conn);
+	}
+	//gonza
 }

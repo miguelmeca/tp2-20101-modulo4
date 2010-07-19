@@ -159,6 +159,8 @@ public class DProducto implements IProducto{
 		
 	}
 
+	
+	
 	/* (non-Javadoc)
 	 * @see pe.com.upz.daoInterface.IProducto#obtenerMaximoNumeroProducto(java.sql.Connection)
 	 */
@@ -460,4 +462,114 @@ public class DProducto implements IProducto{
 		ConnectDS.cerrarConexion(conn);
 		return promedio;
 	}
+	
+	public void eliminarProducto(int codigo, BUsuario usuario, Connection conn)throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE producto \n");
+		sql.append("SET    usuario_modificacion = ?      , \n");
+		sql.append("       fecha_modificacion   = SYSDATE, \n");
+		sql.append("       estado               = 0 \n");
+		sql.append("WHERE  producto_id          = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1,usuario.getLogin());
+		pstm.setInt(2,codigo);
+		pstm.executeUpdate();
+		
+		pstm.close();
+		
+	}
+	//gonza
+	public BProducto obtenerProductos(int codigo) throws SQLException {
+
+		Connection conn = ConnectDS.obtenerConeccion();
+		BProducto producto=null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT producto_id                        , \n");
+		sql.append("       pr.tipo_producto_id                   , \n");
+		sql.append("       pt.descripcion AS dTipo," +
+				" pr.descripcion AS desProducto, \n");
+		sql.append("       pr.estado                             , \n");
+		sql.append("       pr.nombre \n");
+		sql.append("FROM   producto pr, \n");
+		sql.append("       tipo_producto pt \n");
+		sql.append("WHERE  pr.producto_id      = ? \n");
+		sql.append("AND    pt.tipo_producto_id = pr.tipo_producto_id");
+
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1, codigo);
+
+		rs = pstm.executeQuery();
+
+		BTipoProducto tipo;
+		while (rs.next()) {
+			producto = new BProducto();
+
+			producto.setCodigo(rs.getInt("producto_id"));
+			producto.setNombre(rs.getString("nombre"));
+			producto.setDescripcion(rs.getString("desProducto"));
+			producto.setEstado(rs.getInt("estado"));
+			tipo = new BTipoProducto();
+			tipo.setCodigo(rs.getInt("tipo_producto_id"));
+			tipo.setDescripcion(rs.getString("dTipo"));
+			producto.setTipo(tipo);
+		}
+
+		rs.close();
+		pstm.close();
+		conn.close();
+
+		return producto;
+	}
+	
+	public void eliminarProductoSucursal(int codigo, BUsuario usuario, Connection conn)throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE producto_sucursal \n");
+		sql.append("SET    usuario_modificacion = ?      , \n");
+		sql.append("       fecha_modificacion   = SYSDATE, \n");
+		sql.append("       estado               = 0 \n");
+		sql.append("WHERE  producto_id          = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setString(1,usuario.getLogin());
+		pstm.setInt(2,codigo);
+		pstm.executeUpdate();
+		
+		pstm.close();		
+	}
+	
+	public void guardarCambiosProducto(BProducto producto, BUsuario usuario, Connection conn)throws SQLException {
+		// TODO Auto-generated method stub
+		PreparedStatement pstm;
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE producto \n");
+		sql.append("SET    tipo_producto_id     = ?     , \n");
+		sql.append("       descripcion          = ?     , \n");
+		sql.append("       usuario_modificacion = ?     , \n");
+		sql.append("       fecha_modificacion   = SYSDATE, \n");
+		sql.append("       nombre               = ? \n");
+		sql.append("WHERE  producto_id          = ?");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		
+		pstm.setInt(1,producto.getTipo().getCodigo());
+		pstm.setString(2,producto.getDescripcion());
+		pstm.setString(3,usuario.getLogin());
+		pstm.setString(4,producto.getNombre());
+		pstm.setInt(5,producto.getCodigo());
+		pstm.executeUpdate();
+		
+		pstm.close();
+	}
+	//gonza
 }
