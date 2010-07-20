@@ -155,7 +155,7 @@ body {
 								</td>
 								<td><input type="text" name="txtEMail" id="txtEMail"
 									value="<%=cliente.getCorreo()==null?"":cliente.getCorreo() %>" 
-									onKeyPress="Upper();"  
+									onKeyPress="Upper();SoloCorreo(this.value);"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
 								<td>
@@ -262,6 +262,8 @@ function guardar(){
 	var materno = frmNuevoCliente.txtApellidoMaterno.value;
 	var direccion = frmNuevoCliente.txtDireccion.value;
 	var email = frmNuevoCliente.txtEMail.value;
+	var fono1 = frmNuevoCliente.txtTelefono.value;
+	var fono2 = frmNuevoCliente.txtCelular.value;
 	if(dni == ""){
 		alert("Debe ingresar un número de documento.");
 			frmNuevoCliente.txtNumeroDocumento.focus();
@@ -303,12 +305,24 @@ function guardar(){
 			return;
 	}
 
-	if(email != "" && validarEmail(email)){
+	if(email != "" && !fncEsEmail(email)){
 		alert("Debe ingresar un correo válido.");
 		frmNuevoCliente.txtEMail.focus();
 		return;
 	}
-	
+
+	if(fono1 != "" && fono1.length<7){
+		alert("El telefono de casa debe tener mínimo 7 dígitos");
+		frmNuevoCliente.txtTelefono.focus();
+		return;
+	}	
+	if(fono2 != "" && fono1.length<9){
+		alert("El telefono celular debe tener mínimo 9 dígitos");
+		frmNuevoCliente.txtCelular.focus();
+		return;
+	}	
+
+
 	frmNuevoCliente.action="SMantenimientoCliente";
 	frmNuevoCliente.submit();
 }
