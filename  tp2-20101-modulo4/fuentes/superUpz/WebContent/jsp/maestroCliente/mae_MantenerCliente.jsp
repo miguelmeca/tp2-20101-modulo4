@@ -86,6 +86,7 @@ body {
 								</td>
 								<td colspan="2"><input name="btnValidar" type="button"
 									class="ui-state-default btnValidadr" id="btnValidar"
+									onClick="validar()" 
 									style="width: 120px" value="Validar" /></td>
 								<td width="186">
 								<div align="left" class="style4" id="mensajeMostrar"
@@ -142,7 +143,7 @@ body {
 								<div align="left">e-mail:</div>
 								</td>
 								<td><input type="text" name="txtEMail" id="txtEMail"
-									onKeyPress="Upper();"  
+									onKeyPress="Upper();SoloCorreo(this.value);"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
 								<td>
@@ -213,6 +214,7 @@ body {
 				<div align="right"><input type="button" name="btnAceptar"
 					value="Aceptar" onClick="guardar()" style="width: 120px"
 					class="ui-state-default btnAceptar" /> <input type="button"
+					onClick="cerrar()" 
 					name="btnCancelar" value="Cancelar" style="width: 120px"
 					class="ui-state-default btnCancelar" /></div>
 				</td>
@@ -236,6 +238,8 @@ function guardar(){
 	var materno = frmNuevoCliente.txtApellidoMaterno.value;
 	var direccion = frmNuevoCliente.txtDireccion.value;
 	var email = frmNuevoCliente.txtEMail.value;
+	var fono1 = frmNuevoCliente.txtTelefono.value;
+	var fono2 = frmNuevoCliente.txtCelular.value;	
 	if(dni == ""){
 		alert("Debe ingresar un número de documento.");
 			frmNuevoCliente.txtNumeroDocumento.focus();
@@ -276,11 +280,21 @@ function guardar(){
 			frmNuevoCliente.txtDireccion.focus();
 			return;
 	}
-	if(email != "" && validarEmail(email)){
+	if(email != "" && !fncEsEmail(email)){
 		alert("Debe ingresar un correo válido.");
 		frmNuevoCliente.txtEMail.focus();
 		return;
 	}
+		if(fono1 != "" && fono1.length<7){
+		alert("El telefono de casa debe tener mínimo 7 dígitos");
+		frmNuevoCliente.txtTelefono.focus();
+		return;
+	}	
+	if(fono2 != "" && fono1.length<9){
+		alert("El telefono celular debe tener mínimo 9 dígitos");
+		frmNuevoCliente.txtCelular.focus();
+		return;
+	}	
 	frmNuevoCliente.action="SMantenimientoCliente";
 	frmNuevoCliente.submit();
 }
@@ -338,6 +352,40 @@ function buscarDistrito(){
         ret = ret.substr(3);
         llenarComboListaCodTexto(ret,";","|",frmNuevoCliente.selDistrito);
     }
+}
+function validar(){   
+
+    var dni =  frmNuevoCliente.txtNumeroDocumento.value;
+    
+	if(dni == ""){
+		alert("Debe ingresar un número de documento.");
+			frmNuevoCliente.txtNumeroDocumento.focus();
+			return;
+	}
+	if(dni.length != 8){
+		alert("Debe ingresar un número de documento de 8 dígitos.");
+			frmNuevoCliente.txtNumeroDocumento.focus();
+			return;
+	}
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestObtenerDniRepetido" +
+                  "&txtNumeroDocumento="+ dni+"&hddCodigoCliente=-1"; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK_NoExiste")   {
+        ret = ret.substr(3);
+        alert("El DNI ingresado ya se encuentra registrado para "+ret);
+    }
+     
+}
+function cerrar(){
+	frmNuevoCliente.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmNuevoCliente.submit();
 }
 </script>
 </html>

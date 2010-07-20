@@ -1,5 +1,154 @@
-function validarEmail(valor) {
-	return true;
+document.onkeydown=function(){
+  var keycode = event.keyCode;
+    if(window.event){
+      if((keycode >= 113) && (keycode <= 123)){
+        //Bloquear las teclas de funcion excepto F1
+        window.event.cancelBubble = true;
+        window.event.keyCode = 8;
+        window.event.returnValue = false;
+        return false;
+      }
+    }
+    //Bloquear la tecla de Backspace
+    if ((keycode == 8) && (event.srcElement.form == null || event.srcElement.isTextEdit == false)){
+      window.event.cancelBubble = true;
+      window.event.returnValue = false;
+    }
+    var teclaU=85; 
+    teclactrl=event.ctrlKey;
+    //cancela la opcion nueva ventana Ctrl+U
+    if ((teclactrl)&&(keycode==teclaU)){ 
+      return false; 
+    } 
+    var teclaalt = event.altKey;
+    if ((teclaalt)&&(keycode==37 || keycode==39)){//cancela la opcion Alt + Atras y Alt + Adelante
+      return false;
+    }
+    return true;
+  }
+  
+document.oncontextmenu=new Function("return false");
+
+function RegresarPagePrincipal(){
+  location.href="../frame/principal.htm";
+}
+
+/**
+  * Ejecuta la función recursiva.
+  * obj, objeto a modificar.
+  * tope, limite de profundidad.
+  * deshabilitar, flag bloquear / desbloquear.
+  */
+  function ejecutarFuncionRecursiva(obj, tope, deshabilitar){
+    var num = 0;
+    var index;
+    try{
+      num = obj.children.length;
+    }catch(e){
+      num = 0;
+    }
+    if (tope <= 20 && num > 0){              
+      for (index = 0; index < num; index++) {
+        ejecutarFuncionRecursiva(obj.children[index], tope + 1, deshabilitar);
+      }
+    }
+    verificarBloqueoControl(obj, deshabilitar);
+  }
+  
+/**
+  * Verifica el bloqueo de los controles.
+  * obj, objeto a bloquear / desbloquear.
+  * deshabilitar, flag bloquear / desbloquear.
+  */
+  function verificarBloqueoControl(obj, deshabilitar){
+    if(obj.tagName == 'INPUT' || obj.tagName == 'input'){
+      obj.disabled = deshabilitar;
+    }
+    if (obj.tagName == 'option' || obj.tagName == 'OPTION'){
+      obj.disabled = deshabilitar;
+    }
+    if (obj.tagName == 'Select' || obj.tagName == 'SELECT'){
+      obj.disabled = deshabilitar;
+    }
+    if(obj.tagName == 'A' || obj.tagName == 'a'){
+      obj.disabled = deshabilitar; 
+      obj.href = "javascript:reDireccion();";
+      obj.onclick = reDireccion;
+    }
+  }
+  
+/**
+  * Habilita / inhabilita los controles.
+  * objName, nombre de los objetos.
+  * deshabilitar, deshabilita los controles.
+  */
+  function inhabilitarControles(objName, deshabilitar){
+    var obj = document.getElementById(objName);            
+    ejecutarFuncionRecursiva(obj, 0, deshabilitar);
+  }
+
+//---------------------------------------------------
+function fncLongitudMinima(strTexto, intLongitud)
+{    
+    if (strTexto) {
+        if (strTexto.length >= intLongitud){return true;}
+        else{return false;}        
+    }    
+    else{return false;}    
+} 
+function SoloCorreo(texto){
+
+    if(window.event.keyCode!=13)
+    { var Tecla;
+        Tecla = String.fromCharCode(window.event.keyCode);
+    texto=texto+Tecla;
+    
+        if ( ! ( IsNumeric( Tecla ) || IsLetter( Tecla ) || Tecla=="_"  || Tecla=="." || Tecla=="@" )  )
+        {        window.event.keyCode = 0;        }
+
+    if(Tecla==".")
+    {  var myArray = texto.split("@");
+        var arrPunto = myArray[0].split(".");
+        if(texto.substring(texto.length-2,texto.length)=="..")
+            {        window.event.keyCode = 0;        }
+    }
+
+    if(Tecla=="_")
+    {  var myArray = texto.split("@");
+        if(myArray.length > 1)
+        {  var arrGuion = myArray[1].split("_");
+            if(arrGuion.length > 1)
+            {        window.event.keyCode = 0;        }
+        }
+    }
+
+    if(IsLetter(texto.substring(0,1))==false)
+    {        window.event.keyCode = 0;        }
+
+    if(Tecla=="@")
+    {  var myArray = texto.split("@");
+        if(myArray.length > 2)
+        {        window.event.keyCode = 0;        }
+    }
+
+    var myArray = texto.split("@");
+    if(myArray.length > 1)      
+    { if(myArray[1]!="")
+      { if(!IsNumeric(myArray[1].substring(0,1)) && !IsLetter(myArray[1].substring(0,1)))
+        {        window.event.keyCode = 0;        }
+      }
+    }
+
+    }    
+}
+
+
+function fncEsEmail(string) //string = cadena que representa al correo electronico
+{//valida si la entrada es un correo electronico si es cierto devuelve true
+      if (string.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1)
+          return true;
+        else
+          return false;
 }
 
 function IsNumeric(ch){

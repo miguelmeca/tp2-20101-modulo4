@@ -202,8 +202,8 @@ body {
 		frmNuevoActualizar.submit();
 	}
 	function cerrar(){
-	frmNuevoCliente.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
-	frmNuevoCliente.submit();
+	frmNuevoActualizar.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
+	frmNuevoActualizar.submit();
 }
 </script>
 </html>
