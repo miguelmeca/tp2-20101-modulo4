@@ -227,7 +227,7 @@ public class DCliente implements ICliente {
 		sql.append("FROM   fidelizacion.cliente cl \n");
 		sql.append("WHERE  cl.numero_documento = ? \n");
 		sql.append("AND    cl.estado           = 1 \n");
-		sql.append("AND    cl.cliente_id       =?");
+		sql.append("AND    cl.cliente_id       !=?");
 
 		pstm = conn.prepareStatement(sql.toString());
 		pstm.setString(1, numDocumento);
