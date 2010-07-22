@@ -326,7 +326,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			daoCliente.almacenarCliente(conn, cliente, usuario);
 
 			ConnectDS.aceptarTrasaccion(conn);
-
+			request.setAttribute("mensajeMantenimiento", "Se ha Creado la cuenta.");
 			ruta = iniciarListadoClientes(request, true);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
@@ -513,14 +513,14 @@ public class SMantenimientoCliente extends HttpServlet {
 		Connection conn = null;
 		try {
 			conn = ConnectDS.obtenerConeccion();
-			String codigoCuenta=request.getParameter("hddCodigoSeleccionado");
+			String codigoCliente=request.getParameter("hddCodigoSeleccionado");
 						
 			CMantenimientoCliente daoCliente = new CMantenimientoCliente();
-			daoCliente.eliminarCliente(conn,Integer.parseInt(codigoCuenta),usuario,sucursal);
+			daoCliente.eliminarCliente(conn,Integer.parseInt(codigoCliente),usuario);
 			ConnectDS.aceptarTrasaccion(conn);
 			
 			request.setAttribute("mensajeMantenimiento", "Se ha dado de baja al cliente.");
-			ruta = iniciarListadoCuenta(request);
+			ruta = iniciarListadoClientes(request);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
 			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE

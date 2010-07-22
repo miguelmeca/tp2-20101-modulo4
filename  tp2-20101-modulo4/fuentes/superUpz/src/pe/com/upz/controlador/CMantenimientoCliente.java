@@ -102,18 +102,13 @@ public class CMantenimientoCliente {
 	/**
 	 * Elimina los datos de cliente.
 	 * @param conn connexion a BD, tipo Connection.
-	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param cliente codigo de cliente, tipo int.
 	 * @param usuario usuario de la sesion, tipo BUsuario.
-	 * @param  sucursal sucrusal de eliminacion, tipo BSucursal.
 	 * @throws SQLException captura excepciones tipo SQL.
 	 */
-	public void eliminarCliente(Connection conn, int codCuenta, BUsuario usuario, BSucursal sucursal)throws SQLException{
-		ICuenta daoCuenta = new DCuenta();
-		ITarjetaFidelizacion daoTarjeta = new DTarjetaFidelizacion();
-		// elimina las tarjetas
-		daoTarjeta.eliminarTarjetasCuenta(conn, codCuenta, usuario);
-		//elimina las cuentas
-		daoCuenta.eliminarCuenta(conn, codCuenta, usuario,sucursal);
+	public void eliminarCliente(Connection conn, int cliente, BUsuario usuario)throws SQLException{
+		ICliente daoCliente = new DCliente();
+		daoCliente.eliminarCliente(conn, cliente, usuario);
 	}
 	/**
 	 * Elimina los datos asociados a la cuenta.

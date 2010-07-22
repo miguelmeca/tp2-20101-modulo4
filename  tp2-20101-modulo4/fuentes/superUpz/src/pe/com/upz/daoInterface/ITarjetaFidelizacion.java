@@ -54,4 +54,5 @@ public interface ITarjetaFidelizacion {
 	public abstract boolean buscarClienteFidelizado(BCliente cliente, BCuenta cuenta)throws SQLException;
 	
 	public abstract String buscarTarjetaRepetido(String numTarjeta)throws SQLException;
+	public abstract BTarjetaFidelizacion buscarCuentaExistente(int codigoCliente)throws SQLException;
 }

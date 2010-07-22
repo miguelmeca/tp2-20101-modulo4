@@ -192,4 +192,48 @@ public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 
 		return nombreCliente;
 	}
+	public BTarjetaFidelizacion buscarCuentaExistente(int codigoCliente)throws SQLException{
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		BTarjetaFidelizacion tarjeta=null;
+		BCliente cliente;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT fi.numero          , \n");
+	    sql.append("       cl.apellido_paterno, \n");
+	    sql.append("       cl.apellido_materno, NUMERO_DOCUMENTO, \n");
+	    sql.append("       cl.nombre \n");
+	    sql.append("FROM   tarjeta_fidelizacion fi, \n");
+	    sql.append("       cliente cl, cuenta cu \n");
+	    sql.append("WHERE  cu.cuenta_id = fi.cuenta_id AND cl.cliente_id  = fi.cliente_id \n");
+			sql.append("AND    fi.estado      = 1 AND    cu.estado= 1\n");
+			sql.append("AND    fi.tipo_cliente=1 \n");
+			sql.append("AND    fi.cuenta_id IN \n");
+			sql.append("       ( SELECT cuenta_id \n");
+			sql.append("       FROM    tarjeta_fidelizacion f \n");
+			sql.append("       WHERE   f.cliente_id = ? \n");
+			sql.append("       AND     f.estado     = 1 \n");
+			sql.append("       )");
+
+		pstm = conn.prepareStatement(sql.toString());
+		System.out.println(sql.toString());
+		System.out.println(codigoCliente);
+		pstm.setInt(1, codigoCliente);
+		rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			tarjeta = new BTarjetaFidelizacion();
+			cliente = new BCliente();
+			cliente.setNombre(rs.getString("NOMBRE"));
+			cliente.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+			cliente.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+			cliente.setNumeroDocumento(rs.getString("NUMERO_DOCUMENTO"));
+			tarjeta.setCliente(cliente);
+			tarjeta.setNumero(rs.getString("numero"));
+		}
+		rs.close();
+		pstm.close();
+		conn.close();
+		return tarjeta;
+	}	
 }
