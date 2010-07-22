@@ -94,6 +94,7 @@ body {
 								</td>
 								<td colspan="2"><input name="btnValidar" type="button"
 									class="ui-state-default btnValidadr" id="btnValidar"
+									onClick="validar()" 
 									style="width: 120px" value="Validar" /></td>
 								<td width="186">
 								<div align="left" class="style4" id="mensajeMostrar"
@@ -155,7 +156,7 @@ body {
 								</td>
 								<td><input type="text" name="txtEMail" id="txtEMail"
 									value="<%=cliente.getCorreo()==null?"":cliente.getCorreo() %>" 
-									onKeyPress="Upper();SoloCorreo(this.value);"  
+									onKeyPress="Upper();"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
 								<td>
@@ -316,7 +317,7 @@ function guardar(){
 		frmNuevoCliente.txtTelefono.focus();
 		return;
 	}	
-	if(fono2 != "" && fono1.length<9){
+	if(fono2 != "" && fono2.length<9){
 		alert("El telefono celular debe tener mínimo 9 dígitos");
 		frmNuevoCliente.txtCelular.focus();
 		return;
@@ -380,6 +381,36 @@ function buscarDistrito(){
         ret = ret.substr(3);
         llenarComboListaCodTexto(ret,";","|",frmNuevoCliente.selDistrito);
     }
+}
+function validar(){   
+
+    var dni =  frmNuevoCliente.txtNumeroDocumento.value;
+    var codCliente = frmNuevoCliente.hddCodigo.value;
+	if(dni == ""){
+		alert("Debe ingresar un número de documento.");
+			frmNuevoCliente.txtNumeroDocumento.focus();
+			return;
+	}
+	if(dni.length != 8){
+		alert("Debe ingresar un número de documento de 8 dígitos.");
+			frmNuevoCliente.txtNumeroDocumento.focus();
+			return;
+	}
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestObtenerDniRepetido" +
+                  "&txtNumeroDocumento="+ dni+"&hddCodigoCliente="+codCliente; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK_NoExiste")   {
+        ret = ret.substr(3);
+        alert("El DNI ingresado ya se encuentra registrado para "+ret);
+    }
+     
 }
 function cerrar(){
 	frmNuevoCliente.action="<%=ruta%>/jsp/comun/cuerpo.jsp";

@@ -143,7 +143,7 @@ body {
 								<div align="left">e-mail:</div>
 								</td>
 								<td><input type="text" name="txtEMail" id="txtEMail"
-									onKeyPress="Upper();SoloCorreo(this.value);"  
+									onKeyPress="Upper();"  
 									style="width: 150px" class="text  ui-corner-all" /></td>
 								<td>&nbsp;</td>
 								<td>
@@ -290,7 +290,7 @@ function guardar(){
 		frmNuevoCliente.txtTelefono.focus();
 		return;
 	}	
-	if(fono2 != "" && fono1.length<9){
+	if(fono2 != "" && fono2.length<9){
 		alert("El telefono celular debe tener mínimo 9 dígitos");
 		frmNuevoCliente.txtCelular.focus();
 		return;

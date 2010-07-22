@@ -211,11 +211,11 @@ body {
 		  <input type="button" name="btnEditar" value="Editar" 
 		  onclick="javascript:modificar()" 
 		  style="width:120px" class="ui-state-default"  />
-		  <%--
+		  
 		  <input type="button" name="btnEliminar" 
 		  onclick="javascript:eliminar()" 
 		  value="Eliminar" style="width:120px" class="ui-state-default"  />
-		  --%>
+		  
           <%}else{ %>
 		  <input type="button" name="btnAceptar" 
 		  onclick="javascript:aceptarSeleccionPadre()" 
@@ -245,10 +245,13 @@ var codigo = frmListaClientes.hddCodigoSeleccionado.value;
 		alert("Debe seleccionar un cliente.");
 		return;
 	}
+	if(!validar()){
+		return;
+	}
 	if(!confirm("¿Desea dar de baja la cuenta seleccionada?")){
 		return;
 	}
-	frmListaClientes.hddOperacion.value="eliminarCuenta";
+	frmListaClientes.hddOperacion.value="eliminarCliente";
 	frmListaClientes.action="SMantenimientoCliente";
 	frmListaClientes.submit();
 }
@@ -386,6 +389,27 @@ function MM_showHideLayers()
          {  obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v;  }
          obj.visibility=v;
        }
+}
+function validar(){   
+
+    var seleccionado =  frmListaClientes.hddCodigoSeleccionado.value;
+    
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestValidarExisteClienteEnCuenta" +
+                  "&hddCodigoSeleccionado="+ seleccionado; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK_NoExiste")   {
+        ret = ret.substr(3);
+        alert("El Cliente exsite registrado en la cuenta de "+ret+". Eliminelo de la cuenta antes.");
+		return false;
+    }
+     return true;
 }
 </script>
 </html>
