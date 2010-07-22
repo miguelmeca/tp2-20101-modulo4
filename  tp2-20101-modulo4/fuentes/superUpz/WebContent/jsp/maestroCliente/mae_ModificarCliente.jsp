@@ -92,10 +92,7 @@ body {
 									onKeyPress="Upper();SoloNumeros();" 
 									style="width: 150px" maxlength="10" /></div>
 								</td>
-								<td colspan="2"><input name="btnValidar" type="button"
-									class="ui-state-default btnValidadr" id="btnValidar"
-									onClick="validar()" 
-									style="width: 120px" value="Validar" /></td>
+								<td colspan="2">&nbsp;</td>
 								<td width="186">
 								<div align="left" class="style4" id="mensajeMostrar"
 									style="display: none;">DOCUMENTO V&Aacute;LIDO</div>
@@ -270,6 +267,9 @@ function guardar(){
 			frmNuevoCliente.txtNumeroDocumento.focus();
 			return;
 	}
+	if(!validar()){
+		return;
+	}
 	if(paterno == ""){
 		alert("Debe ingresar un apellido paterno.");
 			frmNuevoCliente.txtApellidoPaterno.focus();
@@ -389,12 +389,12 @@ function validar(){
 	if(dni == ""){
 		alert("Debe ingresar un número de documento.");
 			frmNuevoCliente.txtNumeroDocumento.focus();
-			return;
+			return false;
 	}
 	if(dni.length != 8){
 		alert("Debe ingresar un número de documento de 8 dígitos.");
 			frmNuevoCliente.txtNumeroDocumento.focus();
-			return;
+			return false;
 	}
     var url = "ServicioUtilitario?" +
                   "metodo=requestObtenerDniRepetido" +
@@ -409,8 +409,9 @@ function validar(){
     if(ret!="OK_NoExiste")   {
         ret = ret.substr(3);
         alert("El DNI ingresado ya se encuentra registrado para "+ret);
+		return false;
     }
-     
+     return true;
 }
 function cerrar(){
 	frmNuevoCliente.action="<%=ruta%>/jsp/comun/cuerpo.jsp";
