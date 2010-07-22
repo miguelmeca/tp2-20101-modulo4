@@ -13,6 +13,7 @@ import javax.servlet.http.*;
 import pe.com.upz.bean.BEquivalencia;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
+import pe.com.upz.bean.BTarjetaFidelizacion;
 import pe.com.upz.bean.BUbigeo;
 import pe.com.upz.dao.DCliente;
 import pe.com.upz.dao.DCuenta;
@@ -312,5 +313,34 @@ public class ServicioUtilitario extends ServiceSession {
 					+ Parametros.CLAVE + "; Mensaje:" + e);
 		}
 		return numeroTarjeta;
+	}
+	public String requestValidarExisteClienteEnCuenta(HttpServletRequest request,
+			HttpServletResponse response) {
+		BTarjetaFidelizacion tarjeta = null;
+		String clienteCuenta="";
+		try {
+			String codCliente = (String) request
+					.getParameter("hddCodigoSeleccionado");
+									
+			ITarjetaFidelizacion daoCliente = new DTarjetaFidelizacion();
+			
+			tarjeta = daoCliente.buscarCuentaExistente(Integer.parseInt(codCliente));
+			
+			if (tarjeta == null) {
+				clienteCuenta = "_NoExiste";
+			}else{
+				clienteCuenta = tarjeta.getCliente().getApellidoPaterno()+" "+
+				tarjeta.getCliente().getApellidoMaterno()+" "+
+				tarjeta.getCliente().getNombre()+" con DNI "+
+				tarjeta.getCliente().getNumeroDocumento();
+			}
+
+		} catch (Exception e) {
+			System.out.println("Proyecto: " + Parametros.S_APP_NOMBRE
+					+ "; Clase: ServicioUtilitario; " + "; Parametros="
+					+ Parametros.URL + ":" + Parametros.USUARIO + ":"
+					+ Parametros.CLAVE + "; Mensaje:" + e);
+		}
+		return clienteCuenta;
 	}
 }

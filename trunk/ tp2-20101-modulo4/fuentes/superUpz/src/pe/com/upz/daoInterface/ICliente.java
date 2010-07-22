@@ -62,4 +62,6 @@ public interface ICliente {
 	public abstract BCliente obtenerCliente(int codigo)throws SQLException;
 	public abstract void almacenarClienteModificado(Connection conn, BCliente cliente,
 			BUsuario usuario) throws SQLException;
+	public abstract void eliminarCliente(Connection conn, int cliente,
+			BUsuario usuario) throws SQLException;
 }
