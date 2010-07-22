@@ -74,7 +74,7 @@ body {
 </style>
 </head>
 
-<body onload="javascript:mostrarMensaje();ocultarPaneles();">
+<body onload="javascript:ocultarPaneles();mostrarMensaje();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%" align="center">
 
@@ -344,10 +344,8 @@ function agregarNuevo(){
 }
 function mostrarMensaje(){
 	var resultado = "<%=mensajeMantenimiento%>";
-	if(resultado == "nuevoOK"){
-		alert("Se agregó un nuevo Cliente.");
-	}else if (resultado== "actualizadoOK"){
-		alert("Se actualizó el Cliente.");
+	if(resultado != ""){
+		alert(resultado);
 	}
 }
 function ocultarPaneles(){
