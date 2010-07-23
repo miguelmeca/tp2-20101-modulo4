@@ -42,7 +42,7 @@ body {
 <form name="frmCanje" id="frmCanje" method="get" action="">
 <table width="1010px" border="0" >
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Mantenimiento de Cuenta Adicional </td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Modificar Cuenta Adicional </td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
