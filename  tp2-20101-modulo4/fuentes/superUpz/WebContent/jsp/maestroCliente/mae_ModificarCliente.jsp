@@ -62,7 +62,7 @@ body {
 	<tr>
 		<td
 			class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"
-			align="center">Mantener Cliente</td>
+			align="center">Modificar Cliente</td>
 	</tr>
 	<tr>
 		<td height="327" valign="top">
@@ -86,11 +86,7 @@ body {
 								<div align="left">N&uacute;mero de documento: (*)</div>
 								</td>
 								<td width="150">
-								<div align="left"><input name="txtNumeroDocumento"
-									type="text" class="text  ui-corner-all" id="txtNumero22"
-									value="<%=cliente.getNumeroDocumento() %>" 
-									onKeyPress="Upper();SoloNumeros();" 
-									style="width: 150px" maxlength="10" /></div>
+								<div align="left"><input name="txtNumeroDocumento" type="text" class="text  ui-corner-all" id="txtNumero22" style="width: 150px" onKeyPress="Upper();SoloNumeros();" value="<%=cliente.getNumeroDocumento() %>" maxlength="10" readonly="true" /></div>
 								</td>
 								<td colspan="2">&nbsp;</td>
 								<td width="186">

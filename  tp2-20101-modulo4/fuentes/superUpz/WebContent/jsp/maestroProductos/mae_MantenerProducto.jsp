@@ -67,7 +67,7 @@ body {
 	<tr>
 		<td
 			class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"
-			align="center">Nuevo Producto</td>
+			align="center">Agregar Producto</td>
 	</tr>
 	<tr>
 		<td height="327" valign="top">

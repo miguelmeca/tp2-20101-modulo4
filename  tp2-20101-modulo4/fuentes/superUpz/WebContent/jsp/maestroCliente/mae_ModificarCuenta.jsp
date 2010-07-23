@@ -54,7 +54,7 @@ body {
 <form name="frmCanje" id="frmCanje" method="get" action="">
 <table width="1010px" border="0" >
 <tr>
-	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Mantenimiento de Cuenta </td>
+	<td class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" align="center"> Modificar Cuenta </td>
 </tr>
   <tr>
     <td height="327" valign="top" ><table width="100%" border="0">
@@ -122,7 +122,7 @@ body {
 		<table width="877" border="1">
           <tr>
             <td width="4%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">Num</td>
-            <td width="21%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">N&uacute;mero</div></td>
+            <td width="21%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">N&uacute;m. Tarjeta </div></td>
             <td width="25%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Paterno</div></td>
             <td width="22%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Apellido Materno </div></td>
             <td width="24%" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"><div align="center">Nombres</div></td>
