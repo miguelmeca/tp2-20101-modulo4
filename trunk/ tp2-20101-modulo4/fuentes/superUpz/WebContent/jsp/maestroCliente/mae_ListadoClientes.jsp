@@ -109,7 +109,7 @@ body {
 				<div id="divDocumento" style="position:relative;top: 0px;left: 0px ">N&uacute;mero:
                       <input name="txtDNIBuscar" 
 					  onKeyPress="Upper();SoloNumeros();" 
-					  type="text" size="25px"  maxlength="100" value="" >
+					  type="text" size="25px"  maxlength="8" value="" >
                 </div>
 				<div id="divNombres" style="position:relative;top: 0px;left: 0px ">
 					<div id="divNombreCliente">Nombre:&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
