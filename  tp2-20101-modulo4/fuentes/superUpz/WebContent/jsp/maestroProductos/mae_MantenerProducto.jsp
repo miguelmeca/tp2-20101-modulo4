@@ -106,13 +106,12 @@ body {
 								</td>
 								<td align="left" style="height: 31px; width: 420px;"><select
 									id="selTipo" name="selTipo" style="width: 150px">
-									<option value="0">-Seleccione-</option>
-									<%for (int i=0;i<listadoTipoProducto.getTamanio();i++){ %>
-									<%BTipoProducto tipo = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
-									<option value="<%=tipo.getCodigo()%>" <%=producto.getTipo().getCodigo()==tipo.getCodigo()?"Selected":"" %> ><%=tipo.getDescripcion() %>
-									</option>
-									<%} %>
-								</select></td>
+                                  <option value="0">-Seleccione-</option>
+                                  <%for (int i=0;i<listadoTipoProducto.getTamanio();i++){ %>
+                                  <%BTipoProducto tipo = (BTipoProducto)listadoTipoProducto.getElemento(i); %>
+                                  <option value="<%=tipo.getCodigo()%>" <%=producto.getTipo().getCodigo()==tipo.getCodigo()?"Selected":"" %> ><%=tipo.getDescripcion() %> </option>
+                                  <%} %>
+                                </select></td>
 							</tr>
 							<tr>
 								<td align="left" style="height: 31px; width: 175px;">Producto:
@@ -133,13 +132,14 @@ body {
 									</td>
 									
 							</tr>
+							<!--
 							<tr>
 								<td align="left" style="height: 31px; width: 175px;">imagen:
 								(*)</td>
 								<td align="left" style="height: 31px; width: 420px;"><input
 									type="file" name="filRutaImagen" id ="filRutaImagen" /></td>
 							</tr>
-							
+							-->
 
 							<tr>
 								<td colspan="2" align="left">&nbsp;</td>
