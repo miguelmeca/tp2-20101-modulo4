@@ -198,7 +198,7 @@ public class SEquivalencia extends HttpServlet {
 		try {
 			conn = ConnectDS.obtenerConeccion();
 			conn.setAutoCommit(false);
-			BProducto producto = new BProducto();
+			//BProducto producto = new BProducto();
 			CEquivalencia cEquivalencia = new CEquivalencia();
 			int codProducto = Integer.parseInt(request
 					.getParameter("hddCodigoProducto"));

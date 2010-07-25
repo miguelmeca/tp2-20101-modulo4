@@ -18,10 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import org.apache.tomcat.util.http.fileupload.DefaultFileItem;
-import org.apache.tomcat.util.http.fileupload.DiskFileUpload;
-import org.apache.tomcat.util.http.fileupload.FileItem;
+//import org.apache.tomcat.util.http.fileupload.DefaultFileItem;
+//import org.apache.tomcat.util.http.fileupload.DiskFileUpload;
+//import org.apache.tomcat.util.http.fileupload.FileItem;
 
+import pe.com.upz.bean.BImagenProducto;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BTipoProducto;
@@ -45,7 +46,7 @@ public class SMantenimiento extends HttpServlet {
 	 * javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest
 	 * , javax.servlet.http.HttpServletResponse)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	/*public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 			String ruta = "";
@@ -101,7 +102,7 @@ public class SMantenimiento extends HttpServlet {
 			getServletConfig().getServletContext().getRequestDispatcher(
 					"/jsp/comun/msg.jsp").forward(request, response);
 		}
-	}
+	}*/
 
 	/*
 	 * (non-Javadoc)
@@ -131,6 +132,8 @@ public class SMantenimiento extends HttpServlet {
 				ruta = inicioActualizaProducto(request);
 			}else if (operacion.equals("actualizarProducto")) {
 				ruta = almacenarCambiosProducto(request, usuario);
+			}else if (operacion.equals("almacenarProducto")) {
+				ruta = almacenarNuevoProducto(usuario, request, sucursal);
 			}
 			getServletConfig().getServletContext().getRequestDispatcher(ruta)
 					.forward(request, response);
@@ -180,17 +183,18 @@ public class SMantenimiento extends HttpServlet {
 			
 			Lista listadoProducto = null;
 			Lista listadoTipoProducto = null;
-
+			
 			CMantenimiento cMantenimiento = new CMantenimiento();
 			listadoProducto = cMantenimiento.obtenerListadoProductos(true,
 					filtro, valorAuxiliar);
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
-
+			
 			request.setAttribute("filtroPagina", filtro+"");
 			request.setAttribute("valorAuxiliar", valorAuxiliar);
 			request.setAttribute("pagina", pagina);
 			request.setAttribute("listadoProducto", listadoProducto);
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
+			
 			request.setAttribute("mantenimiento", mostrarMantenimiento);
 			//request.setAttribute("mostrar", "1");
 
@@ -217,6 +221,7 @@ public class SMantenimiento extends HttpServlet {
 		try {
 
 			Lista listadoTipoProducto = null;
+			Lista listadoImagen = null;
 			CMantenimiento cMantenimiento = new CMantenimiento();
 
 			int codigo = Integer.parseInt(((String) request
@@ -232,7 +237,7 @@ public class SMantenimiento extends HttpServlet {
 					+ codigo);
 
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
-
+			listadoImagen = cMantenimiento.obtenerListadoImagenes();
 			BProducto producto = new BProducto();
 			if (codigo == -1) {
 				producto = null;
@@ -247,7 +252,7 @@ public class SMantenimiento extends HttpServlet {
 			}
 
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
-
+			request.setAttribute("listadoImagen", listadoImagen);
 			request.setAttribute("producto", producto);
 
 			ruta = "/jsp/maestroProductos/mae_MantenerProducto.jsp";
@@ -274,31 +279,35 @@ public class SMantenimiento extends HttpServlet {
 	 */
 	private String almacenarNuevoProducto(BUsuario usuario,
 			HttpServletRequest request,
-			String codigo,String nombre,String descripcion,int codigoTipo, BSucursal sucursal) {
+			BSucursal sucursal) {
 		String ruta = "";
 		Connection conn = null;
 		try {
+			int codigo;
 			conn = ConnectDS.obtenerConeccion();
 			conn.setAutoCommit(false);
 			BProducto producto = new BProducto();
 			BTipoProducto tipoProducto = new BTipoProducto();
-			// int codigo =
-			// Integer.parseInt((String)request.getParameter("hddCodigo"));
-			//String nombre = (String) request.getParameter("txtNombre");
-			//String descripcion = (String) request
-			//		.getParameter("txtDescripcion");
-			//int codigoTipo = Integer.parseInt((String) request
-			//		.getParameter("selTipo"));
+			BImagenProducto imagen = new BImagenProducto();
+			String nombre = (String) request.getParameter("txtNombre");
+			String descripcion = (String) request
+					.getParameter("txtDescripcion");
+			int codigoTipo = Integer.parseInt((String) request
+					.getParameter("selTipo"));
+			int codigoImagen = Integer.parseInt((String) request
+					.getParameter("hddCodigoSeleccionado"));
 			//String rutaImagen = (String) request.getParameter("txtRutaImagen");
 
 			tipoProducto.setCodigo(codigoTipo);
 			producto.setNombre(nombre);
 			producto.setDescripcion(descripcion);
 			producto.setTipo(tipoProducto);
+			imagen.setCodigo(codigoImagen);
+			producto.setImagen(imagen);
 			//producto.setRutaImagen(rutaImagen);
 
 			CMantenimiento cMantenimiento = new CMantenimiento();
-			codigo = new String(cMantenimiento.almacenarProducto(producto, usuario, conn,sucursal)+"");
+			codigo = cMantenimiento.almacenarProducto(producto, usuario, conn,sucursal);
 			
 			ConnectDS.aceptarTrasaccion(conn);
 
@@ -371,7 +380,7 @@ public class SMantenimiento extends HttpServlet {
 	private String inicioActualizaProducto(HttpServletRequest request) {
 		String ruta = "";
 		try {
-
+			Lista listadoImagen = null;
 			Lista listadoTipoProducto = null;
 			CMantenimiento cMantenimiento = new CMantenimiento();
 
@@ -385,10 +394,11 @@ public class SMantenimiento extends HttpServlet {
 			listadoTipoProducto = cMantenimiento.obtenerListadoTipoProductos();
 
 			BProducto producto = cMantenimiento.obtenerProductos(codigo);
-			
+			listadoImagen = cMantenimiento.obtenerListadoImagenes();
 
 			request.setAttribute("listadoTipoProducto", listadoTipoProducto);
 
+			request.setAttribute("listadoImagen", listadoImagen);
 			request.setAttribute("producto", producto);
 
 			ruta = "/jsp/maestroProductos/mae_ModificarProducto.jsp";
@@ -416,14 +426,15 @@ public class SMantenimiento extends HttpServlet {
 					
 			BProducto producto = new BProducto();
 			BTipoProducto tipo = new BTipoProducto();
-			
+			BImagenProducto imagen = new BImagenProducto();
 			producto.setCodigo(Integer.parseInt(request.getParameter("hddCodigo")));
 			producto.setNombre(request.getParameter("txtNombre"));
 			producto.setDescripcion(request.getParameter("txtDescripcion"));
 			tipo.setCodigo(Integer.parseInt(request.getParameter("selTipo")));
 			producto.setTipo(tipo);
-		
-		
+			imagen.setCodigo(Integer.parseInt((String) request
+					.getParameter("hddCodigoSeleccionado")));
+			producto.setImagen(imagen);
 			CMantenimiento cMantenimiento = new CMantenimiento();
 			cMantenimiento.guardarCambiosProducto(producto, usuario, conn);
 			ConnectDS.aceptarTrasaccion(conn);
