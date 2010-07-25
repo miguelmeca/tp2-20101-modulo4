@@ -41,9 +41,9 @@ String ruta = request.getContextPath();
 			</tr>
 			<tr>
 				<td width="49%" align="left">Usuario:</td>
-				<td width="51%" align="left"><input type="text"
-					name="txtUsuario" id="txtUsuario" style="width: 150px"
-					class="text  ui-corner-all" size="20" /></td>
+				<td width="51%" align="left"><input
+					name="txtUsuario" type="text"
+					class="text  ui-corner-all" id="txtUsuario" style="width: 150px" size="20" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td align="left">&nbsp;</td>
@@ -51,9 +51,9 @@ String ruta = request.getContextPath();
 			</tr>
 			<tr>
 				<td align="left">Contrase&ntilde;a:</td>
-				<td align="left"><input type="password" name="txtClave"
-					id="txtClave" style="width: 150px" class="text  ui-corner-all"
-					size="100" /></td>
+				<td align="left"><input name="txtClave" type="password" class="text  ui-corner-all"
+					id="txtClave" style="width: 150px"
+					size="100" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="left">&nbsp;</td>

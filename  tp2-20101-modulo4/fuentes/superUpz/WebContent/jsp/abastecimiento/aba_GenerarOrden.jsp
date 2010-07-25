@@ -223,7 +223,7 @@ function validarCantidadIngresada(codigo){
 	var valor = document.getElementById("txtCantidad"+codigo);
 	var valorMaximo = document.getElementById("hddCantidad"+codigo);
 	var ingresado =valor.value;
-	if(parseInt(valor.value) > parseInt(valorMaximo.value)){
+	if(parseInt(valor.value) > parseInt(valorMaximo.value)|| parseInt(valor.value) == 0){
 		valor.value=valorMaximo.value;
 		alert("Cantidad ingresada de "+ingresado+" unidades no válida");
 		valor.focus();

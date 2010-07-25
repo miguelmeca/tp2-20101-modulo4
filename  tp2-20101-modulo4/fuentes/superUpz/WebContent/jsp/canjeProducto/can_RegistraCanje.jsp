@@ -129,7 +129,7 @@ body {
 								<td align="left"><input name="txtCantidadCanje" type="text"
 									class="text  ui-corner-all" id="txtCantidadCanje"
 									style="width: 56px" onKeyPress="Upper();SoloNumeros();"
-									value="1" /></td>
+									value="1" maxlength="4" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" align="left">&nbsp;</td>
