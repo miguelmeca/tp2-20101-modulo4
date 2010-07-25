@@ -79,9 +79,9 @@ body {
 								<div align="left">N&uacute;mero de documento: (*)</div>
 								</td>
 								<td width="150">
-								<div align="left"><input name="txtNumeroDocumento"
-									type="text" class="text  ui-corner-all" id="txtNumero22"
-									onKeyPress="Upper();SoloNumeros();" 
+								<div align="left"><input name="txtNumeroDocumento" 
+									type="text" class="text  ui-corner-all" id="txtNumero22" 
+									onKeyPress="Upper();SoloNumeros();"  
 									style="width: 150px" maxlength="10" /></div>
 								</td>
 								<td colspan="2">&nbsp;</td>

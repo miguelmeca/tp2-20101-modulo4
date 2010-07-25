@@ -8,9 +8,11 @@
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
 <%@page import="pe.com.upz.bean.BTipoProducto"%>
+<%@page import="pe.com.upz.bean.BImagenProducto"%>
 <%
 String ruta = request.getContextPath(); 
 Lista listadoTipoProducto = (Lista)request.getAttribute("listadoTipoProducto");
+Lista listadoImagen = (Lista) request.getAttribute("listadoImagen");
 BProducto producto = (BProducto)request.getAttribute("producto");
 
 if(producto == null){
@@ -24,6 +26,9 @@ if(producto == null){
 if(listadoTipoProducto ==null){
 	listadoTipoProducto = new Lista();
 }
+	if (listadoImagen == null) {
+		listadoImagen = new Lista();
+	}
 %>
 <html>
 <head>
@@ -92,6 +97,8 @@ body {
 									name="hddCodigo" type="hidden" 
 									id="hddCodigo" 
 									value="<%=producto.getCodigo() %>"  />
+									<input name="hddCodigoSeleccionado"
+									type="text" id="hddCodigoSeleccionado" value="<%=producto.getImagen().getCodigo()%>" />
 								</td>
 							</tr>
 							<% if(producto.getCodigo() != -1){%>
@@ -138,14 +145,86 @@ body {
 								<td align="left" style="height: 31px; width: 175px;">&nbsp;</td>
 								<td align="left" style="height: 31px; width: 420px;">&nbsp;</td>
 							</tr>
-							
-
 							<tr>
-								<td colspan="2" align="left">&nbsp;</td>
+							<td colspan="2" align="left"><span class="style3">(*)
+								Campos obligatórios.&nbsp;</span></td>
+								</tr>
+							<tr>
+								<td colspan="2" align="left">
+								<div id="tblPrincipal"
+									style="border-width: 1; border-color: gray; width: 600px; height: 300px; overflow-y: scroll">
+								<table width="583" border="1">
+									<%
+										for (int i = 0; (i*3) < listadoImagen.getTamanio(); i++) {
+											BImagenProducto imagen1 = (i*3 < listadoImagen.getTamanio())
+											? (BImagenProducto) listadoImagen.getElemento(i*3)
+											: null;
+											BImagenProducto imagen2 = ((i*3 + 1) < listadoImagen.getTamanio())
+													? (BImagenProducto) listadoImagen.getElemento(i*3 + 1)
+													: null;
+											BImagenProducto imagen3 = ((i*3 + 2) < listadoImagen.getTamanio())
+													? (BImagenProducto) listadoImagen.getElemento(i*3 + 2)
+													: null;
+									%>
+									<tr>
+										<td width="33%" class="ui-accordion-content">
+										<%if(imagen1 !=null){%>
+										<div align="center" class="Estilo4"><img
+											src="<%=ruta%>/images/productos/<%=imagen1.getArchivo()%>" 
+											width="100" height="100">
+											</div>
+										<%} %>
+										</td>
+										<td width="40%" class="ui-accordion-content">
+										<%if(imagen2 !=null){%>
+										<div align="center" class="Estilo4"><img
+											src="<%=ruta%>/images/productos/<%=imagen2.getArchivo()%>"
+											width="100" height="100"></div>
+										<%
+										System.out.println(ruta+"/images/productos/"+imagen2.getArchivo());
+										} %>
+										</td>
+										<td width="33%" class="ui-accordion-content">
+										<%if(imagen3 !=null){%>
+										<div align="center" class="Estilo4"><img
+											src="../../images/productos/<%=imagen3.getArchivo()%>"
+											width="100" height="100"></div>
+										<%} %>
+										</td>
+									</tr>
+									<tr>
+										<td class="ui-accordion-content">
+										<div align="center" class="Estilo4"><%=imagen1!=null?imagen1.getNombre():""%></div>
+										<%if(imagen1 !=null){%> <input name="chkProducto" type="radio"
+											value="<%=imagen1.getCodigo()%>" <%=imagen1.getCodigo()==producto.getImagen().getCodigo()?"checked":""%> 
+											onclick="javascript:seleccionar('<%=imagen1.getCodigo()%>')" />
+										<%} %>
+										</td>
+										<td class="ui-accordion-content">
+										<div align="center" class="Estilo4"><%=imagen2!=null?imagen2.getNombre():""%></div>
+										<%if(imagen2 !=null){%> <input name="chkProducto" type="radio"
+											value="<%=imagen2.getCodigo()%>" <%=imagen2.getCodigo()==producto.getImagen().getCodigo()?"checked":""%> 
+											onclick="javascript:seleccionar('<%=imagen2.getCodigo()%>')" />
+										<%} %>
+										</td>
+										<td class="ui-accordion-content">
+										<div align="center" class="Estilo4"><%=imagen3!=null?imagen3.getNombre():""%></div>
+										<%if(imagen3 !=null){%> <input name="chkProducto" type="radio"
+											value="<%=imagen3.getCodigo()%>" <%=imagen3.getCodigo()==producto.getImagen().getCodigo()?"checked":""%> 
+											onclick="javascript:seleccionar('<%=imagen3.getCodigo()%>')" />
+										<%} %>
+										</td>
+									</tr>
+									<%
+										}
+									%>
+								</table>
+
+								</div>
+								</td>
 							</tr>
 							<tr>
-								<td colspan="2" align="left"><span class="style3">(*)
-								Campos obligatórios.&nbsp;</span></td>
+								
 							</tr>
 						</table>
 						</td>
@@ -177,6 +256,9 @@ body {
 </div>
 </body>
 <script language="JavaScript">
+function seleccionar(codigo){
+	frmNuevoActualizar.hddCodigoSeleccionado.value=codigo;
+}
 	function almacenar(){
 		var tipo = frmNuevoActualizar.selTipo.value;
 		var nombre = frmNuevoActualizar.txtNombre.value;
