@@ -13,8 +13,10 @@ import java.sql.SQLException;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
 import pe.com.upz.bean.BUsuario;
+import pe.com.upz.dao.DImagenProducto;
 import pe.com.upz.dao.DProducto;
 import pe.com.upz.dao.DTipoProducto;
+import pe.com.upz.daoInterface.IImagenProducto;
 import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.daoInterface.ITipoProducto;
 import pe.com.upz.util.Lista;
@@ -118,5 +120,19 @@ public class CMantenimiento {
 		IProducto dProducto = new DProducto();
 		dProducto.guardarCambiosProducto(producto, usuario, conn);
 	}
+	
+	/**
+	 * Obtiene el listado de imagenes de galeria.
+	 * @return listadoImagenes listado de imagenes de galeria, tipo Lista.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public Lista obtenerListadoImagenes()throws SQLException{
+		Lista listadoImagenes=null;
+		IImagenProducto daoTipoProducto = new DImagenProducto();
+		
+		listadoImagenes = daoTipoProducto.obtenerListadoImagenes();
+		
+		return listadoImagenes;
+	}	 
 	//gonza
 }

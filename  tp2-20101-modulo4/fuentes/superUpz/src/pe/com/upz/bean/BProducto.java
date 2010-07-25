@@ -51,8 +51,15 @@ public class BProducto extends Bean{
 	private Lista listaPuntaje;
 
 	/**
+	 * Codigo Imagen
+	 */
+	private BImagenProducto imagen;
+	/**
 	 * Retorna codigo del producto.
 	 * @return codigo del producto.
+	 */
+	/**
+	 * @return
 	 */
 	public int getCodigo() {
 		return codigo;
@@ -158,7 +165,13 @@ public class BProducto extends Bean{
 	public void setRutaImagen(String rutaImagen) {
 		this.rutaImagen = rutaImagen;
 	}
+	public BImagenProducto getImagen() {
+		return imagen;
+	}
 
+	public void setImagen(BImagenProducto codigoImagen) {
+		this.imagen = codigoImagen;
+	}
 	/**
 	 * Retorna nombre del producto
 	 * @return nombre nombre del producto, tipo String.
@@ -190,5 +203,7 @@ public class BProducto extends Bean{
 	public void setListaPuntaje(Lista listaPuntaje) {
 		this.listaPuntaje = listaPuntaje;
 	}
+
+
 	
 }

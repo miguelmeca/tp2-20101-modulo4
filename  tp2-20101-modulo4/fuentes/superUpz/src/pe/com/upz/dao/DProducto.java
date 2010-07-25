@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import pe.com.upz.bean.BEquivalencia;
+import pe.com.upz.bean.BImagenProducto;
 import pe.com.upz.bean.BOpcion;
 import pe.com.upz.bean.BProducto;
 import pe.com.upz.bean.BSucursal;
@@ -131,6 +132,7 @@ public class DProducto implements IProducto{
 		sql.append("              FECHA_CREACION      , \n");
 		sql.append("              FECHA_MODIFICACION  , \n");
 		sql.append("              ESTADO              , \n");
+		sql.append("              codigo_imagen              , \n");
 		sql.append("              NOMBRE \n");
 		sql.append("       ) \n");
 		sql.append("       VALUES \n");
@@ -144,6 +146,7 @@ public class DProducto implements IProducto{
 		sql.append("              SYSDATE, \n");
 		sql.append("              NULL   , \n");
 		sql.append("              1      , \n");
+		sql.append("              ?     , \n");
 		sql.append("              ? \n");
 		sql.append("       )");
 		
@@ -152,7 +155,8 @@ public class DProducto implements IProducto{
 		pstm.setInt(2,producto.getTipo().getCodigo());
 		pstm.setString(3,producto.getDescripcion());
 		pstm.setString(4,usuario.getLogin());
-		pstm.setString(5,producto.getNombre());
+		pstm.setInt(5,producto.getImagen().getCodigo());
+		pstm.setString(6,producto.getNombre());
 		pstm.executeUpdate();
 		
 		return codigo;
@@ -201,6 +205,7 @@ public class DProducto implements IProducto{
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT PR.PRODUCTO_ID  AS CODIGO            , \n");
 		sql.append("       PR.TIPO_PRODUCTO_ID  AS TIPO        , \n");
+		sql.append("       nvl(IM.ARCHIVO,'NODISPONIBLE.jpg')  AS ARCHIVO        , \n");
 		sql.append("       TP.DESCRIPCION  AS DESTIPO            , \n");
 		sql.append("       PR.NOMBRE    AS NOMBRE               , \n");
 		sql.append("       NVL(EQ.MONTO_UNO,0)   AS   EQM1    , \n");
@@ -211,8 +216,10 @@ public class DProducto implements IProducto{
 		sql.append("       NVL(EQ.CANTIDAD_PUNTO_TRES,0) AS EQP3 \n");
 		sql.append("FROM   FIDELIZACION.PRODUCTO PR     , \n");
 		sql.append("       FIDELIZACION.TIPO_PRODUCTO TP, \n");
-		sql.append("       FIDELIZACION.EQUIVALENCIA EQ \n");
+		sql.append("       FIDELIZACION.EQUIVALENCIA EQ, \n");
+		sql.append("       FIDELIZACION.IMAGEN_PRODUCTO IM \n");
 		sql.append("WHERE  PR.TIPO_PRODUCTO_ID = TP.TIPO_PRODUCTO_ID \n");
+		sql.append("AND    PR.CODIGO_IMAGEN      = IM.CODIGO(+) \n");
 		if(soloActivos){
 			sql.append("AND    PR.ESTADO           = 1 \n");
 		}
@@ -241,6 +248,7 @@ public class DProducto implements IProducto{
 		rs = pstm.executeQuery();
 		
 		BTipoProducto tipo;
+		BImagenProducto imagen;
 		Lista equivalenciaListado;
 		BEquivalencia equivalencia;
 		while(rs.next()){
@@ -252,6 +260,9 @@ public class DProducto implements IProducto{
 			tipo.setCodigo(rs.getInt("TIPO"));
 			tipo.setDescripcion(rs.getString("DESTIPO"));
 			producto.setTipo(tipo);
+			imagen = new BImagenProducto();
+			imagen.setArchivo(rs.getString("ARCHIVO"));
+			producto.setImagen(imagen);
 			equivalenciaListado = new Lista();
 			equivalencia = new BEquivalencia();
 			equivalencia.setCantidadPuntoUno(rs.getInt("EQP1"));
@@ -496,7 +507,7 @@ public class DProducto implements IProducto{
 		sql.append("       pt.descripcion AS dTipo," +
 				" pr.descripcion AS desProducto, \n");
 		sql.append("       pr.estado                             , \n");
-		sql.append("       pr.nombre \n");
+		sql.append("       pr.nombre, NVL(pr.codigo_imagen,-1) AS codIma \n");
 		sql.append("FROM   producto pr, \n");
 		sql.append("       tipo_producto pt \n");
 		sql.append("WHERE  pr.producto_id      = ? \n");
@@ -508,6 +519,7 @@ public class DProducto implements IProducto{
 		rs = pstm.executeQuery();
 
 		BTipoProducto tipo;
+		BImagenProducto imagen;
 		while (rs.next()) {
 			producto = new BProducto();
 
@@ -515,10 +527,13 @@ public class DProducto implements IProducto{
 			producto.setNombre(rs.getString("nombre"));
 			producto.setDescripcion(rs.getString("desProducto"));
 			producto.setEstado(rs.getInt("estado"));
+			imagen = new BImagenProducto();
+			imagen.setCodigo(rs.getInt("codIma"));
 			tipo = new BTipoProducto();
 			tipo.setCodigo(rs.getInt("tipo_producto_id"));
 			tipo.setDescripcion(rs.getString("dTipo"));
 			producto.setTipo(tipo);
+			producto.setImagen(imagen);
 		}
 
 		rs.close();
@@ -557,7 +572,8 @@ public class DProducto implements IProducto{
 		sql.append("       descripcion          = ?     , \n");
 		sql.append("       usuario_modificacion = ?     , \n");
 		sql.append("       fecha_modificacion   = SYSDATE, \n");
-		sql.append("       nombre               = ? \n");
+		sql.append("       nombre               = ?, \n");
+		sql.append("       codigo_imagen        = ? \n");
 		sql.append("WHERE  producto_id          = ?");
 		
 		pstm = conn.prepareStatement(sql.toString());
@@ -566,7 +582,8 @@ public class DProducto implements IProducto{
 		pstm.setString(2,producto.getDescripcion());
 		pstm.setString(3,usuario.getLogin());
 		pstm.setString(4,producto.getNombre());
-		pstm.setInt(5,producto.getCodigo());
+		pstm.setInt(5,producto.getImagen().getCodigo());
+		pstm.setInt(6,producto.getCodigo());
 		pstm.executeUpdate();
 		
 		pstm.close();
