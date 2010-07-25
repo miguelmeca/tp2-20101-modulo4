@@ -165,7 +165,7 @@ body {
           <%BProducto producto = (BProducto)listadoProducto.getElemento(i); %>
           <%BEquivalencia equiva = (BEquivalencia)producto.getListaPuntaje().getElemento(0); %>
           <tr>
-            <td>[imagen]</td>
+            <td><img src="<%=ruta%>/images/productos/<%=producto.getImagen().getArchivo()%>" width="100" height="100"></td>
             <td><table width="349" border="0">
               <tr>
                 <td colspan="3"><%=producto.getNombre() %></td>
