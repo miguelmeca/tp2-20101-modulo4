@@ -7,6 +7,11 @@
 --%>
 <%
 String ruta = request.getContextPath(); 
+//mensaje a mostrar
+String mensajeMantenimiento = (String)request.getAttribute("mensajeMantenimiento");
+if(mensajeMantenimiento == null){
+	mensajeMantenimiento = "";
+}
 %>
 <html>
 <head>
@@ -40,7 +45,7 @@ body {
 </style>
 </head>
 
-<body>
+<body onload="javascript:mostrarMensaje();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 
 <div class="demos-nav" style="width: 100%" align="center">
@@ -319,6 +324,12 @@ function canjear(){
 	frmCanje.hddOperacion.value="almacenarCanje";
 	frmCanje.action="<%=ruta%>/SCanje?hddOperacion=almacenarCanje";
 	frmCanje.submit();
+}
+function mostrarMensaje(){
+	var resultado = "<%=mensajeMantenimiento%>";
+	if(resultado != ""){
+		alert(resultado);
+	}
 }
 </script>
 </html>

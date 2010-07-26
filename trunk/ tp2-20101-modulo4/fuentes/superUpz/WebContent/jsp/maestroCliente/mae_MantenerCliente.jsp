@@ -378,7 +378,7 @@ function validar(){
     var ret = msxml.responseText;	 
         
     if(ret!="OK_NoExiste")   {
-        ret = ret.substr(3);
+        ret = ret.substr(2);
         alert("El DNI ingresado ya se encuentra registrado para "+ret);
 		return false;
     }

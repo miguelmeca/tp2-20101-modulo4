@@ -27,6 +27,11 @@ if(nombreCliente ==null){
 if(codCuenta !=null){
 	codigoCuenta = Integer.parseInt(codCuenta);
 }
+//mensaje a mostrar
+String mensajeMantenimiento = (String)request.getAttribute("mensajeMantenimiento");
+if(mensajeMantenimiento == null){
+	mensajeMantenimiento = "";
+}
 %>
 
 <%@page import="pe.com.upz.bean.BTarjetaFidelizacion"%><html>
@@ -48,7 +53,7 @@ body {
 </style>
 </head>
 
-<body>
+<body onload="javascript:mostrarMensaje();">
 <jsp:include page="../comun/cabecera.jsp"></jsp:include>
 <div class="demos-nav" style="width:100%" align="center">
 <form name="frmCanje" id="frmCanje" method="get" action="">
@@ -227,6 +232,12 @@ function agregarTarjeta(){
 	                 ",height=" + 250; 
 	window.open("","VENTANA",opciones,1); 
 	frmCanje.submit();
+}
+function mostrarMensaje(){
+	var resultado = "<%=mensajeMantenimiento%>";
+	if(resultado != ""){
+		alert(resultado);
+	}
 }
 function mostrarClientes(){
 	frmCanje.target="VENTANA";
