@@ -107,7 +107,7 @@ public interface IProducto {
 	 * @throws SQLException
 	 */
 	public abstract Lista obtenerSucursalProductoStock() throws SQLException;
-	
+	public abstract boolean consultarSalida(int codSucursal, int codProducto) throws SQLException;
 	/**
 	 * Obtiene el consumo promedio de producto
 	 * @param codSucursal codigo de sucursal, tipo int.

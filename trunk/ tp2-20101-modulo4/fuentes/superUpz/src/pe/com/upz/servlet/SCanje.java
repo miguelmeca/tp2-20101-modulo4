@@ -111,7 +111,7 @@ public class SCanje extends HttpServlet {
 			cAba.actualizarPuntaje(conn, codigoCuenta, puntaje, usuario);
 			//actualiza stock
 			String numeroPedido = cAba.alamcenarOrden(request, usuario, codigoProducto,cantidad, conn,sucursal);
-			
+			request.setAttribute("mensajeMantenimiento", "Se ha realizado el canje.");
 			ruta = "/jsp/canjeProducto/can_RegistraCanje.jsp";
 			ConnectDS.aceptarTrasaccion(conn);
 		} catch (Exception e) {

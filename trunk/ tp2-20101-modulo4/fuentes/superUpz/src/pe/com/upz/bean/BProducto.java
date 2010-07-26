@@ -7,6 +7,11 @@
  */
 package pe.com.upz.bean;
 
+import java.sql.SQLException;
+
+import pe.com.upz.comun.ConnectDS;
+import pe.com.upz.dao.DProducto;
+import pe.com.upz.daoInterface.IProducto;
 import pe.com.upz.util.Bean;
 import pe.com.upz.util.Lista;
 
@@ -139,8 +144,38 @@ public class BProducto extends Bean{
 	 * Realiza el calculo de la cantidad maxia a solicitar en una orden de pedido.
 	 * @return cantidad maxima a solcitar.
 	 */
-	public long obtenerMaximoSolicitar(){
-		return 50;
+	public long obtenerMaximoSolicitar(int codSucursal){
+		int cantidad =0;
+
+			IProducto daoProducto = new DProducto();
+			try {
+				int mes= Integer.parseInt( ConnectDS.obtenerFechaFormato("MM"))-1;
+				int anio = Integer.parseInt( ConnectDS.obtenerFechaFormato("YYYY"));
+				cantidad = daoProducto.obtenerSucursalProductoPromedio(codSucursal, codigo, anio, mes);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		return cantidad;
+	}
+	/**
+	 * Realiza el calculo de la cantidad maxia a solicitar en una orden de pedido.
+	 * @return cantidad maxima a solcitar.
+	 */
+	public boolean obtenerSiExisteMovimiento(int codSucursal){
+		boolean cantidad =false;
+
+			IProducto daoProducto = new DProducto();
+			try {
+			
+				cantidad = (daoProducto.consultarSalida(codSucursal, codigo));
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		return cantidad;
 	}
 	/**
 	 * Retorna el codigo formateado con ceros

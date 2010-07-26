@@ -588,5 +588,35 @@ public class DProducto implements IProducto{
 		
 		pstm.close();
 	}
+	public boolean consultarSalida(int codSucursal, int codProducto) throws SQLException {
+		boolean valor= false;
+		Connection conn = ConnectDS.obtenerConeccion();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT cantidad PROMEDIO\n");
+		sql.append("FROM   FIDELIZACION.Pedido PE, \n");
+		sql.append("       FIDELIZACION.Detalle_Pedido dp \n");
+		sql.append("WHERE  dp.producto_id                  = ? \n");
+		sql.append("AND    pe.sucursal_id                  = ? \n");
+		sql.append("AND    pe.pedido_id                    = dp.pedido_id \n");
+		sql.append("AND    pe.estado                       = 1 \n");
+		sql.append("AND    pe.tipo_movimiento              = 3");
+		
+		pstm = conn.prepareStatement(sql.toString());
+		pstm.setInt(1,codProducto);
+		pstm.setInt(2,codSucursal);
+				
+		rs = pstm.executeQuery();
+		
+		int promedio=0;
+		if(rs.next()){
+			valor = true;			
+		}
+		rs.close();
+		pstm.close();
+		ConnectDS.cerrarConexion(conn);
+		return valor;
+	}
 	//gonza
 }

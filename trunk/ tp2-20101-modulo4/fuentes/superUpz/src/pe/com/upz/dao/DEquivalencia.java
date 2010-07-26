@@ -151,11 +151,11 @@ public class DEquivalencia implements IEquivalencia {
 		ResultSet rs = null;
 		BEquivalencia equival = new BEquivalencia();
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT E.CANTIDAD_PUNTO_UNO AS P1, \n");
+		sql.append("SELECT NVL(E.CANTIDAD_PUNTO_UNO,0) AS P1, \n");
 		sql.append("       E.MONTO_UNO          AS M1, \n");
-		sql.append("       E.CANTIDAD_PUNTO_DOS  AS P2, \n");
+		sql.append("       NVL(E.CANTIDAD_PUNTO_DOS,0)  AS P2, \n");
 		sql.append("       E.MONTO_DOS          AS M2, \n");
-		sql.append("       E.CANTIDAD_PUNTO_TRES AS P3, \n");
+		sql.append("       NVL(E.CANTIDAD_PUNTO_TRES,0) AS P3, \n");
 		sql.append("       E.MONTO_TRES AS M3 \n");
 		sql.append("FROM   FIDELIZACION.EQUIVALENCIA E \n");
 		sql.append("WHERE  E.PRODUCTO_ID = ? \n");
