@@ -12,6 +12,9 @@
 String ruta = request.getContextPath(); 
 String variable = (String)request.getAttribute("mostrar");
 String mantenimiento = (String)request.getAttribute("mantenimiento");
+
+//request.getSession().removeAttribute("listadoCuenta");
+
 boolean mostrarDiv=true;
 boolean mostrarMantenimineto=true;
 if(variable !=null && variable.equals("0")){
