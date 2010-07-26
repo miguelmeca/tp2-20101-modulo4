@@ -625,12 +625,15 @@ public class SMantenimientoCliente extends HttpServlet {
 			boolean encontrado = false;
 			if(codigoCliente == Integer.parseInt(codigoClienteTitular)){
 				encontrado=true;
+				request.setAttribute("mensajeMantenimiento", "El cliente ya se encontraba en la cuenta.");
 			}
 			
 			for(int i=0 ;i< listadoCuenta.getTamanio();i++){
 				BTarjetaFidelizacion tar = (BTarjetaFidelizacion)listadoCuenta.getElemento(i);
-				if(tar.getCliente().getCodigo() == codigoCliente)
+				if(tar.getCliente().getCodigo() == codigoCliente){
 					encontrado = true;
+					request.setAttribute("mensajeMantenimiento", "El cliente ya se encontraba en la cuenta.");
+				}
 			}
 			
 			tarjetaFidel.setCliente(cliente);
@@ -638,10 +641,10 @@ public class SMantenimientoCliente extends HttpServlet {
 			tarjetaFidel.setNumero(numeroTarjeta);
 			if(!encontrado){
 				listadoCuenta.setElemento(tarjetaFidel);
+				
 			}
 
 			request.getSession().setAttribute("listadoCuenta", listadoCuenta);
-			request.setAttribute("mensajeMantenimiento", "El cliente ya se encontraba en la cuenta.");
 			request.setAttribute("numTarjeta", numTarjetaTitular);
 			request.setAttribute("nombreCliente", nombreClienteTitular);
 			request.setAttribute("codigoCuenta", codigoCuenta);
