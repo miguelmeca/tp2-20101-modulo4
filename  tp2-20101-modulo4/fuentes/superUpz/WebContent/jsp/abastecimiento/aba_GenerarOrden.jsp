@@ -7,9 +7,12 @@
 --%>
 <%@page import="pe.com.upz.util.Lista"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
+<%@page import="pe.com.upz.bean.BSucursal"%>
 <%@page import="pe.com.upz.util.Parametros"%>
 
 <%
+	BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+			"sucursalSesion"));
 	String ruta = request.getContextPath();
 	boolean mostrarValidacion = Boolean.parseBoolean(((String) request
 			.getAttribute("mostrarValidacion") == null) ? "true"
@@ -137,13 +140,13 @@ MM_reloadPage(true);
 							<div align="center"><input name="txtCantidad<%=producto.getCodigo()%>" type="text"
 								onKeyPress="Upper();SoloNumeros();" 
 								class="text  ui-corner-all" id="txtCantidad<%=producto.getCodigo()%>" style="width: 50px"
-								value="<%=producto.obtenerMaximoSolicitar()%>" size="5" maxlength="5" 
+								value="<%=producto.obtenerMaximoSolicitar(sucursal.getCodigo())%>" size="5" maxlength="5" 
 								onkeyup="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
 								onblur="javascript:validarCantidadIngresada('<%=producto.getCodigo()%>')" 
 								disabled />
 								<input name="hddCantidad<%=producto.getCodigo()%>" type="hidden"
 								id="hddCantidad<%=producto.getCodigo()%>" 
-								value="<%=producto.obtenerMaximoSolicitar()%>" /></div>
+								value="<%=(producto.obtenerSiExisteMovimiento(sucursal.getCodigo()))?producto.obtenerMaximoSolicitar(sucursal.getCodigo()):999999%>" /></div>
 							</div>
 							</td>
 						</tr>
@@ -151,7 +154,6 @@ MM_reloadPage(true);
 							}
 						%>
 					</table>
-
 					</div>
 
 					 </td>
@@ -224,7 +226,12 @@ function validarCantidadIngresada(codigo){
 	var valorMaximo = document.getElementById("hddCantidad"+codigo);
 	var ingresado =valor.value;
 	if(parseInt(valor.value) > parseInt(valorMaximo.value)|| parseInt(valor.value) == 0){
-		valor.value=valorMaximo.value;
+		if(valorMaximo.value == 999999){
+			valor.value="0";
+		}else{
+			valor.value=valorMaximo.value;
+		}
+		
 		alert("Cantidad ingresada de "+ingresado+" unidades no válida");
 		valor.focus();
 	}
