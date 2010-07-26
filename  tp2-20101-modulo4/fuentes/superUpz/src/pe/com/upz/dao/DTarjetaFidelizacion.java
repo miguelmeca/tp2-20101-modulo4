@@ -172,7 +172,7 @@ public class DTarjetaFidelizacion implements ITarjetaFidelizacion {
 		Connection conn = ConnectDS.obtenerConeccion();
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String nombreCliente = "";
+		String nombreCliente = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT tf.numero AS numero \n");
 		sql.append("FROM   fidelizacion.tarjeta_fidelizacion tf \n");

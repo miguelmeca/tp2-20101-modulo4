@@ -146,7 +146,7 @@ public class ServicioUtilitario extends ServiceSession {
 					cadena.append(equival.getMontoDos()+"|");
 					cadena.append(equival.getCantidadPuntoDos()+";");
 				}
-				if(equival.getCantidadPuntoDos() > 0){
+				if(equival.getCantidadPuntoTres() > 0){
 					cadena.append(equival.getMontoTres()+"|");
 					cadena.append(equival.getCantidadPuntoTres()+"");
 				}

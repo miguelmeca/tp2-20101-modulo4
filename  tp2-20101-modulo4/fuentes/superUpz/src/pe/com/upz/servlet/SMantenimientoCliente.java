@@ -326,7 +326,7 @@ public class SMantenimientoCliente extends HttpServlet {
 			daoCliente.almacenarCliente(conn, cliente, usuario);
 
 			ConnectDS.aceptarTrasaccion(conn);
-			request.setAttribute("mensajeMantenimiento", "Se ha Creado la cuenta.");
+			request.setAttribute("mensajeMantenimiento", "Se ha Creado el cliente.");
 			ruta = iniciarListadoClientes(request, true);
 		} catch (Exception e) {
 			ConnectDS.deshacerTrasaccion(conn);
@@ -622,14 +622,26 @@ public class SMantenimientoCliente extends HttpServlet {
 			cliente.setApellidoMaterno(maternoAdicional);
 			tarjetaFidel = new BTarjetaFidelizacion();
 			listaTarjeta = new Lista();
-	
+			boolean encontrado = false;
+			if(codigoCliente == Integer.parseInt(codigoClienteTitular)){
+				encontrado=true;
+			}
+			
+			for(int i=0 ;i< listadoCuenta.getTamanio();i++){
+				BTarjetaFidelizacion tar = (BTarjetaFidelizacion)listadoCuenta.getElemento(i);
+				if(tar.getCliente().getCodigo() == codigoCliente)
+					encontrado = true;
+			}
+			
 			tarjetaFidel.setCliente(cliente);
 			tarjetaFidel.setTipoCliente(2);
 			tarjetaFidel.setNumero(numeroTarjeta);
-			listadoCuenta.setElemento(tarjetaFidel);
+			if(!encontrado){
+				listadoCuenta.setElemento(tarjetaFidel);
+			}
 
 			request.getSession().setAttribute("listadoCuenta", listadoCuenta);
-			
+			request.setAttribute("mensajeMantenimiento", "El cliente ya se encontraba en la cuenta.");
 			request.setAttribute("numTarjeta", numTarjetaTitular);
 			request.setAttribute("nombreCliente", nombreClienteTitular);
 			request.setAttribute("codigoCuenta", codigoCuenta);
