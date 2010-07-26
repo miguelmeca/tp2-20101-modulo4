@@ -10,10 +10,13 @@
 <%@page import="pe.com.upz.bean.BPedidoDetalle"%>
 <%@page import="pe.com.upz.bean.BProducto"%>
 <%@page import="pe.com.upz.util.Parametros"%>
+<%@page import="pe.com.upz.bean.BSucursal"%>
 
 <%
 	String ruta = request.getContextPath();
-	String fecha = (String) request.getAttribute("fecha");
+BSucursal sucursal = ((BSucursal) request.getSession().getAttribute(
+		"sucursalSesion"));	
+String fecha = (String) request.getAttribute("fecha");
 	String pedidoNumero = (String) request.getAttribute("pedidoNumero");
 	Lista listaDetalle = (Lista) request
 			.getAttribute("listaDetalle");
@@ -136,7 +139,7 @@ MM_reloadPage(true);
 								value="<%=detalle.getCantidad()%>" size="5" maxlength="5"  />
 								<input name="hddCantidad<%=producto.getCodigo()%>" type="hidden"
 								id="hddCantidad<%=producto.getCodigo()%>" 
-								value="<%=producto.obtenerMaximoSolicitar()%>" /></div>
+								value="<%=producto.obtenerMaximoSolicitar(sucursal.getCodigo())%>" /></div>
 							</div>
 							</td>
 						</tr>
