@@ -193,7 +193,10 @@ body {
               <input type="hidden" name="hddPuntoTres<%=producto.getCodigo()%>" value="<%=equivalencia.getCantidadPuntoTres()%>" />
 			  <input type="hidden" name="hddMontoTres<%=producto.getCodigo()%>" value="<%=equivalencia.getMontoTres()%>" />
             </div></td>
-            <td class="ui-accordion-content"><input name="chkProducto" type="radio" value ="<%=producto.getCodigo()%>"  /></td>
+            <td class="ui-accordion-content">
+			<input name="chkProducto" 
+			onclick="javascript:seleccionar('<%=producto.getCodigo()%>')" 
+			type="radio" value ="<%=producto.getCodigo()%>"  /></td>
             </tr>
             <%} %>
         </table>          
@@ -217,6 +220,7 @@ body {
     </table></td>
   </tr>
 </table>
+<input type="hidden" name="hddCodigoSeleccionado" id="hddCodigoSeleccionado" value="" />
 <input type="hidden" name="hddOperacion" id="hddOperacion" value="" />
 </form>
 </div>
@@ -236,15 +240,22 @@ function mostrarMensaje(){
 	}
 }
 function validarProductosSeleccionados(){
-	var seleccionado = false;
+	var seleccionado = true;
 	
-	for (i=0; i < frmListaProducto.chkProducto.length; i++) {
+	/*for (i=0; i < frmListaProducto.chkProducto.length; i++) {
 		if (frmListaProducto.chkProducto[i].checked) {
 			seleccionado = true;
 			break;
 		}
-	}	
+	}	*/
+	var codigo = frmListaProducto.hddCodigoSeleccionado.value;
+	if(codigo == ""){
+		seleccionado = false;
+	}
 	return seleccionado;
+}
+function seleccionar(codigo){
+	frmListaProducto.hddCodigoSeleccionado.value=codigo;
 }
 function agregarPuntaje(){
 	if(!validarProductosSeleccionados()){

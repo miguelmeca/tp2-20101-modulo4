@@ -67,9 +67,9 @@ body {
             </tr>
 		  <tr >
             <td width="49%" align="left" > N&uacute;mero de Tarjeta: (*) </td>
-            <td width="51%" align="left" ><input type="text" name="txtNumeroTarjeta" 
-            onKeyPress="Upper();SoloNumeros();" 
-            id="txtNumeroTarjeta" style="width:150px" class="text  ui-corner-all" /></td>
+            <td width="51%" align="left" ><input name="txtNumeroTarjeta" type="text" class="text  ui-corner-all" 
+            id="txtNumeroTarjeta" style="width:150px" 
+            onKeyPress="Upper();SoloNumeros();" maxlength="16" /></td>
           </tr>
           <tr >
             <td align="left" >&nbsp;</td>
@@ -116,10 +116,38 @@ function aceptarSeleccionPadre(){
 		alert("Debe ingresar un número de tarjeta.");
 		return;
 	}
+	if(codigo.length != 16){
+		alert("Debe ingresar un número de tarjeta de 16 dígitos.");
+			return false;
+	}
+	if(!validar()){
+		return;
+	}
 	var vm=window.opener;
 	vm.document.getElementById("txtNumeroTarjeta").value =  codigo;
 	cerrar();
 	
+}
+function validar(){   
+
+    var dni =  frmTarjeta.txtNumeroTarjeta.value;
+
+    var url = "ServicioUtilitario?" +
+                  "metodo=requestObtenerTarjetaRepetido" +
+                  "&txtNumeroTarjeta="+ dni; 
+    
+    var msxml = new ActiveXObject("msxml2.XMLHTTP");
+        
+    msxml.Open("GET", url, false);
+    msxml.Send("");
+    var ret = msxml.responseText;	 
+        
+    if(ret!="OK_NoExiste")   {
+        ret = ret.substr(2);
+        alert("El número de tarjeta ya se encuentra registrado.");
+		return false;
+    }
+     return true;
 }
 </script>
 </html>
