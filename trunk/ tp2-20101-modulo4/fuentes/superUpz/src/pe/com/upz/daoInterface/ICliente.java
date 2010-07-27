@@ -57,11 +57,38 @@ public interface ICliente {
 	 */
 	public abstract int obtenerMaximoNumeroCliente(Connection conn)throws SQLException;
 
+	/**
+	 * Busca dni repetidos
+	 * @param numDocumento
+	 * @param codigoCliente
+	 * @return
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract String buscarDniRepetido(String numDocumento, int codigoCliente)throws SQLException;
 
+	/**
+	 * obtiene un cliente
+	 * @param codigo  coigo a buscar, tipo int.
+	 * @return cliente, tipo BCliente
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract BCliente obtenerCliente(int codigo)throws SQLException;
+	/**
+	 * @param conn
+	 * @param cliente
+	 * @param usuario
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract void almacenarClienteModificado(Connection conn, BCliente cliente,
 			BUsuario usuario) throws SQLException;
+	
+	/**
+	 * Elimina un cliente
+	 * @param conn connexión a la BD, tipo Connection
+	 * @param cliente cliente a eliminar, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract void eliminarCliente(Connection conn, int cliente,
 			BUsuario usuario) throws SQLException;
 }

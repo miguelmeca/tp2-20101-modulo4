@@ -33,7 +33,9 @@ public interface ITarjetaFidelizacion {
 	 */
 	public abstract void almacenarTarjeta(Connection conn, BTarjetaFidelizacion tarjeta,
 			BUsuario usuario, BSucursal sucursal, int codCuenta)throws SQLException;
-	
+
+	public abstract boolean buscarClienteFidelizado(BCliente cliente, BCuenta cuenta)throws SQLException;
+
 	/**
 	 * Busca cliente de cuenta.
 	 * @param cliente cliente a buscar, tipo BCliente.
@@ -51,8 +53,20 @@ public interface ITarjetaFidelizacion {
 	 */
 	public abstract void eliminarTarjetasCuenta(Connection conn, int codCuenta, BUsuario usuario)throws SQLException;
 	
-	public abstract boolean buscarClienteFidelizado(BCliente cliente, BCuenta cuenta)throws SQLException;
 	
+	
+	/**
+	 * BUsca si existe repetido tarjeta.
+	 * @param numTarjeta numero de la tareta, tipo String.
+	 * @return usuario de repetido, tipo String
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract String buscarTarjetaRepetido(String numTarjeta)throws SQLException;
+	/**
+	 * Busca si exsiste la tarjeta.
+	 * @param codigoCliente codigo del cliente, int.
+	 * @return tarjeta a buscra, tipo BTarjetaFidelizacion.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
 	public abstract BTarjetaFidelizacion buscarCuentaExistente(int codigoCliente)throws SQLException;
 }
