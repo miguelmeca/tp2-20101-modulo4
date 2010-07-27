@@ -111,6 +111,28 @@ public class CMantenimientoCliente {
 		daoCliente.eliminarCliente(conn, cliente, usuario);
 	}
 	/**
+	 * Elimina los datos de cliente.
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param cliente codigo de cliente, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public BCliente obtenerCliente(int codigo)throws SQLException{
+		ICliente daoCliente = new DCliente();
+		return daoCliente.obtenerCliente(codigo);
+	}
+	/**
+	 * Elimina los datos de cliente.
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param cliente codigo de cliente, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public BUbigeo obtenerUbigeoDeCliente(BCliente cliente)throws SQLException{
+		IUbigeo daoUbigeo = new DUbigeo();
+		return daoUbigeo.obtenerUbigeo(cliente.getUbigeo().getCodigo());
+	}
+	/**
 	 * Elimina los datos asociados a la cuenta.
 	 * @param conn connexion a BD, tipo Connection.
 	 * @param codCuenta codigo de la cuenta, tipo int.
@@ -169,14 +191,7 @@ public class CMantenimientoCliente {
 		}
 		return cuenta.getCodigo();
 	}
-	public BCliente obtenerCliente(int codigo)throws SQLException{
-		ICliente daoCliente = new DCliente();
-		return daoCliente.obtenerCliente(codigo);
-	}
-	public BUbigeo obtenerUbigeoDeCliente(BCliente cliente)throws SQLException{
-		IUbigeo daoUbigeo = new DUbigeo();
-		return daoUbigeo.obtenerUbigeo(cliente.getUbigeo().getCodigo());
-	}
+
 	/**
 	 * Almacena un cliente modificado.
 	 * @param conn conexion a la base de datos, tipo Connection.

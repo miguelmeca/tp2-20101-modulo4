@@ -82,6 +82,18 @@ public interface ICuenta {
 	public abstract int obtenerPuntajeCuenta (int codcuenta)throws SQLException;
 	
 	/**
+	 * Elimina la cuenta
+	 * @param conn connexion a BD, tipo Connection.
+	 * @param codCuenta codigo de la cuenta, tipo int.
+	 * @param usuario usuario de la sesion, tipo BUsuario.
+	 * @param sucursal sucursal a buscar, tipo BSucursal.
+	 * @throws SQLException captura excepciones tipo SQL.
+	 */
+	public abstract void actualizarTarjetaClienteTitular(Connection conn, BTarjetaFidelizacion tarjeta,
+			BUsuario usuario, BSucursal sucursal, int codCuenta)throws SQLException;
+
+	
+	/**
 	 * Busca cuentas abiertas en una sucursal y un mes.
 	 * @param sucursal sucursal a buscar, tipo BSucursal.
 	 * @param mes mas a buscar, tipo int.
@@ -127,6 +139,4 @@ public interface ICuenta {
 	 */
 	public abstract void modificarCuenta(Connection conn, BCuenta cuenta,BUsuario usuario, BSucursal sucursal)throws SQLException;
 
-	public abstract void actualizarTarjetaClienteTitular(Connection conn, BTarjetaFidelizacion tarjeta,
-			BUsuario usuario, BSucursal sucursal, int codCuenta)throws SQLException;
 }
